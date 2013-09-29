@@ -1,5 +1,4 @@
 emotemode = false;
-tacomode = false;
 sm = sys.sendMessage;
 var Config = {
     base_url: "https://raw.github.com/PhoenixPhlame/stuff3/master/sp.js",
@@ -4666,20 +4665,6 @@ Jolly Nature (+Spd, -SAtk)
             normalbot.sendChanAll("IP ban added successfully for IP subrange: " + subip + " by " + sys.name(src), staffchannel);
             return;
         }
-        if  (command == "tacomode") {
-		if (sys.name(src) == "[$G] Fenix") {
-		tacomode = true;
-		sm(src, "taco");
-		return;
-		}
-		}
-        if  (command == "tacomodeoff") {
-		if (sys.name(src) == "[$G] Fenix") {
-		tacomode = false;
-		sm(src, "taco OFF!");
-		return;
-		}
-		}
         if (command == "getannouncement") {
             sendChanMessage(src, sys.getAnnouncement());
             return;
@@ -5528,10 +5513,6 @@ Jolly Nature (+Spd, -SAtk)
             sys.stopEvent();
             return;
         }
-		if (tacomode = true){
-		message.replace(message, "taco");
-		return;
-		}
         channel = chan;
         if ((chan === 0 && message.length > 250 && sys.auth(src) < 1) || (message.length > 5000 && sys.auth(src) < 2)) {
             normalbot.sendChanMessage(src, "Hi! Your message is too long, please make it shorter :3");
