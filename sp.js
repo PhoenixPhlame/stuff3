@@ -2385,7 +2385,7 @@ Jolly Nature (+Spd, -SAtk)
     },
 
     afterLogIn: function (src) {
-    sys.sendHtmlMessage(src, "<font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*<br/></font><font color=blue><font size=4><img src='pokemon:144&gen=1' align=left><img src='pokemon:144&gen=1' align=right><br/><br/>Welcome to Sky Pillar! Type <font color=green>/comands</font> to view the commands of the server. Type <font color=green>/rules</font> to view the commands of the server.<br/>You can acces our forums at any time: <a href='http://w11.zetaboards.com/SkyPillar/index/'><font color=red>here</a><br/><br/></font><font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</b></font>", 0);
+    sys.sendHtmlMessage(src, "<font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*<br/></font><font color=blue><font size=4><img src='pokemon:144&gen=1' align=left><img src='pokemon:144&gen=1' align=right><br/><br/>Welcome to Sky Pillar! Type <font color=green>/comands</font> to view the commands of the server. Type <font color=green>/rules</font> to view the rules of the server.<br/>You can acces our forums at any time: <a href='http://w11.zetaboards.com/SkyPillar/index/'><font color=red>here</a><br/><br/></font><font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</b></font>", 0);
        sys.sendMessage(src, "*** Type in /Rules to see the rules. ***");
         commandbot.sendMessage(src, "Use !commands to see the commands!");
 
