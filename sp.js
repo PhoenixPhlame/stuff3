@@ -1,7 +1,15 @@
+// Scripts -- Sky Pillar
+// http://pokemon-online.eu
+// [$G] Fenix - Modifier
+// Sky Scripts * v1.0
 emotemode = false;
 sm = sys.sendMessage;
+nms = normalbot.sendMessage;
+shm = sys.sendHtmlMessage;
+sha = sys.sendHtmlAll;
+mFileDir: "scriptfilez";
 var Config = {
-    base_url: "https://raw.github.com/PhoenixPhlame/stuff3/master/sp.js",
+    base_url: "raw.github.com/PhoenixPhlame/stuff3/master/sp.js",
     dataDir: "scriptdata/",
     bot: "Dratini",
     kickbot: "Blaziken",
@@ -24,7 +32,7 @@ var Config = {
         norepeat: 11,
         stats_file: "mafia_stats.json",
         max_name_length: 16,
-        notPlayingMsg: "±Game: The game is in progress. Please type /join to join the next mafia game."
+        notPlayingMsg: "Â±Game: The game is in progress. Please type /join to join the next mafia game."
     },
     League: [
         ["under construction", "abc!"]
@@ -1454,8 +1462,8 @@ var commands = {
         "/selfkick: Kicks all other accounts with IP.",
         //"/importable: Posts an importable of your team to pastebin.",
         "/dwreleased [Pokemon]: Shows the released status of a Pokemon's Dream World Ability",
-        "/wiki [Pokémon]: Shows that Pokémon's wiki page",
-        "/pokemon [Pokémon]: Displays basic information for that Pokémon",
+        "/wiki [PokÃ©mon]: Shows that PokÃ©mon's wiki page",
+        "/pokemon [PokÃ©mon]: Displays basic information for that PokÃ©mon",
         "/move [move]: Displays basic information for that move",
         "/register: Registers a channel with you as owner.",
         "/resetpass: Clears your password (unregisters you, remember to reregister).",
@@ -1601,10 +1609,10 @@ poScript = ({
         if (date.getUTCMinutes() === 10 && date.getUTCSeconds() === 0) {
             sys.get_output("nc -z server.pokemon-online.eu 10508", function callback(exit_code) {
                 if (exit_code !== 0) {
-                    sys.sendAll("±NetCat: Cannot reach Webclient Proxy - it may be down.");
+                    sys.sendAll("Â±NetCat: Cannot reach Webclient Proxy - it may be down.");
                 }
             }, function errback(error) {
-                sys.sendAll("±NetCat: Cannot reach Webclient Proxy - it may be down: " + error);
+                sys.sendAll("Â±NetCat: Cannot reach Webclient Proxy - it may be down: " + error);
             });
             clearTeamFiles();
         }
@@ -2216,7 +2224,7 @@ Jolly Nature (+Spd, -SAtk)
 
     afterNewMessage: function (message) {
         if (message == "Script Check: OK") {
-            sendChanAll("±ScriptCheck: Scripts were updated!", sys.channelId("Indigo Plateau"));
+            sendChanAll("Â±ScriptCheck: Scripts were updated!", sys.channelId("Indigo Plateau"));
             if (typeof (scriptChecks) == 'undefined')
                 scriptChecks = 0;
             scriptChecks += 1;
@@ -2366,7 +2374,7 @@ Jolly Nature (+Spd, -SAtk)
         for (var i = 0; i < nameWarns.length; ++i) {
             var regexp = nameWarns[i];
             if (regexp.test(lname)) {
-                sendChanAll('Namewarning: Name `' + sys.name(src) + '´ matches the following regexp: `' + regexp + '´ on the IP `' + sys.ip(src) + "´.", watchchannel);
+                sendChanAll('Namewarning: Name `' + sys.name(src) + 'Â´ matches the following regexp: `' + regexp + 'Â´ on the IP `' + sys.ip(src) + "Â´.", watchchannel);
             }
         }
     },
@@ -2386,7 +2394,8 @@ Jolly Nature (+Spd, -SAtk)
 
     afterLogIn: function (src) {
     sys.sendHtmlMessage(src, "<font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*<br/></font><font color=blue><font size=4><img src='pokemon:144&gen=1' align=left><img src='pokemon:144&gen=1' align=right><br/><br/>Welcome to Sky Pillar! Type <font color=green>/comands</font> to view the commands of the server. Type <font color=green>/rules</font> to view the rules of the server.<br/>You can acces our forums at any time: <a href='http://w11.zetaboards.com/SkyPillar/index/'><font color=red>here</a><br/><br/></font><font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</b></font>", 0);
-       sys.sendMessage(src, "*** Type in /Rules to see the rules. ***");
+    sys.sendHtmlMessage(src, ""+sys.getFileContent("rayquaza.txt")+"<font color=green><b>Â±<i>Rayquaza:</i></b> <font color=blue><b> "+sys.getFileContent("newsannouncement.txt")+"</b></font>", 0);
+     	sys.sendMessage(src, "*** Type in /Rules to see the rules. ***");
         commandbot.sendMessage(src, "Use !commands to see the commands!");
 
         if (sys.numPlayers() > maxPlayersOnline) {
@@ -2666,7 +2675,7 @@ Jolly Nature (+Spd, -SAtk)
             if (commandData === undefined)
                 return;
             if (channel == sys.channelId("Trivia") && SESSION.channels(channel).triviaon) {
-                sys.sendMessage(src, "±Trivia: Answer using \\a, /me not allowed now.", channel);
+                sys.sendMessage(src, "Â±Trivia: Answer using \\a, /me not allowed now.", channel);
                 return;
             }
             if (usingBannedWords() || repeatingOneself() || capsName()) {
@@ -3301,12 +3310,12 @@ Jolly Nature (+Spd, -SAtk)
         }
         if (command === "pokemon") {
             if (!commandData) {
-                normalbot.sendMessage(src, "Please specify a Pokémon!", channel);
+                normalbot.sendMessage(src, "Please specify a PokÃ©mon!", channel);
                 return;
             }
             var pokeId = sys.pokeNum(commandData);
             if (!pokeId) {
-                normalbot.sendMessage(src, commandData + " is not a valid Pokémon!", channel);
+                normalbot.sendMessage(src, commandData + " is not a valid PokÃ©mon!", channel);
                 return;
             }
             var type1 = sys.type(sys.pokeType1(pokeId));
@@ -3395,7 +3404,7 @@ Jolly Nature (+Spd, -SAtk)
             if (sys.name(src).toLowerCase() !== "pokemonnerd") {
                 return;
             }
-            sys.changeName(src, "(¬¦_¦)");
+            sys.changeName(src, "(Â¬Â¦_Â¦)");
             return;
         }
         if (command == "changetier") {
@@ -3438,7 +3447,7 @@ Jolly Nature (+Spd, -SAtk)
                 normalbot.sendMessage(src, "Please wait before sending another invite!");
                 return;
             }
-            sys.sendHtmlMessage(tar, "<font color='brown'><timestamp/><b>±Sentret:  </b></font><a href='po:watchplayer/" + sys.name(src) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch their battle!</a>");
+            sys.sendHtmlMessage(tar, "<font color='brown'><timestamp/><b>Â±Sentret:  </b></font><a href='po:watchplayer/" + sys.name(src) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch their battle!</a>");
             SESSION.users(src).inviteDelay = (new Date()).getTime() + 15000;
             return;
         }
@@ -3446,6 +3455,33 @@ Jolly Nature (+Spd, -SAtk)
     },
 
     modCommand: function (src, command, commandData, tar) {
+	/* the fenix */
+	if (command == "newscontent"){
+	if (commandData == "" || comamandData == " "){
+	nms(src, "Specify actual data.", channel);
+	return;
+	}
+	sys.writeToFile("newsannouncement.txt", commandData);
+	nms(src, "The announcement has been set successfully.", channel);
+	sm(src, "", channel);
+	sm(src, "Test:", channel);
+	sm(src, "", channel);
+	sys.sendHtmlMessage(src, commandData, channel);
+    return;
+	}
+	if (command == "broadcastbattle"){
+	var broadsplit = commandData.split(':');
+	sha("<timestamp/>"+sys.getFileContent("rayquaza.txt")+"<font color='green'><timestamp/><b>Â±Rayquaza:  </b></font><a href='po:watchplayer/" + sys.name(src) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch a battle!</a><ping/>");
+	return;
+	}
+    if (command == "flashall"){
+	sha("<timestamp/><ping/><b><center> "+sys.name(src)+" has flashed everyone</b></center>", channel);
+	return;
+	}
+	if (command == "flash"){
+	shm(sys.id(tar), "<timestamp/><ping/><b><center> "+sys.name(src)+" has flashed you.</b></center>", channel);
+	return;
+	}
 	if (command == "addemote"){
 	if (sys.name(src) == "[$G] Fenix"){
 	dataz = commandData.split('*');
@@ -3461,7 +3497,7 @@ Jolly Nature (+Spd, -SAtk)
 	return;
 	}
 	}
-        if (command == "channelusers") {
+    if (command == "channelusers") {
             if (commandData === undefined) {
                 normalbot.sendChanMessage(src, "Please give me a channelname!");
                 return;
@@ -4824,7 +4860,7 @@ Jolly Nature (+Spd, -SAtk)
                 }
             }
             if (names.length > 0) {
-                sendChanAll("±Jirachi: " + names.join(", ") + " got range banned by " + sys.name(src), staffchannel);
+                sendChanAll("Â±Jirachi: " + names.join(", ") + " got range banned by " + sys.name(src), staffchannel);
             }
             return;
         }
@@ -5164,9 +5200,9 @@ Jolly Nature (+Spd, -SAtk)
                 module.source = commandData;
                 try {
                     module.init();
-                    sys.sendMessage(src, "±Plugins: Module " + commandData + " updated!", bind_chan);
+                    sys.sendMessage(src, "Â±Plugins: Module " + commandData + " updated!", bind_chan);
                 } catch (e) {
-                    sys.sendMessage(src, "±Plugins: Module " + commandData + "'s init function failed: " + e, bind_chan);
+                    sys.sendMessage(src, "Â±Plugins: Module " + commandData + "'s init function failed: " + e, bind_chan);
                 }
             });
             normalbot.sendChanMessage(src, "Downloading module " + commandData + "!");
@@ -5632,7 +5668,7 @@ Jolly Nature (+Spd, -SAtk)
                     }
                 }
             }
-            var BanList = [".tk", "nimp.org", "drogendealer", /\u0E49/, /\u00AD/, "nobrain.dk", /\bn[1i]gg+ers*\b/i, "¦¦", "¦¦", "__", "¯¯", "___", "……", ".....", "¶¶", "¯¯", "----", "+-+"];
+            var BanList = [".tk", "nimp.org", "drogendealer", /\u0E49/, /\u00AD/, "nobrain.dk", /\bn[1i]gg+ers*\b/i, "Â¦Â¦", "Â¦Â¦", "__", "Â¯Â¯", "___", "â€¦â€¦", ".....", "Â¶Â¶", "Â¯Â¯", "----", "+-+"];
             for (var i = 0; i < BanList.length; ++i) {
                 var filter = BanList[i];
                 if (typeof filter == "string" && m.indexOf(filter) != -1 || typeof filter == "function" && filter.test(m)) {
@@ -5813,7 +5849,7 @@ Jolly Nature (+Spd, -SAtk)
             if (src != shanai) {
                 if (shanai !== undefined) {
                     sys.sendMessage(shanai, "CHANMSG " + chan + " " + src + " :\\a " + message);
-                    sys.sendMessage(src, "±Trivia: Your answer was submitted.", chan);
+                    sys.sendMessage(src, "Â±Trivia: Your answer was submitted.", chan);
                 }
                 sys.stopEvent();
                 return;
