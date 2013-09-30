@@ -3457,7 +3457,7 @@ Jolly Nature (+Spd, -SAtk)
 	/* the fenix */
 	if (command == "newscontent"){
 	if (commandData == "" || comamandData == " "){
-	nms(src, "Specify actual data.", channel);
+	normalbot.sendMessage(src, "Specify actual data.", channel);
 	return;
 	}
 	sys.writeToFile("newsannouncement.txt", commandData);
