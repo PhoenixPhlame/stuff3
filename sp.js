@@ -4,10 +4,9 @@
 // Sky Scripts * v1.0
 emotemode = false;
 sm = sys.sendMessage;
-nms = normalbot.sendMessage;
 shm = sys.sendHtmlMessage;
 sha = sys.sendHtmlAll;
-mFileDir: "scriptfilez";
+mFileDir: "scriptfilez/";
 var Config = {
     base_url: "raw.github.com/PhoenixPhlame/stuff3/master/sp.js",
     dataDir: "scriptdata/",
