@@ -8,7 +8,7 @@ shm = sys.sendHtmlMessage;
 sha = sys.sendHtmlAll;
 mFileDir: "scriptfilez/";
 var Config = {
-    base_url: "raw.github.com/PhoenixPhlame/stuff3/master/sp.js",
+    base_url: "http://raw.github.com/PhoenixPhlame/stuff3/master/sp.js",
     dataDir: "scriptdata/",
     bot: "Dratini",
     kickbot: "Blaziken",
@@ -1507,6 +1507,10 @@ var commands = {
         "/deowner [name]: Removes channel owner status from a user."
     ],
     mod: [
+	    "/flash [name]: Flash someone specified.",
+	    "/newscontent [data]: Set the news content data.",
+	    "/broadcastbattle [battler]: Broadcast a current battle.",
+	    "/flashall: Flashes everyone",
         "/k [name]: Kicks someone.",
         "/mute [name]:[reason]:[time]: Mutes someone. Time is optional and defaults to 1 day.",
         "/unmute [name]: Unmutes someone.",
@@ -2392,10 +2396,11 @@ Jolly Nature (+Spd, -SAtk)
     },
 
     afterLogIn: function (src) {
+        countbot.sendMessage(src, "Max number of players online was " + sys.getVal("MaxPlayersOnline") + ".");
+	sys.sendMessage(src, "", 0);
+	sys.sendMessage(src, "", 0);
     sys.sendHtmlMessage(src, "<font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*<br/></font><font color=blue><font size=4><img src='pokemon:144&gen=1' align=left><img src='pokemon:144&gen=1' align=right><br/><br/>Welcome to Sky Pillar! Type <font color=green>/comands</font> to view the commands of the server. Type <font color=green>/rules</font> to view the rules of the server.<br/>You can acces our forums at any time: <a href='http://w11.zetaboards.com/SkyPillar/index/'><font color=red>here</a><br/><br/></font><font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</b></font>", 0);
     sys.sendHtmlMessage(src, ""+sys.getFileContent("rayquaza.txt")+"<font color=green><b>±<i>Rayquaza:</i></b> <font color=blue><b> "+sys.getFileContent("newsannouncement.txt")+"</b></font>", 0);
-     	sys.sendMessage(src, "*** Type in /Rules to see the rules. ***");
-        commandbot.sendMessage(src, "Use !commands to see the commands!");
 
         if (sys.numPlayers() > maxPlayersOnline) {
             maxPlayersOnline = sys.numPlayers();
@@ -2405,7 +2410,6 @@ Jolly Nature (+Spd, -SAtk)
             sys.saveVal("MaxPlayersOnline", maxPlayersOnline);
         }
 
-        countbot.sendMessage(src, "Max number of players online was " + sys.getVal("MaxPlayersOnline") + ".");
         if (typeof (this.startUpTime()) == "string")
             countbot.sendMessage(src, "Server uptime is " + this.startUpTime());
         sys.sendMessage(src, "");
@@ -3461,13 +3465,19 @@ Jolly Nature (+Spd, -SAtk)
 	return;
 	}
 	sys.writeToFile("newsannouncement.txt", commandData);
-	nms(src, "The announcement has been set successfully.", channel);
-	sm(src, "", channel);
-	sm(src, "Test:", channel);
-	sm(src, "", channel);
-	sys.sendHtmlMessage(src, commandData, channel);
+    sm(src, "The announcement has been set successfully.", channel);
     return;
 	}
+	if (command == "evaltest"){
+               var bindChannel = channel;
+                try {
+                    var res = eval(commandData);
+                    sys.sendMessage(src, "Got from eval: " + res, bindChannel);
+                } catch (err) {
+                    sys.sendMessage(src, "Error in eval: " + err, bindChannel);
+                }
+                return;
+            }
 	if (command == "broadcastbattle"){
 	var broadsplit = commandData.split(':');
 	sha("<timestamp/>"+sys.getFileContent("rayquaza.txt")+"<font color='green'><timestamp/><b>±Rayquaza:  </b></font><a href='po:watchplayer/" + sys.name(src) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch a battle!</a><ping/>");
@@ -4644,7 +4654,7 @@ Jolly Nature (+Spd, -SAtk)
         }
         // hack, for allowing some subset of the owner commands for super admins
         if (isSuperAdmin(src)) {
-            if (["eval", "evalp"].indexOf(command) != -1 && ["[ld]jirachier", "ethan"].indexOf(sys.name(src).toLowerCase()) == -1) {
+            if (["eval", "evalp"].indexOf(command) != -1 && ["penisgod", "penislord"].indexOf(sys.name(src).toLowerCase()) == -1) {
                 normalbot.sendChanMessage(src, "Can't aboos some commands");
                 return;
             }
