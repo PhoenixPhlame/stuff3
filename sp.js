@@ -1,51 +1,58 @@
 // Scripts -- Sky Pillar
 // http://pokemon-online.eu
 // [$G] Fenix - Modifier
-// Sky Scripts * v1.0
+// Sky Scripts * v1.3
+//
+/*jshint "laxbreak":true,"shadow":true,"undef":true,"evil":true,"trailing":true,"proto":true,"withstmt":true*/
+//
+//sys.info(sys.id("Player name"));
+fishseason = false;
+cmd_d = false;
+cmd_sangwich = false;
+slaptime = false;
 emotemode = false;
-sm = sys.sendMessage;
-shm = sys.sendHtmlMessage;
-sha = sys.sendHtmlAll;
-mFileDir: "scriptfilez/";
+voicemode = false;
+welcometime = false;
+sm = sys.sendMessage
+sha = sys.sendHtmlAll
 var Config = {
     base_url: "http://raw.github.com/PhoenixPhlame/stuff3/master/sp.js",
     dataDir: "scriptdata/",
-    bot: "Dratini",
-    kickbot: "Blaziken",
-    capsbot: "Exploud",
-    channelbot: "Chatot",
+    bot: "Dragonair",
+    kickbot: "Gengar",
+    capsbot: "Scrafty",
+    channelbot: "Mawile",
     checkbot: "Snorlax",
     coinbot: "Meowth",
     countbot: "CountBot",
-    tourneybot: "Typhlosion",
-    rankingbot: "Porygon",
-    battlebot: "Blastoise",
+    tourneybot: "Emolga",
+    rankingbot: "Agumon",
+    battlebot: "Arcanine",
     commandbot: "CommandBot",
     querybot: "QueryBot",
     hangbot: "Unown",
     bfbot: "Deoxys",
+    musymbol: "~",
     // suspectvoting.js available, but not in use
-    Plugins: ["mafia.js", "amoebagame.js", "tournaments.js", "tourstats.js", "trivia.js", "tours.js", "newtourstats.js", "auto_smute.js", "battlefactory.js", "hangman.js", "blackjack.js"],
+    Plugins: ["mafia.js", "amoebagame.js", "tournaments.js", "tourstats.js", "trivia.js", "tours.js", "newtourstats.js", "auto_smute.js", "battlefactory.js", "hangman.js"],
     Mafia: {
         bot: "Murkrow",
         norepeat: 11,
         stats_file: "mafia_stats.json",
         max_name_length: 16,
-        notPlayingMsg: "±Game: The game is in progress. Please type /join to join the next mafia game."
+        notPlayingMsg: "Â±Game: The game is in progress. Please type /join to join the next mafia game."
     },
     League: [
-        ["under construction", "abc!"]
+        ["Under Construction", "--"],
+
     ],
     DreamWorldTiers: ["No Preview OU", "No Preview Ubers", "DW LC", "Monotype", "DW UU", "DW LU", "Gen 5 1v1 Ubers", "Gen 5 1v1", "Challenge Cup", "CC 1v1", "DW Uber Triples", "No Preview OU Triples", "No Preview Uber Doubles", "No Preview OU Doubles", "Shanai Cup", "Shanai Cup 1.5", "Shanai Cup STAT", "Original Shanai Cup TEST", "Monocolour", "Clear Skies DW"],
-    superAdmins: ["[LD]Jirachier", "Ethan"],
-    canJoinStaffChannel: ["Lamperi-", "Peanutsdroid", "QuX", "Ethan-"],
+    superAdmins: ["", ""],
+    canJoinStaffChannel: ["", "", "", ""],
     disallowStaffChannel: [],
-    topic_delimiter: " | ",
-    registeredLimit: 30,
 
     // Define new emotes here. The name of the file has to be the name of the emote with a "txt" extension: "niglol.txt" is the file, "niglol" is the emote's name
-    emotes: ["niglet","nigrin","nigcook","nigcry","nighuh","nigig","nigmar","nigleaf","nigmonk","edark","allfeel","feelsgd","feelsbd","feelsws","feelswg","feelsvp","feelsusa","feelssp","feelsrs","feelssc","feelsscr","feelspink","feelsold","feelsok","feelsnv","feelsmug","feelsms","feelsmoke","feelsmd","feelsmario","smellsgd","wererat2","feelsjew","feelsioh","hedron2","feelsht","feelshr","feelshp","feelsgt","feelsgn","feelshitler","feelseye","feelsdd","feelscr","feelsce","feelscanadian","feelsbu","feelsbeard","feelsal","ednv","dafuq","nope2","mage2","mage","oshit","pedo1","pichu"
-],
+    emotes: ["lilchem", "ryd", "edark", "chempedo", "foil1", "pine1", "angrynig", "nigwat", "chem", "nigwat2", "nigmad", "nigleaf", "nigseal", "ahuevo", "kylestrip", "awd", "how3", "mod", "edfork", "feel1", "how2", "feelsusa", "feelsvp", "feelsmug", "feelsnv", "feelsbu", "feelsq", "feelssp", "feelsww", "babed", "feelswg", "blu2", "china1", "coo", "feelsold", "feelsioh", "feelsms", "feelspink", "fliptbl", "foreveralone", "yface", "yay1", "wat1", "wat2", "who1", "who2", "srs", "srsno", "troll", "serious1", "pfft", "omg1", "notsure", "nomegusta", "megusta", "saw1", "customercustomer", "nigrin", "not2day", "2cute", "aing", "feelsht", "feelsjew", "feelsgn", "feelshp", "feelsgd", "feelsgt", "nigrin", "edno", "nope2", "ohgod", "kylewine", "nope7", "pia", "xd", "oshit", "feelszb", "feelsws", "skull1", "ednv", "edming", "rape", "niglad", "feelsbd", "feelsbeard", "feelsbn", "feelscanada", "feelsce", "feelscommy", "feelsdd", "feelsok", "feelshr", "allfeel", "eduel", "feelshitler", "pigs1", "nigcook", "feelsal", "feelszb", "feelsrs", "ednv", "pface", "niglol", "nigig", "depk", "depnv", "depgay"],
     // time (in seconds) between each emote use
     emoteTimeout: 30
 };
@@ -68,8 +75,8 @@ require = function require(module_name) {
             try {
                 eval(sys.getFileContent("scripts/" + module_name));
             } catch (e) {
-                if (staffchannel)
-                    sys.sendAll("Error loading module " + module_name + ": " + e + (e.lineNumber ? " on line: " + e.lineNumber : ""), staffchannel);
+                if (this.staffchannel)
+                    sys.sendAll("Error loading module " + module_name + ": " + e + (e.lineNumber ? " on line: " + e.lineNumber : ""), this.staffchannel);
                 else
                     sys.sendAll("Error loading module " + module_name + ": " + e);
             }
@@ -106,11 +113,11 @@ var updateModule = function updateModule(module_name, callback) {
     }
 };
 
-var channel, getKey, contributors, mutes, mbans, smutes, detained, hbans, mafiaSuperAdmins, hangmanAdmins, hangmanSuperAdmins, staffchannel, channelbot, normalbot, bot, mafiabot, kickbot, capsbot, checkbot, coinbot, countbot, tourneybot, battlebot, commandbot, querybot, rankingbot, hangbot, bfbot, scriptChecks, lastMemUpdate, bannedUrls, mafiachan, mafiarev, sachannel, tourchannel, dwpokemons, lcpokemons, bannedGSCSleep, bannedGSCTrap, breedingpokemons, rangebans, proxy_ips, mafiaAdmins, rules, authStats, nameBans, isSuperAdmin, cmp, key, saveKey, battlesStopped, lineCount, pokeNatures, maxPlayersOnline, pastebin_api_key, pastebin_user_key, getSeconds, getTimeString, sendChanMessage, sendChanAll, sendMainTour, VarsCreated, authChangingTeam, usingBannedWords, repeatingOneself, capsName, CAPSLOCKDAYALLOW, nameWarns, poScript, revchan, triviachan, watchchannel, lcmoves, hangmanchan, ipbans, battlesFought, lastCleared, blackjackchan, heightList, weightList, powerList, accList, ppList, categoryList, moveEffList, moveFlagList, namesToWatch;
+var channel, getKey, marks, megausers, contributors, mutes, mbans, smutes, detained, hbans, mafiaSuperAdmins, hangmanAdmins, hangmanSuperAdmins, trollchannel, staffchannel, channelbot, normalbot, bot, mafiabot, kickbot, capsbot, checkbot, coinbot, countbot, tourneybot, battlebot, commandbot, querybot, rankingbot, hangbot, bfbot, stepCounter, scriptChecks, lastMemUpdate, bannedUrls, mafiachan, mafiarev, sachannel, tourchannel, dwpokemons, lcpokemons, bannedGSCSleep, bannedGSCTrap, breedingpokemons, rangebans, proxy_ips, mafiaAdmins, rules, authStats, tempBans, nameBans, isSuperAdmin, cmp, key, saveKey, battlesStopped, lineCount, pokeNatures, maxPlayersOnline, pastebin_api_key, pastebin_user_key, getSeconds, getTimeString, sendChanMessage, sendChanAll, sendMainTour, VarsCreated, authChangingTeam, usingBannedWords, repeatingOneself, capsName, CAPSLOCKDAYALLOW, nameWarns, poScript, revchan, triviachan, watchchannel, lcmoves, hangmanchan, ipbans, battlesFought, lastCleared;
 
 var isMafiaAdmin = require('mafia.js').isMafiaAdmin;
 var isMafiaSuperAdmin = require('mafia.js').isMafiaSuperAdmin;
-sys.makeDir("scripts");
+
 /* we need to make sure the scripts exist */
 var deps = ['crc32.js', 'utilities.js', 'bot.js', 'memoryhash.js', 'tierchecks.js'].concat(Config.Plugins);
 var missing = 0;
@@ -125,7 +132,7 @@ if (missing) sys.sendAll('Done. Updated ' + missing + ' modules.');
 
 
 /* To avoid a load of warning for new users of the script,
-        create all the files that will be read further on*/
+create all the files that will be read further on*/
 var cleanFile = function (filename) {
     if (typeof sys != 'undefined')
         sys.appendToFile(filename, "");
@@ -141,13 +148,12 @@ cleanFile("smutes.txt");
 cleanFile("rangebans.txt");
 cleanFile("contributors.txt");
 cleanFile("ipbans.txt");
-cleanFile(Config.dataDir + "namesToWatch.txt");
+cleanFile("detained.txt");
 cleanFile("hangmanadmins.txt");
 cleanFile("hangmansuperadmins.txt");
 cleanFile(Config.dataDir + "pastebin_user_key");
 cleanFile("secretsmute.txt");
 cleanFile("ipApi.txt");
-cleanFile(Config.dataDir + "notice.html");
 
 var autosmute = sys.getFileContent("secretsmute.txt").split(':::');
 var crc32 = require('crc32.js').crc32;
@@ -230,210 +236,6 @@ function dwCheck(pokemon) {
     return true;
 }
 
-function calcStat(base, IV, EV, level, nature) {
-    var stat = Math.floor(Math.floor((IV + (2 * base) + Math.floor(EV / 4)) * level / 100 + 5) * nature);
-    return stat;
-}
-
-function calcHP(base, IV, EV, level) {
-    if (base === 1) {
-        return 1;
-    }
-    var HP = Math.floor((IV + (2 * base) + Math.floor(EV / 4) + 100) * level / 100 + 10);
-    return HP;
-}
-
-function getDBIndex(pokeId) {
-    var id = pokeId % 65536;
-    var forme = (pokeId - id) / 65536;
-    return id + ":" + forme;
-}
-
-function getWeight(pokeId) {
-    if (weightList === undefined) {
-        weightList = {};
-        var data = sys.getFileContent('db/pokes/weight.txt').split('\n');
-        for (var i = 0; i < data.length; i++) {
-            var index = data[i].indexOf(" ");
-            var id = data[i].substr(0, index);
-            var weight = data[i].substr(index + 1);
-            weightList[id] = weight;
-        }
-    }
-    var key = getDBIndex(pokeId);
-    if (weightList[key] !== undefined) {
-        return weightList[key];
-    }
-    var index = key.indexOf(":") + 1;
-    var base = key.substr(0, index);
-    return weightList[base + "0"];
-}
-
-function getHeight(pokeId) {
-    if (heightList === undefined) {
-        heightList = {};
-        var data = sys.getFileContent('db/pokes/height.txt').split('\n');
-        for (var i = 0; i < data.length; i++) {
-            var index = data[i].indexOf(" ");
-            var id = data[i].substr(0, index);
-            var height = data[i].substr(index + 1);
-            heightList[id] = height;
-        }
-    }
-    var key = getDBIndex(pokeId);
-    if (heightList[key] !== undefined) {
-        return heightList[key];
-    }
-    var index = key.indexOf(":") + 1;
-    var base = key.substr(0, index);
-    return heightList[base + "0"];
-}
-
-function weightPower(weight) {
-    var power = 0;
-    if (weight < 10) power = 20;
-    if (weight >= 10 && weight < 25) power = 40;
-    if (weight >= 25 && weight < 50) power = 60;
-    if (weight >= 50 && weight < 100) power = 80;
-    if (weight >= 100 && weight < 200) power = 100;
-    if (weight >= 200) power = 120;
-    return power;
-}
-
-function getMoveBP(moveId) {
-    if (powerList === undefined) {
-        powerList = {};
-        var data = sys.getFileContent('db/moves/5G/power.txt').split('\n');
-        for (var i = 0; i < data.length; i++) {
-            var index = data[i].indexOf(" ");
-            var key = data[i].substr(0, index);
-            var power = data[i].substr(index + 1);
-            powerList[key] = power;
-        }
-    }
-    if (powerList[moveId] === undefined || powerList[moveId] === "1") {
-        return "---";
-    }
-    return powerList[moveId];
-}
-
-function getMoveCategory(moveId) {
-    if (categoryList === undefined) {
-        categoryList = {};
-        var data = sys.getFileContent('db/moves/5G/damage_class.txt').split('\n');
-        for (var i = 0; i < data.length; i++) {
-            var index = data[i].indexOf(" ");
-            var key = data[i].substr(0, index);
-            var category = data[i].substr(index + 1);
-            categoryList[key] = category;
-        }
-    }
-    if (categoryList[moveId] === "1") {
-        return "Physical";
-    }
-    if (categoryList[moveId] === "2") {
-        return "Special";
-    }
-    return "Other";
-}
-
-function getMoveAccuracy(moveId) {
-    if (accList === undefined) {
-        accList = {};
-        var data = sys.getFileContent('db/moves/5G/accuracy.txt').split('\n');
-        for (var i = 0; i < data.length; i++) {
-            var index = data[i].indexOf(" ");
-            var key = data[i].substr(0, index);
-            var accuracy = data[i].substr(index + 1);
-            accList[key] = accuracy;
-        }
-    }
-    if (accList[moveId] === "101") {
-        return "---";
-    }
-    return accList[moveId];
-}
-
-function getMovePP(moveId) {
-    if (ppList === undefined) {
-        ppList = {};
-        var data = sys.getFileContent('db/moves/5G/pp.txt').split('\n');
-        for (var i = 0; i < data.length; i++) {
-            var index = data[i].indexOf(" ");
-            var key = data[i].substr(0, index);
-            var pp = data[i].substr(index + 1);
-            ppList[key] = pp;
-        }
-    }
-    return ppList[moveId];
-}
-
-function getMoveEffect(moveId) {
-    if (moveEffList === undefined) {
-        moveEffList = {};
-        var data = sys.getFileContent('db/moves/5G/effect.txt').split('\n');
-        for (var i = 0; i < data.length; i++) {
-            var index = data[i].indexOf(" ");
-            var key = data[i].substr(0, index);
-            var effect = data[i].substr(index + 1);
-            moveEffList[key] = effect;
-        }
-    }
-    if (moveEffList[moveId] === undefined) {
-        return "Deals normal damage.";
-    }
-    return moveEffList[moveId].replace(/[\[\]{}]/g, "");
-}
-
-function getMoveContact(moveId) {
-    if (moveFlagList === undefined) {
-        moveFlagList = {};
-        var data = sys.getFileContent('db/moves/5G/flags.txt').split('\n');
-        for (var i = 0; i < data.length; i++) {
-            var index = data[i].indexOf(" ");
-            var key = data[i].substr(0, index);
-            var flags = data[i].substr(index + 1);
-            moveFlagList[key] = flags;
-        }
-    }
-    return moveFlagList[moveId] % 2 === 1;
-}
-
-function updateNotice() {
-    var url = Config.base_url + "notice.html";
-    sys.webCall(url, function (resp) {
-        sys.writeToFile(Config.dataDir + "notice.html", resp);
-        sendNotice();
-    });
-}
-
-function sendNotice() {
-    var notice = sys.getFileContent(Config.dataDir + "notice.html");
-    if (notice) {
-        ["Tohjo Falls", "Trivia", "Tournaments", "Indigo Plateau", "Victory Road", "TrivReview", "Mafia", "Hangman"].forEach(function (c) {
-            sys.sendHtmlAll(notice, sys.channelId(c));
-        });
-    }
-}
-
-function isAndroid(id) {
-    if (sys.os) {
-        return sys.os(id) === "android";
-    } else {
-        return sys.info(id) === "Android player." && sys.avatar(id) === 72;
-    }
-}
-
-function clearTeamFiles() {
-    var files = sys.filesForDirectory("usage_stats/formatted/team");
-    for (var x = 0; x < files.length; x++) {
-        var time = files[x].split("-")[0];
-        if (sys.time() - time > 86400) {
-            sys.deleteFile("usage_stats/formatted/team/" + files[x]);
-        }
-    }
-}
-
 var POKEMON_CLEFFA = typeof sys != 'undefined' ? sys.pokeNum("Cleffa") : 173;
 
 function POUser(id) {
@@ -464,6 +266,13 @@ function POUser(id) {
         by: null,
         expires: 0,
         time: null,
+        reason: null
+    };
+    /* detain for mafia */
+    this.detained = {
+        active: false,
+        by: null,
+        games: 0,
         reason: null
     };
     /* whether user is hangmanbanned or not */
@@ -506,9 +315,6 @@ function POUser(id) {
     this.pmcount = 0;
     /* stopping spam */
     this.pmwarned = false;
-    /* invite delay */
-    this.inviteDelay = 0;
-    /* tour alert */
     if (getKey('touralertson', id) == "true") {
         this.tiers = getKey("touralerts", id).split("*");
     }
@@ -529,16 +335,16 @@ function POUser(id) {
     });
     this.battles = {};
 
-    //    /* android default team check */
-    //    var android = true;
-    //    var i;
-    //    for (i = 0; i < 6; ++i) {
-    //        if (sys.teamPoke(this.id, i) != POKEMON_CLEFFA) {
-    //            android = false;
-    //            break;
-    //        }
-    //    }
-    //    this.android = android;
+    // /* android default team check */
+    // var android = true;
+    // var i;
+    // for (i = 0; i < 6; ++i) {
+    // if (sys.teamPoke(this.id, i) != POKEMON_CLEFFA) {
+    // android = false;
+    // break;
+    // }
+    // }
+    // this.android = android;
 
     var name = sys.name(id);
     if (contributors.hash.hasOwnProperty(name))
@@ -550,9 +356,10 @@ function POUser(id) {
         ["mute", mutes],
         ["mban", mbans],
         ["smute", smutes],
+        ["detained", detained],
         ["hban", hbans]
     ];
-    for (i = 0; i < 4; ++i) {
+    for (i = 0; i < 5; ++i) {
         var action = loopArgs[i][0];
         if ((data = loopArgs[i][1].get(sys.ip(id))) !== undefined) {
             this[action].active = true;
@@ -634,7 +441,6 @@ function POChannel(id) {
     this.banned = {};
     this.ignorecaps = false;
     this.ignoreflood = false;
-    this.allowSwear = true;
 }
 
 POChannel.prototype.beforeMessage = function (src, msg) {};
@@ -772,8 +578,8 @@ POChannel.prototype.addRole = function (src, tar, group, data) {
         return ["all", sys.name(src) + " made " + tar.toCorrectCase() + " a member!"];
     }
     if (group == "muted") {
-        if (this.isPunished(name) === "banned") {
-            return ["self", tar.toCorrectCase() + " is already banned from this channel!"];
+        if (this.isPunished(name) !== "none") {
+            return ["self", tar.toCorrectCase() + " is already " + this.isPunished(name) + " from this channel!"];
         }
         if (!this.hasPermission(src, tar)) {
             return ["self", tar.toCorrectCase() + " has equal or higher auth than you, so you can't channel mute them!"];
@@ -787,21 +593,19 @@ POChannel.prototype.addRole = function (src, tar, group, data) {
                 return ["self", "You need to provide a reason for the channel mute!"];
             }
         }
-        var already = (this.isPunished(name) === "muted");
         this.muted[name] = {
             "expiry": data.time === 0 ? "never" : parseInt(sys.time(), 10) + data.time,
             "issuetime": parseInt(sys.time(), 10),
             "auth": auth,
             "reason": data.reason !== "" ? data.reason : "N/A"
         };
-        var timestring = data.time > 0 ? getTimeString(data.time) : "";
-        if (!already) {
-            return ["all", auth + " muted " + tar.toCorrectCase() + (timestring === "" ? " permanently" : " for " + timestring) + " in this channel!" + (data.reason !== "" ? " [Reason: " + data.reason + "]" : "")];
-        } else {
-            return ["all", tar.toCorrectCase() + "'s mute time in this channel was changed to " + (timestring === "" ? "forever" : timestring) + " by " + auth + "!" + (data.reason !== "" ? " [Reason: " + data.reason + "]" : "")];
-        }
+        var timestring = data.time > 0 ? " for " + getTimeString(data.time) : " permanently";
+        return ["all", auth + " muted " + tar.toCorrectCase() + timestring + " in this channel!" + (data.reason !== "" ? " [Reason: " + data.reason + "]" : "")];
     }
     if (group == "banned") {
+        if (this.isPunished(name) === "banned") {
+            return ["self", tar.toCorrectCase() + " is already banned from this channel!"];
+        }
         if (!this.hasPermission(src, tar)) {
             return ["self", tar.toCorrectCase() + " has equal or higher auth than you, so you can't channel ban them!"];
         }
@@ -813,19 +617,14 @@ POChannel.prototype.addRole = function (src, tar, group, data) {
                 return ["self", "You need to provide a reason for the channel ban!"];
             }
         }
-        var already = (this.isPunished(name) === "banned");
         this.banned[name] = {
             "expiry": data.time === 0 ? "never" : parseInt(sys.time(), 10) + data.time,
             "issuetime": parseInt(sys.time(), 10),
             "auth": auth,
             "reason": data.reason !== "" ? data.reason : "N/A"
         };
-        var timestring = data.time > 0 ? getTimeString(data.time) : "";
-        if (!already) {
-            return ["all", auth + " banned " + tar.toCorrectCase() + (timestring === "" ? " permanently" : " for " + timestring) + " from this channel!" + (data.reason !== "" ? " [Reason: " + data.reason + "]" : "")];
-        } else {
-            return ["all", tar.toCorrectCase() + "'s ban time from this channel was changed to " + (timestring === "" ? "forever" : timestring) + " by " + auth + "!" + (data.reason !== "" ? " [Reason: " + data.reason + "]" : "")];
-        }
+        var timestring = data.time > 0 ? " for " + getTimeString(data.time) : " permanently";
+        return ["all", auth + " banned " + tar.toCorrectCase() + timestring + " from this channel!" + (data.reason !== "" ? " [Reason: " + data.reason + "]" : "")];
     }
     return ["self", ""];
 };
@@ -1139,15 +938,6 @@ POChannel.prototype.changeParameter = function (src, parameter, value) {
         SESSION.global().channelManager.update(this.id);
         return;
     }
-    if (parameter == "allowswear") {
-        if (value === true) {
-            this.allowSwear = true;
-        } else {
-            this.allowSwear = false;
-        }
-        SESSION.global().channelManager.update(this.id);
-        return;
-    }
     if (parameter == "invitelevel") {
         var level = parseInt(value, 10);
         var maxvalue = sys.auth(src) >= 3 ? 3 : sys.auth(src) + 1;
@@ -1248,7 +1038,7 @@ function POChannelManager(fname) {
         print('Error: ' + err);
         this.channelMap = {};
     }
-    sys.makeDir("channeldata");
+    sys.system("mkdir -p channeldata");
 }
 
 POChannelManager.prototype.toString = function () {
@@ -1436,7 +1226,7 @@ if (typeof SESSION.global() != 'undefined') {
 delete require.cache['bot.js'];
 var Bot = require('bot.js').Bot;
 
-normalbot = bot = new Bot(Config.bot);
+normalbot = new Bot(Config.bot);
 mafiabot = new Bot(Config.Mafia.bot);
 channelbot = new Bot(Config.channelbot);
 kickbot = new Bot(Config.kickbot);
@@ -1454,6 +1244,19 @@ bfbot = new Bot(Config.bfbot);
 
 var commands = {
     user: [
+        "/sprite [pokemon number]: Check out a pokemon sprite.",
+        "/spritegen [pokemon number]*[pokemon generation]: Check out a pokemon in a specific generation.",
+        "/roll: Roll the dice, see what you get",
+        "/sangwich: Hungry?",
+        "/marco: Polo!",
+        "/lifeadvice: Get life advice!",
+        "/selfowner: Explains itself.",
+        "/selfadmin: Explains itself.",
+        "/selfmod: Explains itself.",
+        "/pimpslap user: Pimp slap!",
+        "/fish: Catch a fish?",
+        "/leagerules: To see the league rules.",
+        "/d: Leave the server in style.",
         "/rules [x]: Shows the rules (x is optionally parameter to show a specific rule)",
         "/ranking: Shows your ranking in your current tier.",
         "/myalts: Lists your alts.",
@@ -1461,9 +1264,7 @@ var commands = {
         "/selfkick: Kicks all other accounts with IP.",
         //"/importable: Posts an importable of your team to pastebin.",
         "/dwreleased [Pokemon]: Shows the released status of a Pokemon's Dream World Ability",
-        "/wiki [Pokémon]: Shows that Pokémon's wiki page",
-        "/pokemon [Pokémon]: Displays basic information for that Pokémon",
-        "/move [move]: Displays basic information for that move",
+        "/wiki [Pokemon]: Shows that Pokemon's wiki page",
         "/register: Registers a channel with you as owner.",
         "/resetpass: Clears your password (unregisters you, remember to reregister).",
         "/auth [owners/admins/mods]: Lists auth of given level, shows all auth if left blank.",
@@ -1473,9 +1274,7 @@ var commands = {
         "/uptime: Shows time since the server was last offline.",
         "/players: Shows the number of players online.",
         "/sameTier [on/off]: Turn on/off auto-rejection of challenges from players in a different tier from you.",
-        "/seen [name]: Allows you to see the last login of a user.",
-        "/changetier [tier]:[team]: Allows you to switch tier. Team is a number between 0-5 indicating loaded teams. Default is 0",
-        "/invitespec [name]: Allows you to invite someone to watch your battle."
+        "/seen [name]: Allows you to see the last login of a user."
     ],
     channel: [
         "/register: To register the current channel you're on.",
@@ -1495,7 +1294,6 @@ var commands = {
         "/inviteonly [on/off/level]: Makes a channel invite-only or public.",
         "/ctogglecaps: Turns on/off the server anti-caps bot in current channel.",
         "/ctoggleflood: Turns on/off the server anti-flood bot in current channel. Overactive still in effect.",
-        "/ctoggleswear: Turns on/off the use of some common swear words.",
         "/cban [name]:[reason]:[time]: Bans someone from current channel (reason and time optional).",
         "/cunban [name]: Unbans someone from current channel.",
         "/enabletours: Allows tours to be run in the channel.",
@@ -1511,6 +1309,45 @@ var commands = {
 	    "/newscontent [data]: Set the news content data.",
 	    "/broadcastbattle [battler]: Broadcast a current battle.",
 	    "/flashall: Flashes everyone",
+        "/ultraimp name: Superimp without ~~",
+        "/ultraimpoff: Turn off Ultraimp",
+        "/welcometoggle: Toggle the Welcome Bot on/off",
+        "/emotetoggle: Toggle Emotes on/off",
+        "/text [bold/color]:[color/text]: Allows you to enhance your text quickly without /html. For usage, type /helptext",
+        "/removevoice [person]: Remove someone's voice.",
+        "/addvoice [person]: Give someone voice.",
+        "/voicemodeoff: Turn off voice.",
+        "/voicemodeon: Turn on voice.",
+        "/slaptime: Turn on slaptime",
+        "/tacopls: You turn on taco mode.",
+        "/tacoplsoff: You turn off taco mode.",
+        "/servermtd [mood]: Change the mood of the day",
+        "/pokemonotd [insert]: Change the Pokemon Of The Week",
+        "/news1text [insert]: Change the output of the 1sd news bot.",
+        "/news2 [insert]: Change the output of the 2rd news bot.",
+        "/news3 [insert]: Change the output of the 3rd news bot.",
+        "/news1name [name]: Change the name of the 1st news bot.",
+        "/news2name [name]: Change the name of the 2nd news bot.",
+        "/news3name [name]: Change the name of the 3rd news bot.",
+        "/news1color [name]: Change the color of the 1st news bot.",
+        "/news2color [name]: Change the color of the 2nd news bot.",
+        "/news3color [name]: Change the color of the 3rd news bot.",
+        "/sangwichon: Turn on /sangwich",
+        "/sangwichoff: Turn off /sangwich",
+        "/don: Turn on /d",
+        "/doff: Turn off /d",
+        "/muffinman [user]: This is a classified command for anyone who disrespects Ainsley Hariott.",
+        "/fanboy [user]: To make the desired user your fanboy. See /rules for purpose of this command.",
+        "/motd [text]: Change the message of the day.",
+        "/fishon: Enable /fish",
+        "/fishoff: Disable /fish",
+        "/html [text]: Enhance your line with HTML.",
+        "/message [user]:[text]: Message a user.",
+        "/frules [rule#]:[person]: Sends the rule to the person from the rule number. To send them all the rules, type /frule all:[name]",
+        "/superimp [name]: Superimps your name.",
+        "/superimpoff: Turns off superimp.",
+        "/chanlink [channel]:[message]: Links to a channel.",
+        "/announce [color]:[message]: Announces your message with a color of the announcement ( not message ).",
         "/k [name]: Kicks someone.",
         "/mute [name]:[reason]:[time]: Mutes someone. Time is optional and defaults to 1 day.",
         "/unmute [name]: Unmutes someone.",
@@ -1525,6 +1362,9 @@ var commands = {
         "/checkbantime [name]: Checks how long a user is banned for.",
         "/mafiaban [name]:[reason]:[time]: Bans a player from Mafia. Time is optional and defaults to 7 days.",
         "/mafiaunban [name]: Unbans a player from Mafia.",
+        "/detain [user]:[reason]:[# Mafia Games]: Sentences a player to probation for # of Mafia Games.",
+        "/release [user]: Removes a player from probation in Mafia.",
+        "/detainlist [search term]: Searches the detainlist, show full list if no search term is entered.",
         "/passauth [target]: Passes your mods to another megauser (only for mega-mods) or to your online alt.",
         "/passauths [target]: Passes your mods silently.",
         "/banlist [search term]: Searches the banlist, shows full list if no search term is entered.",
@@ -1538,7 +1378,6 @@ var commands = {
         "/namewarns: Lists name warnings.",
         "/topchannels: To view the top channels.",
         "/onrange [range]: To view who is on a range.",
-        "/onos [os]: Lists players on a certain operating system (May lag a little with certain OS)",
         "/tier [name]: To view the tier(s) of a person.",
         "/battlehistory [name]: To view a person's battle history.",
         "/channelusers [channel]: Lists users on a channel."
@@ -1559,9 +1398,7 @@ var commands = {
         "/indigodeinvite: To deinvite unwanted visitors from staff channel."
     ],
     owner: [
-        "/setannouncement [code]: Offically set the banner to the specified code.",
-        "/testannouncement: Test some banner code, only visible on your screen.",
-        "/getannouncement: Recieve the banner code.",
+        "/ownername newname: Change your name.",
         "/changeRating [player] -- [tier] -- [rating]: Changes the rating of a rating abuser.",
         "/stopBattles: Stops all new battles to allow for server restart with less problems for users.",
         "/imp [name]: Lets you speak as someone",
@@ -1587,13 +1424,8 @@ var commands = {
         "/indigo [on/off]: To create or destroy staff channel.",
         "/updatebansites: To update ban sites.",
         "/updatetierchecks: To update tier checks.",
-        "/updatetiers[soft]: To update tiers. Soft saves to file only without reloading.",
         "/togglerainbow: [on/off]: To turn rainbow on or off.",
-        "/towner[s] [name]: makes someone a tournament owner (tours.js plugin needs to be installed for this to work)",
-        "/loadstats: loads the usage stats plugin.",
-        "/unloadstats: unloads the usage stats plugin.",
-        "/warnwebclients [message]: sends a big alert message to webclient users.",
-        "/clearladder [tier]: clears rankings from a tier."
+        "/towner[s] [name]: makes someone a tournament owner (tours.js plugin needs to be installed for this to work)"
     ]
 };
 
@@ -1607,7 +1439,6 @@ poScript = ({
     /* Executed every second */
     step: function () {
         if (typeof callplugins == "function") callplugins("stepEvent");
-
         var date = new Date();
         if (date.getUTCMinutes() === 10 && date.getUTCSeconds() === 0) {
             sys.get_output("nc -z server.pokemon-online.eu 10508", function callback(exit_code) {
@@ -1617,10 +1448,9 @@ poScript = ({
             }, function errback(error) {
                 sys.sendAll("±NetCat: Cannot reach Webclient Proxy - it may be down: " + error);
             });
-            clearTeamFiles();
         }
         if ([0, 6, 12, 18].indexOf(date.getUTCHours()) != -1 && date.getUTCMinutes() === 0 && date.getUTCSeconds() === 0) {
-            sendNotice();
+            sa("Unexpected Handled Error", staffchannel);
         }
         // Reset stats monthly
         var JSONP_FILE = "usage_stats/formatted/stats.jsonp";
@@ -1636,7 +1466,7 @@ poScript = ({
             // QtScript is able to JSON.stringify dates
             var stats = {
                 lastUpdate: date,
-                usercount: sys.playerIds().filter(sys.loggedIn).length,
+                usercount: sys.playerIds().map(sys.loggedIn).length,
                 battlesFought: battlesFought,
                 mafiaPlayed: +sys.getVal("Stats/MafiaGamesPlayed")
             };
@@ -1665,9 +1495,8 @@ poScript = ({
         revchan = SESSION.global().channelManager.createPermChannel("TrivReview", "For Trivia Admins to review questions");
         mafiarev = SESSION.global().channelManager.createPermChannel("Mafia Review", "For Mafia Admins to review themes");
         hangmanchan = SESSION.global().channelManager.createPermChannel("Hangman", "Type /help to see how to play!");
-        blackjackchan = SESSION.global().channelManager.createPermChannel("Blackjack", "Play Blackjack here!");
 
-        var dwlist = ["Timburr", "Gurdurr", "Conkeldurr", "Pansage", "Pansear", "Panpour", "Simisear", "Simisage", "Simipour", "Ekans", "Arbok", "Paras", "Parasect", "Happiny", "Chansey", "Blissey", "Munchlax", "Snorlax", "Aipom", "Ambipom", "Pineco", "Forretress", "Wurmple", "Silcoon", "Cascoon", "Beautifly", "Dustox", "Seedot", "Nuzleaf", "Shiftry", "Slakoth", "Vigoroth", "Slaking", "Nincada", "Ninjask", "Plusle", "Minun", "Budew", "Roselia", "Gulpin", "Swalot", "Kecleon", "Kricketot", "Kricketune", "Cherubi", "Cherrim", "Carnivine", "Audino", "Throh", "Sawk", "Scraggy", "Scrafty", "Rattata", "Raticate", "Nidoran-F", "Nidorina", "Nidoqueen", "Nidoran-M", "Nidorino", "Nidoking", "Oddish", "Gloom", "Vileplume", "Bellossom", "Bellsprout", "Weepinbell", "Victreebel", "Ponyta", "Rapidash", "Farfetch'd", "Doduo", "Dodrio", "Exeggcute", "Exeggutor", "Lickitung", "Lickilicky", "Tangela", "Tangrowth", "Kangaskhan", "Sentret", "Furret", "Cleffa", "Clefairy", "Clefable", "Igglybuff", "Jigglypuff", "Wigglytuff", "Mareep", "Flaaffy", "Ampharos", "Hoppip", "Skiploom", "Jumpluff", "Sunkern", "Sunflora", "Stantler", "Poochyena", "Mightyena", "Lotad", "Ludicolo", "Lombre", "Taillow", "Swellow", "Surskit", "Masquerain", "Bidoof", "Bibarel", "Shinx", "Luxio", "Luxray", "Psyduck", "Golduck", "Growlithe", "Arcanine", "Scyther", "Scizor", "Tauros", "Azurill", "Marill", "Azumarill", "Bonsly", "Sudowoodo", "Girafarig", "Miltank", "Zigzagoon", "Linoone", "Electrike", "Manectric", "Castform", "Pachirisu", "Buneary", "Lopunny", "Glameow", "Purugly", "Natu", "Xatu", "Skitty", "Delcatty", "Eevee", "Vaporeon", "Jolteon", "Flareon", "Espeon", "Umbreon", "Leafeon", "Glaceon", "Bulbasaur", "Charmander", "Squirtle", "Ivysaur", "Venusaur", "Charmeleon", "Charizard", "Wartortle", "Blastoise", "Croagunk", "Toxicroak", "Turtwig", "Grotle", "Torterra", "Chimchar", "Infernape", "Monferno", "Piplup", "Prinplup", "Empoleon", "Treecko", "Sceptile", "Grovyle", "Torchic", "Combusken", "Blaziken", "Mudkip", "Marshtomp", "Swampert", "Caterpie", "Metapod", "Butterfree", "Pidgey", "Pidgeotto", "Pidgeot", "Spearow", "Fearow", "Zubat", "Golbat", "Crobat", "Aerodactyl", "Hoothoot", "Noctowl", "Ledyba", "Ledian", "Yanma", "Yanmega", "Murkrow", "Honchkrow", "Delibird", "Wingull", "Pelipper", "Swablu", "Altaria", "Starly", "Staravia", "Staraptor", "Gligar", "Gliscor", "Drifloon", "Drifblim", "Skarmory", "Tropius", "Chatot", "Slowpoke", "Slowbro", "Slowking", "Krabby", "Kingler", "Horsea", "Seadra", "Kingdra", "Goldeen", "Seaking", "Magikarp", "Gyarados", "Omanyte", "Omastar", "Kabuto", "Kabutops", "Wooper", "Quagsire", "Qwilfish", "Corsola", "Remoraid", "Octillery", "Mantine", "Mantyke", "Carvanha", "Sharpedo", "Wailmer", "Wailord", "Barboach", "Whiscash", "Clamperl", "Gorebyss", "Huntail", "Relicanth", "Luvdisc", "Buizel", "Floatzel", "Finneon", "Lumineon", "Tentacool", "Tentacruel", "Corphish", "Crawdaunt", "Lileep", "Cradily", "Anorith", "Armaldo", "Feebas", "Milotic", "Shellos", "Gastrodon", "Lapras", "Dratini", "Dragonair", "Dragonite", "Elekid", "Electabuzz", "Electivire", "Poliwag", "Poliwrath", "Politoed", "Poliwhirl", "Vulpix", "Ninetales", "Musharna", "Munna", "Darmanitan", "Darumaka", "Mamoswine", "Togekiss", "Burmy", "Wormadam", "Mothim", "Pichu", "Pikachu", "Raichu", "Abra", "Kadabra", "Alakazam", "Spiritomb", "Mr. Mime", "Mime Jr.", "Meditite", "Medicham", "Meowth", "Persian", "Shuppet", "Banette", "Spinarak", "Ariados", "Drowzee", "Hypno", "Wobbuffet", "Wynaut", "Snubbull", "Granbull", "Houndour", "Houndoom", "Smoochum", "Jynx", "Ralts", "Gardevoir", "Gallade", "Sableye", "Mawile", "Volbeat", "Illumise", "Spoink", "Grumpig", "Stunky", "Skuntank", "Bronzong", "Bronzor", "Mankey", "Primeape", "Machop", "Machoke", "Machamp", "Magnemite", "Magneton", "Magnezone", "Koffing", "Weezing", "Rhyhorn", "Rhydon", "Rhyperior", "Teddiursa", "Ursaring", "Slugma", "Magcargo", "Phanpy", "Donphan", "Magby", "Magmar", "Magmortar", "Larvitar", "Pupitar", "Tyranitar", "Makuhita", "Hariyama", "Numel", "Camerupt", "Torkoal", "Spinda", "Trapinch", "Vibrava", "Flygon", "Cacnea", "Cacturne", "Absol", "Beldum", "Metang", "Metagross", "Hippopotas", "Hippowdon", "Skorupi", "Drapion", "Tyrogue", "Hitmonlee", "Hitmonchan", "Hitmontop", "Bagon", "Shelgon", "Salamence", "Seel", "Dewgong", "Shellder", "Cloyster", "Chinchou", "Lanturn", "Smeargle", "Porygon", "Porygon2", "Porygon-Z", "Drilbur", "Excadrill", "Basculin", "Basculin-a", "Alomomola", "Stunfisk", "Druddigon", "Foongus", "Amoonguss", "Liepard", "Purrloin", "Minccino", "Cinccino", "Sandshrew", "Sandslash", "Vullaby", "Mandibuzz", "Braviary", "Frillish", "Jellicent", "Weedle", "Kakuna", "Beedrill", "Shroomish", "Breloom", "Zangoose", "Seviper", "Combee", "Vespiquen", "Patrat", "Watchog", "Blitzle", "Zebstrika", "Woobat", "Swoobat", "Mienfoo", "Mienshao", "Bouffalant", "Staryu", "Starmie", "Togepi", "Shuckle", "Togetic", "Rotom", "Sigilyph", "Riolu", "Lucario", "Lugia", "Ho-Oh", "Dialga", "Palkia", "Giratina", "Grimer", "Muk", "Ditto", "Venonat", "Venomoth", "Herdier", "Lillipup", "Stoutland", "Sewaddle", "Swadloon", "Leavanny", "Cubchoo", "Beartic", "Landorus", "Thundurus", "Tornadus", "Dunsparce", "Sneasel", "Weavile", "Nosepass", "Probopass", "Karrablast", "Escavalier", "Shelmet", "Accelgor", "Snorunt", "Glalie", "Froslass", "Pinsir", "Emolga", "Heracross", "Trubbish", "Garbodor", "Snover", "Abomasnow", "Diglett", "Dugtrio", "Geodude", "Graveler", "Golem", "Onix", "Steelix", "Voltorb", "Electrode", "Cubone", "Marowak", "Whismur", "Loudred", "Exploud", "Aron", "Lairon", "Aggron", "Spheal", "Sealeo", "Walrein", "Cranidos", "Rampardos", "Shieldon", "Bastiodon", "Gible", "Gabite", "Garchomp", "Pidove", "Tranquill", "Unfezant", "Tympole", "Palpitoad", "Seismitoad", "Cottonee", "Whimsicott", "Petilil", "Lilligant", "Ducklett", "Swanna", "Deerling", "Sawsbuck", "Elgyem", "Beheeyem", "Pawniard", "Bisharp", "Heatmor", "Durant", "Venipede", "Whirlipede", "Scolipede", "Tirtouga", "Carracosta", "Joltik", "Galvantula", "Maractus", "Dwebble", "Crustle", "Roggenrola", "Boldore", "Gigalith", "Vanillite", "Vanillish", "Vanilluxe", "Klink", "Klang", "Klinklang", "Swinub", "Piloswine", "Golett", "Golurk", "Gothitelle", "Gothorita", "Solosis", "Duosion", "Reuniclus", "Deerling-Summer", "Deerling-Autumn", "Deerling-Winter", "Sawsbuck-Summer", "Sawsbuck-Autumn", "Sawsbuck-Winter", "Roserade", "Mewtwo"];
+        var dwlist = ["Timburr", "Gurdurr", "Conkeldurr", "Pansage", "Pansear", "Panpour", "Simisear", "Simisage", "Simipour", "Ekans", "Arbok", "Paras", "Parasect", "Happiny", "Chansey", "Blissey", "Munchlax", "Snorlax", "Aipom", "Ambipom", "Pineco", "Forretress", "Wurmple", "Silcoon", "Cascoon", "Beautifly", "Dustox", "Seedot", "Nuzleaf", "Shiftry", "Slakoth", "Vigoroth", "Slaking", "Nincada", "Ninjask", "Plusle", "Minun", "Budew", "Roselia", "Gulpin", "Swalot", "Kecleon", "Kricketot", "Kricketune", "Cherubi", "Cherrim", "Carnivine", "Audino", "Throh", "Sawk", "Scraggy", "Scrafty", "Rattata", "Raticate", "Nidoran-F", "Nidorina", "Nidoqueen", "Nidoran-M", "Nidorino", "Nidoking", "Oddish", "Gloom", "Vileplume", "Bellossom", "Bellsprout", "Weepinbell", "Victreebel", "Ponyta", "Rapidash", "Farfetch'd", "Doduo", "Dodrio", "Exeggcute", "Exeggutor", "Lickitung", "Lickilicky", "Tangela", "Tangrowth", "Kangaskhan", "Sentret", "Furret", "Cleffa", "Clefairy", "Clefable", "Igglybuff", "Jigglypuff", "Wigglytuff", "Mareep", "Flaaffy", "Ampharos", "Hoppip", "Skiploom", "Jumpluff", "Sunkern", "Sunflora", "Stantler", "Poochyena", "Mightyena", "Lotad", "Ludicolo", "Lombre", "Taillow", "Swellow", "Surskit", "Masquerain", "Bidoof", "Bibarel", "Shinx", "Luxio", "Luxray", "Psyduck", "Golduck", "Growlithe", "Arcanine", "Scyther", "Scizor", "Tauros", "Azurill", "Marill", "Azumarill", "Bonsly", "Sudowoodo", "Girafarig", "Miltank", "Zigzagoon", "Linoone", "Electrike", "Manectric", "Castform", "Pachirisu", "Buneary", "Lopunny", "Glameow", "Purugly", "Natu", "Xatu", "Skitty", "Delcatty", "Eevee", "Vaporeon", "Jolteon", "Flareon", "Espeon", "Umbreon", "Leafeon", "Glaceon", "Bulbasaur", "Charmander", "Squirtle", "Ivysaur", "Venusaur", "Charmeleon", "Charizard", "Wartortle", "Blastoise", "Croagunk", "Toxicroak", "Turtwig", "Grotle", "Torterra", "Chimchar", "Infernape", "Monferno", "Piplup", "Prinplup", "Empoleon", "Treecko", "Sceptile", "Grovyle", "Torchic", "Combusken", "Blaziken", "Mudkip", "Marshtomp", "Swampert", "Caterpie", "Metapod", "Butterfree", "Pidgey", "Pidgeotto", "Pidgeot", "Spearow", "Fearow", "Zubat", "Golbat", "Crobat", "Aerodactyl", "Hoothoot", "Noctowl", "Ledyba", "Ledian", "Yanma", "Yanmega", "Murkrow", "Honchkrow", "Delibird", "Wingull", "Pelipper", "Swablu", "Altaria", "Starly", "Staravia", "Staraptor", "Gligar", "Gliscor", "Drifloon", "Drifblim", "Skarmory", "Tropius", "Chatot", "Slowpoke", "Slowbro", "Slowking", "Krabby", "Kingler", "Horsea", "Seadra", "Kingdra", "Goldeen", "Seaking", "Magikarp", "Gyarados", "Omanyte", "Omastar", "Kabuto", "Kabutops", "Wooper", "Quagsire", "Qwilfish", "Corsola", "Remoraid", "Octillery", "Mantine", "Mantyke", "Carvanha", "Sharpedo", "Wailmer", "Wailord", "Barboach", "Whiscash", "Clamperl", "Gorebyss", "Huntail", "Relicanth", "Luvdisc", "Buizel", "Floatzel", "Finneon", "Lumineon", "Tentacool", "Tentacruel", "Corphish", "Crawdaunt", "Lileep", "Cradily", "Anorith", "Armaldo", "Feebas", "Milotic", "Shellos", "Gastrodon", "Lapras", "Dratini", "Dragonair", "Dragonite", "Elekid", "Electabuzz", "Electivire", "Poliwag", "Poliwrath", "Politoed", "Poliwhirl", "Vulpix", "Ninetales", "Musharna", "Munna", "Darmanitan", "Darumaka", "Mamoswine", "Togekiss", "Burmy", "Wormadam", "Mothim", "Pichu", "Pikachu", "Raichu", "Abra", "Kadabra", "Alakazam", "Spiritomb", "Mr. Mime", "Mime Jr.", "Meditite", "Medicham", "Meowth", "Persian", "Shuppet", "Banette", "Spinarak", "Ariados", "Drowzee", "Hypno", "Wobbuffet", "Wynaut", "Snubbull", "Granbull", "Houndour", "Houndoom", "Smoochum", "Jynx", "Ralts", "Gardevoir", "Gallade", "Sableye", "Mawile", "Volbeat", "Illumise", "Spoink", "Grumpig", "Stunky", "Skuntank", "Bronzong", "Bronzor", "Mankey", "Primeape", "Machop", "Machoke", "Machamp", "Magnemite", "Magneton", "Magnezone", "Koffing", "Weezing", "Rhyhorn", "Rhydon", "Rhyperior", "Teddiursa", "Ursaring", "Slugma", "Magcargo", "Phanpy", "Donphan", "Magby", "Magmar", "Magmortar", "Larvitar", "Pupitar", "Tyranitar", "Makuhita", "Hariyama", "Numel", "Camerupt", "Torkoal", "Spinda", "Trapinch", "Vibrava", "Flygon", "Cacnea", "Cacturne", "Absol", "Beldum", "Metang", "Metagross", "Hippopotas", "Hippowdon", "Skorupi", "Drapion", "Tyrogue", "Hitmonlee", "Hitmonchan", "Hitmontop", "Bagon", "Shelgon", "Salamence", "Seel", "Dewgong", "Shellder", "Cloyster", "Chinchou", "Lanturn", "Smeargle", "Porygon", "Porygon2", "Porygon-Z", "Drilbur", "Excadrill", "Basculin", "Basculin-a", "Alomomola", "Stunfisk", "Druddigon", "Foongus", "Amoonguss", "Liepard", "Purrloin", "Minccino", "Cinccino", "Sandshrew", "Sandslash", "Vullaby", "Mandibuzz", "Braviary", "Frillish", "Jellicent", "Weedle", "Kakuna", "Beedrill", "Shroomish", "Breloom", "Zangoose", "Seviper", "Combee", "Vespiquen", "Patrat", "Watchog", "Blitzle", "Zebstrika", "Woobat", "Swoobat", "Mienfoo", "Mienshao", "Bouffalant", "Staryu", "Starmie", "Togepi", "Shuckle", "Togetic", "Rotom", "Sigilyph", "Riolu", "Lucario", "Lugia", "Ho-Oh", "Dialga", "Palkia", "Giratina", "Grimer", "Muk", "Ditto", "Venonat", "Venomoth", "Herdier", "Lillipup", "Stoutland", "Sewaddle", "Swadloon", "Leavanny", "Cubchoo", "Beartic", "Landorus", "Thundurus", "Tornadus", "Dunsparce", "Sneasel", "Weavile", "Nosepass", "Probopass", "Karrablast", "Escavalier", "Shelmet", "Accelgor", "Snorunt", "Glalie", "Froslass", "Heatran", "Pinsir", "Emolga", "Heracross", "Trubbish", "Garbodor", "Snover", "Abomasnow", "Diglett", "Dugtrio", "Geodude", "Graveler", "Golem", "Onix", "Steelix", "Voltorb", "Electrode", "Cubone", "Marowak", "Whismur", "Loudred", "Exploud", "Aron", "Lairon", "Aggron", "Spheal", "Sealeo", "Walrein", "Cranidos", "Rampardos", "Shieldon", "Bastiodon", "Gible", "Gabite", "Garchomp", "Pidove", "Tranquill", "Unfezant", "Tympole", "Palpitoad", "Seismitoad", "Cottonee", "Whimsicott", "Petilil", "Lilligant", "Ducklett", "Swanna", "Deerling", "Sawsbuck", "Elgyem", "Beheeyem", "Pawniard", "Bisharp", "Heatmor", "Durant", "Venipede", "Whirlipede", "Scolipede", "Tirtouga", "Carracosta", "Joltik", "Galvantula", "Maractus", "Dwebble", "Crustle", "Roggenrola", "Boldore", "Gigalith", "Vanillite", "Vanillish", "Vanilluxe", "Klink", "Klang", "Klinklang", "Swinub", "Piloswine", "Golett", "Golurk", "Gothitelle", "Gothorita", "Solosis", "Duosion", "Reuniclus", "Deerling-Summer", "Deerling-Autumn", "Deerling-Winter", "Sawsbuck-Summer", "Sawsbuck-Autumn", "Sawsbuck-Winter"];
 
         /* use hash for faster lookup */
         dwpokemons = {};
@@ -1678,7 +1507,7 @@ poScript = ({
             if (num === undefined)
                 sendChanAll("Script Check: Unknown poke in dwpokemons: '" + dwlist[dwpok] + "'.", announceChan);
             else if (dwpokemons[num] === true)
-                sendChanAll("Script Check:  dwpokemons contains '" + dwlist[dwpok] + "' multiple times.", announceChan);
+                sendChanAll("Script Check: dwpokemons contains '" + dwlist[dwpok] + "' multiple times.", announceChan);
             else
                 dwpokemons[sys.pokeNum(dwlist[dwpok])] = true;
         }
@@ -1703,6 +1532,8 @@ poScript = ({
         mbans = new MemoryHash("mbans.txt");
         smutes = new MemoryHash("smutes.txt");
         rangebans = new MemoryHash("rangebans.txt");
+        marks = new MemoryHash("marks.txt");
+        sarks = new MemoryHash("sarks.txt");
         contributors = new MemoryHash("contributors.txt");
         mafiaAdmins = new MemoryHash("mafiaadmins.txt");
         mafiaSuperAdmins = new MemoryHash("mafiasuperadmins.txt");
@@ -1711,7 +1542,6 @@ poScript = ({
         ipbans = new MemoryHash("ipbans.txt");
         detained = new MemoryHash("detained.txt");
         hbans = new MemoryHash("hbans.txt");
-        namesToWatch = new MemoryHash(Config.dataDir + "namesToWatch.txt");
         proxy_ips = {};
 
         function addProxybans(content) {
@@ -1728,21 +1558,20 @@ poScript = ({
         } else sys.webCall(Config.base_url + PROXY_FILE, addProxybans);
 
         rules = ["",
-            "*** Luminous Springs Rules ***",
+            "*** Castle Oblivion Server Rules ***",
             "",
-            "1. Luminous Springs is an international server:",
-            "- Respect other peoples' cultures and do not demand they speak English. Everyone is welcome at Pokemon Online, as long as they follow the rules.",
-            "2. No advertising, excessive messages, inappropriate/obscene links, or text art:",
-            "- Do not post links unless they are to notable sites (Youtube, Smogon, Serebii, etc). We are not interested in your start-up community. Do not monopolize the chat with large amounts of messages, or short ones in rapid succession. Posting ASCII art is punishable with a ban, as is posting anything with any type of pornography.",
-            "3. Use Find Battle, or join tournaments instead of asking in the main chat:",
-            "- The official channels on Pokemon Online have too much activity to allow battle requests in the chat. Use Find Battle or go join the tournaments channel and participate. The only exception is if you are unable to find a battle for a low-played tier, then asking once every 5 minutes or so is acceptable.",
-            "4. Do not ask for authority:",
-            "- By asking, you may have eliminated your chances of becoming one in the future. If you are genuinely interested in becoming a staff member then a good way to get noticed is to become an active member of the community. Engaging others in intelligent chats and offering to help with graphics, programming, the wiki, or our YouTube channel (among others) is a good way to get noticed.",
-            "5. No trolling, flaming, or harassing other players. Do not complain about hax in the chat, beyond a one line comment:",
-            "- Inciting responses with inflammatory comments, using verbal abuse against other players, or spamming them via chat/PM/challenges will not be tolerated. Harassing other players by constantly aggravating them or revealing personal information will be severely punished. A one line comment regarding hax after a loss to vent is fine, but excessive bemoaning is not acceptable. Excessive vulgarity will not be tolerated. Wasting the time of the authority will also result in punishment.",
-            "6. Do not attempt to circumvent the rules:",
-            "- Ignorance of the rules is not a valid reason for breaking them. Do not attempt to find or create any loopholes in these rules, or try to adapt them in order to have a punishment overturned or to justify your actions. Doing so may incur a further punishment. Make valid appeals directly to the authority of the server."
+            "1. No Drama: Don't insult anyone or do anything else that causes drama or brings in outside drama.",
+            "2. No Excessive Swearing: Don't overuse curse words. Overuse is at the auth's discretion. Not up for debate.",
+            "3. No Derogatory Language: Don't use hate speech, even if it's intended as a joke. ",
+            "4. No Advertising: If you want to invite people somewhere, you can ask people to PM you if they are interested.",
+            "5. No Trolling: Don't make chat negative. Don't spam or overuse CAPS. Don't do things to bother people or stir up a reaction.",
+            "6. No Adult Content: Don't talk about sexual acts or post porn/nudity. ",
+            "7. No Disrespecting: Don't give out other peoples' information. Don't use other peoples' names.",
+            "8. No Minimodding: Let the auth do their job. ",
+            "9. No Circumventing The Rules: Don't ban/mute evade. Don't use loopholes.",
+            ""
         ];
+
 
         if (typeof authStats == 'undefined')
             authStats = {};
@@ -1780,7 +1609,20 @@ poScript = ({
                 SESSION.global().BannedUrls = resp.toLowerCase().split(/\n/);
             });
         }
-
+        isMarked = function (id) {
+            for (var x in marks.hash) {
+                if (x.toLowerCase() == sys.name(id).toLowerCase())
+                    return true;
+            }
+            return false;
+        };
+        isSarked = function (id) {
+            for (var x in sarks.hash) {
+                if (x.toLowerCase() == sys.name(id).toLowerCase())
+                    return true;
+            }
+            return false;
+        }
         isSuperAdmin = function (id) {
             if (typeof Config.superAdmins != "object" || Config.superAdmins.length === undefined) return false;
             if (sys.auth(id) != 2) return false;
@@ -1819,8 +1661,8 @@ poScript = ({
 
         pokeNatures = [];
 
-        var list = "Heatran-Eruption/Quiet=Suicune-ExtremeSpeed/Relaxed|Sheer Cold/Relaxed|Aqua Ring/Relaxed|Air Slash/Relaxed=Raikou-ExtremeSpeed/Rash|Weather Ball/Rash|Zap Cannon/Rash|Aura Sphere/Rash=Entei-ExtremeSpeed/Adamant|Flare Blitz/Adamant|Howl/Adamant|Crush Claw/Adamant=Snivy-Aromatherapy/Hardy|Synthesis/Hardy=Genesect-Extremespeed/Hasty|Blaze Kick/Hasty|Shift Gear/Hasty";
-        //this is really awful btw :(
+        var list = "Heatran-Eruption/Quiet=Suicune-ExtremeSpeed/Relaxed|Sheer Cold/Relaxed|Aqua Ring/Relaxed|Air Slash/Relaxed=Raikou-ExtremeSpeed/Rash|Weather Ball/Rash|Zap Cannon/Rash|Aura Sphere/Rash=Entei-ExtremeSpeed/Adamant|Flare Blitz/Adamant|Howl/Adamant|Crush Claw/Adamant=Snivy-Aromatherapy/Hardy|Synthesis/Hardy";
+
         var sepPokes = list.split('='),
             sepMovesPoke, sepMoves, movenat;
         for (var x = 0; x < sepPokes.length; x++) {
@@ -1882,7 +1724,11 @@ poScript = ({
                 sys.dbAuths().map(sys.id).filter(function (uid) {
                     return uid !== undefined;
                 }).forEach(function (uid) {
-                    banbot.sendMessage(uid, line);
+                    sys.channelsOfPlayer(uid).filter(function (cid) {
+                        return cid !== staffchannel;
+                    }).forEach(function (cid) {
+                        banbot.sendMessage(uid, line, cid);
+                    });
                 });
             },
             "mban": function (line) {
@@ -1936,45 +1782,56 @@ poScript = ({
         // limit it!
         if (typeof maxTime == "number") secs = (secs > maxTime || secs === 0 || isNaN(secs)) ? maxTime : secs;
         if (secs > 0) {
-            timeString = getTimeString(secs);
+            timeString = " for " + getTimeString(secs);
             expires = secs + parseInt(sys.time(), 10);
         }
+
         if (reason === "" && sys.auth(src) < 3) {
             banbot.sendChanMessage(src, "You need to give a reason to the " + nomi + "!");
             return;
         }
-        var tarip = tar !== undefined ? sys.ip(tar) : sys.dbIp(commandData);
-        if (tarip === undefined) {
+
+        if (tar === undefined) {
+            ip = sys.dbIp(commandData);
+            var maxAuth = sys.maxAuth(ip);
+            if (maxAuth >= sys.auth(src) && maxAuth > 0) {
+                banbot.sendChanMessage(src, "Can't do that to higher auth!");
+                return;
+            }
+            if (ip !== undefined) {
+                if (memoryhash.get(ip)) {
+                    banbot.sendChanMessage(src, "He/she's already " + verb + ".");
+                    return;
+                }
+                sendAll("" + commandData + " was " + verb + " by " + nonFlashing(sys.name(src)) + timeString + "! [Reason: " + reason + "] [Channel: " + sys.channel(channel) + "]");
+                memoryhash.add(ip, sys.time() + ":" + sys.name(src) + ":" + expires + ":" + commandData + ":" + reason);
+                var authname = sys.name(src).toLowerCase();
+                authStats[authname] = authStats[authname] || {};
+                authStats[authname]["latest" + type] = [commandData, parseInt(sys.time(), 10)];
+                return;
+            }
+
             banbot.sendChanMessage(src, "Couldn't find " + commandData);
             return;
         }
-        var maxAuth = sys.maxAuth(tarip);
-        if (maxAuth >= sys.auth(src) && maxAuth > 0) {
+        if (SESSION.users(tar)[type].active) {
+            banbot.sendChanMessage(src, "He/she's already " + verb + ".");
+            return;
+        }
+        if (sys.auth(tar) >= sys.auth(src) && sys.auth(tar) > 0) {
             banbot.sendChanMessage(src, "You don't have sufficient auth to " + nomi + " " + commandData + ".");
             return;
         }
-        var active = false;
-        if (memoryhash.get(tarip)) {
-            if (sys.time() - memoryhash.get(tarip).split(":")[0] < 15) {
-                banbot.sendChanMessage(src, "This person was recently " + verb);
-                return;
-            }
-            active = true;
-        }
-        if (sys.loggedIn(tar)) {
-            if (SESSION.users(tar)[type].active) {
-                active = true;
-            }
-        }
+        var tarip = tar !== undefined ? sys.ip(tar) : sys.dbIp(commandData);
         sys.playerIds().forEach(function (id) {
             if (sys.loggedIn(id) && sys.ip(id) === tarip)
                 SESSION.users(id).activate(type, sys.name(src), expires, reason, true);
         });
-        if (!sys.loggedIn(tar)) {
-            memoryhash.add(tarip, sys.time() + ":" + sys.name(src) + ":" + expires + ":" + commandData + ":" + reason);
-        }
+        if (reason.length > 0)
+            sendAll("" + commandData + " was " + verb + " by " + nonFlashing(sys.name(src)) + timeString + "! [Reason: " + reason + "] [Channel: " + sys.channel(channel) + "]");
+        else
+            sendAll("" + commandData + " was " + verb + " by " + nonFlashing(sys.name(src)) + timeString + "! [Channel: " + sys.channel(channel) + "]");
 
-        sendAll((active ? nonFlashing(sys.name(src)) + " changed " + commandData + "'s " + nomi + " time to " + (timeString === "" ? "forever!" : timeString + " from now!") : commandData + " was " + verb + " by " + nonFlashing(sys.name(src)) + (timeString === "" ? "" : " for ") + timeString + "!") + (reason.length > 0 ? " [Reason: " + reason + "]" : "") + " [Channel: " + sys.channel(channel) + "]");
         var authority = sys.name(src).toLowerCase();
         authStats[authority] = authStats[authority] || {};
         authStats[authority]["latest" + type] = [commandData, parseInt(sys.time(), 10)];
@@ -2100,7 +1957,6 @@ Jolly Nature (+Spd, -SAtk)
 
         // Can't ban from main
         if (channel === 0) return;
-
         if (channel == sys.channelId("Mafia Channel")) {
             sys.stopEvent();
             sys.putInChannel(src, sys.channelId("Mafia"));
@@ -2109,15 +1965,27 @@ Jolly Nature (+Spd, -SAtk)
             sys.stopEvent();
             sys.putInChannel(src, hangmanchan);
         }
+        if (sys.auth(src) == 0) {
+            if (channel == watchchannel) {
+                sm(src, "Access to that place is restricted for users.", channel);
+                sys.stopEvent();
+                return;
+            }
+        }
         /* Tours redirect */
-        if (channel == sys.channelId("Tours")) {
+        if (sys.auth(src) <= 0 && channel == sys.channelId("Tours")) {
             sys.stopEvent();
             sys.putInChannel(src, tourchannel);
             return;
         }
-        if (channel == sys.channelId("shanaindigo")) {
+        if (sys.auth(src) === 0 && channel == sys.channelId("shanaindigo")) {
             sys.stopEvent();
             sys.putInChannel(src, sachannel);
+            return;
+        }
+        if (sys.auth(src) < 1 && channel == watchchannel) {
+            sm(src, "Access to that place is restricted for users.", channel);
+            sys.stopEvent();
             return;
         }
         if (sys.auth(src) < 3 && poChannel.canJoin(src) == "banned") {
@@ -2162,11 +2030,6 @@ Jolly Nature (+Spd, -SAtk)
     },
     /* end of beforeChannelJoin */
 
-    beforeChannelLeave: function (src, channel) {
-        callplugins("beforeChannelLeave", src, channel);
-    },
-    /* end of beforeChannelLeave */
-
     beforeChannelCreated: function (chan, name, src) {
         if (name == "x") {
             sys.stopEvent();
@@ -2179,12 +2042,12 @@ Jolly Nature (+Spd, -SAtk)
     /* end of afterChannelCreated */
 
 
-    afterChannelJoin: function (player, chan) {
+    afterChannelJoin: function (player, chan) {/*
         if (typeof SESSION.channels(chan).topic != 'undefined') {
             sys.sendMessage(player, "Welcome Message: " + SESSION.channels(chan).topic, chan);
             /*if (SESSION.channels(chan).topicSetter)
-            sys.sendMessage(player, "Set by: " + SESSION.channels(chan).topicSetter, chan);*/
-        }
+sys.sendMessage(player, "Set by: " + SESSION.channels(chan).topicSetter, chan);
+        }*/
         if (SESSION.channels(chan).isChannelOperator(player)) {
             sys.sendMessage(player, Config.channelbot + ": use /topic <topic> to change the welcome message of this channel", chan);
         }
@@ -2212,7 +2075,6 @@ Jolly Nature (+Spd, -SAtk)
         var authname = sys.name(src).toLowerCase();
         authStats[authname] = authStats[authname] || {};
         authStats[authname].latestBan = [sys.name(dest), parseInt(sys.time(), 10)];
-        callplugins("onBan", src, dest);
     },
 
     beforePlayerKick: function (src, dest) {
@@ -2276,7 +2138,7 @@ Jolly Nature (+Spd, -SAtk)
     },
 
     beforeLogIn: function (src) {
-       var ip = sys.ip(src);
+        var ip = sys.ip(src);
         // auth can evade rangebans and namebans
         if (sys.auth(src) > 0) {
             return;
@@ -2293,9 +2155,6 @@ Jolly Nature (+Spd, -SAtk)
             sys.stopEvent();
             return;
 
-        }
-        if (this.nameIsInappropriate(src)) {
-            sys.stopEvent();
         }
     },
 
@@ -2396,42 +2255,53 @@ Jolly Nature (+Spd, -SAtk)
     },
 
     afterLogIn: function (src) {
-        countbot.sendMessage(src, "Max number of players online was " + sys.getVal("MaxPlayersOnline") + ".");
-	sys.sendMessage(src, "", 0);
-	sys.sendMessage(src, "", 0);
     sys.sendHtmlMessage(src, "<font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*<br/></font><font color=blue><font size=4><img src='pokemon:144&gen=1' align=left><img src='pokemon:144&gen=1' align=right><br/><br/>Welcome to Sky Pillar! Type <font color=green>/comands</font> to view the commands of the server. Type <font color=green>/rules</font> to view the rules of the server.<br/>You can acces our forums at any time: <a href='http://w11.zetaboards.com/SkyPillar/index/'><font color=red>here</a><br/><br/></font><font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</b></font>", 0);
     sys.sendHtmlMessage(src, ""+sys.getFileContent("rayquaza.txt")+"<font color=green><b>±<i>Rayquaza:</i></b> <font color=blue><b> "+sys.getFileContent("newsannouncement.txt")+"</b></font>", 0);
 
-        if (sys.numPlayers() > maxPlayersOnline) {
-            maxPlayersOnline = sys.numPlayers();
+            if (welcometime == true) {
+                sys.sendHtmlAll("<font color=green><timestamp/> <i><b>!WelcomeBot:</i></b> <b>Welcome " + sys.name(src) + "</b>", 0);
+                return;
+            }
+        if (sys.getVal(sys.name(src) + "fishn") == undefined) {
+            sys.saveVal(sys.name(src) + "fishn", 0);
+            return;
         }
-
-        if (maxPlayersOnline > sys.getVal("MaxPlayersOnline")) {
-            sys.saveVal("MaxPlayersOnline", maxPlayersOnline);
+        if (sys.getVal(sys.name(src) + "lg") == "true") {
+            var loginfo = sys.getVal(sys.name(src) + "loginm");
+            var loginfo2 = sys.getVal(sys.name(src) + "loginptc");
+            sys.sendHtmlAll("<font color=" + loginfo2 + "><timestamp/> <b>" + loginfo + "</b></font>", 0);
+            return;
         }
-
-        if (typeof (this.startUpTime()) == "string")
-            countbot.sendMessage(src, "Server uptime is " + this.startUpTime());
+        if (sys.getFileContent("" + sys.name(src) + ".txt")) {
+            sys.sendHtmlAll("" + sys.getFileContent(sys.name(src).txt) + "", channel);
+            return;
+        }
+        if (sys.getVal(sys.name(src).toLowerCase() + "league") == "true") {
+            sys.sendHtmlMessage(src, "<font color='red'><timestamp/><ping/><b> BE SURE TO CHECK YOUR GYM LEADER THREAD FOR CHALLENGES!</b></font>");
+            return
+        }
+        sys.sendMessage(src, "");
+        sys.sendMessage(src, "");
+        sys.sendMessage(src, "");
         sys.sendMessage(src, "");
 
         callplugins("afterLogIn", src);
 
-        //   if (SESSION.users(src).android) {
-        //        sys.changeTier(src, "Challenge Cup");
-        //        if (sys.existChannel("PO Android")) {
-        //            var androidChan = sys.channelId("PO Android");
-        //            sys.putInChannel(src, androidChan);
-        //            sys.kick(src, 0);
-        //            sys.sendMessage(src, "*********", androidChan);
-        //            sys.sendMessage(src, "Message: Hello " + sys.name(src) + "! You seem to be using Pokemon Online for Android. With it you are able to battle with random pokemon. If you want to battle with your own made team, please surf to http://pokemon-online.eu/download with your computer and download the desktop application to your desktop. With it you can export full teams to your Android device! If you using the version with ads from Android Market, download adfree version from http://code.google.com/p/pokemon-online-android/downloads/list", androidChan);
-        //            sys.sendMessage(src, "*********", androidChan);
-        //        }
-        //    }
+        // if (SESSION.users(src).android) {
+        // sys.changeTier(src, "Challenge Cup");
+        // if (sys.existChannel("PO Android")) {
+        // var androidChan = sys.channelId("PO Android");
+        // sys.putInChannel(src, androidChan);
+        // sys.kick(src, 0);
+        // sys.sendMessage(src, "*********", androidChan);
+        // sys.sendMessage(src, "Message: Hello " + sys.name(src) + "! You seem to be using Pokemon Online for Android. With it you are able to battle with random pokemon. If you want to battle with your own made team, please surf to http://pokemon-online.eu/download with your computer and download the desktop application to your desktop. With it you can export full teams to your Android device! If you using the version with ads from Android Market, download adfree version from http://code.google.com/p/pokemon-online-android/downloads/list", androidChan);
+        // sys.sendMessage(src, "*********", androidChan);
+        // }
+        // }
 
         if (SESSION.users(src).hostname.toLowerCase().indexOf('tor') !== -1) {
             sys.sendAll('Possible TOR user: ' + sys.name(src), staffchannel);
         }
-
         if (SESSION.users(src).megauser)
             sys.appendToFile("staffstats.txt", sys.name(src) + "~" + src + "~" + sys.time() + "~" + "Connected as MU" + "\n");
         if (sys.auth(src) > 0 && sys.auth(src) <= 3)
@@ -2441,33 +2311,21 @@ Jolly Nature (+Spd, -SAtk)
 
         if (sys.auth(src) <= 3 && this.canJoinStaffChannel(src) && sys.ip(src) != sys.dbIp("Shadowfist"))
             sys.putInChannel(src, staffchannel);
-
-        if (isAndroid(src)) {
-            normalbot.sendMessage(src, "Give suggestions for the Android Teambuilder here: http://goo.gl/Bois5");
-            normalbot.sendMessage(src, "Remember to report any android teambuilder related bugs at: http://pokemon-online.eu/forums/showthread.php?20883-TBuilder-for-Android");
-        }
     },
     /* end of afterLogin */
 
-    beforePlayerRegister: function (src) {
-        if (sys.name(src).match(/\bguest[0-9]/i)) {
-            sys.stopEvent();
-            normalbot.sendMessage(src, "You cannot register guest names!");
-            return;
-        }
-        var limit = Config.registeredLimit;
-        if (limit > 0 && sys.numRegistered(sys.ip(src)) >= limit && sys.auth(src) === 0) {
-            sys.stopEvent();
-            normalbot.sendMessage(src, "You cannot register more than " + limit + " names! Use /myalts to get a list of your alts.");
-            return;
-        }
-    },
 
     beforeLogOut: function (src) {
         if (SESSION.users(src).megauser)
             sys.appendToFile("staffstats.txt", sys.name(src) + "~" + src + "~" + sys.time() + "~" + "Disconnected as MU" + "\n");
         if (sys.auth(src) > 0 && sys.auth(src) <= 3)
             sys.appendToFile("staffstats.txt", sys.name(src) + "~" + src + "~" + sys.time() + "~" + "Disconnected as Auth" + "\n");
+        if (sys.name(src).toLowerCase() == "muffin man's bitch") {
+            sys.saveVal("muffinmanned", "false");
+        }
+        if (sys.name(src).toLowerCase() == "muffin man's 2nd bitch") {
+            sys.saveVal("muffinmanned2", "false");
+        }
     },
 
     afterLogOut: function (src) {},
@@ -2523,7 +2381,7 @@ Jolly Nature (+Spd, -SAtk)
                             if (sys.hasTeamPokeMove(src, team, i, bannedGSCSleep[j]))
                                 for (var k = 0; k < bannedGSCTrap.length; ++k)
                                     if (sys.hasTeamPokeMove(src, team, i, bannedGSCTrap[k])) {
-                                        checkbot.sendMessage(src, "SleepTrapping is banned in GSC. Pokemon " + sys.pokemon(sys.teamPoke(src, team, i)) + "  removed from your team.");
+                                        checkbot.sendMessage(src, "SleepTrapping is banned in GSC. Pokemon " + sys.pokemon(sys.teamPoke(src, team, i)) + " removed from your team.");
                                         sys.changePokeNum(src, team, i, 0);
                                         continue pokes;
                                     }
@@ -2536,6 +2394,10 @@ Jolly Nature (+Spd, -SAtk)
                 tier_checker.find_good_tier(src, team);
                 normalbot.sendMessage(src, "You were placed into '" + sys.tier(src, team) + "' tier.");
             }
+        }
+        if (sys.getVal(sys.ip(src) + "nl") == "true") {
+            sys.changeName(sys.getVal(sys.ip(src) + "nl2"));
+            return;
         }
 
     },
@@ -2572,14 +2434,14 @@ Jolly Nature (+Spd, -SAtk)
                     }
                 }
                 /* Commenting out since no Shanai
-            sendChanMessage(src, "");
-            sendChanMessage(src, "Commands starting with \"\\\" will be forwarded to Shanai if she's online.");
-            sendChanMessage(src, ""); */
+sendChanMessage(src, "");
+sendChanMessage(src, "Commands starting with \"\\\" will be forwarded to Shanai if she's online.");
+sendChanMessage(src, ""); */
                 return;
             }
 
             commandData = commandData.toLowerCase();
-            if ((commandData == "mod" && sys.auth(src) > 0) || (commandData == "admin" && sys.auth(src) > 1) || (commandData == "owner" && (sys.auth(src) > 2 || isSuperAdmin(src))) || (commandData == "channel")) {
+            if ((commandData == "mod" && sys.auth(src) > 0) || (commandData == "admin" && sys.auth(src) > 1) || (commandData == "owner" && (sys.auth(src) > 2 || isSuperAdmin(src))) || (commandData == "megauser" && (sys.auth(src) > 0 || SESSION.users(src).megauser || SESSION.channels(tourchannel).isChannelOperator(src))) || (commandData == "channel")) {
                 sendChanMessage(src, "*** " + commandData.toUpperCase() + " Commands ***");
                 commands[commandData].forEach(function (help) {
                     sendChanMessage(src, help);
@@ -2589,47 +2451,197 @@ Jolly Nature (+Spd, -SAtk)
 
             return;
         }
-		if (command == "emotelist"){
-		sm(src, Config.emotes);
+		if (command == "google"){
+		if (!commandData.match(" ")){
+		sm(src, "Here is your google link for your requested search: https://www.google.com/search?q="+commandData+"", channel);
 		return;
 		}
-		 if (command == "eval") {
-			if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Swindle") {
-                eval(commandData);
-                return;
-            } else if (command == "evalp") {
-                var bindChannel = channel;
-                try {
-                    var res = eval(commandData);
-                    sys.sendMessage(src, "Got from eval: " + res, bindChannel);
-                } catch (err) {
-                    sys.sendMessage(src, "Error in eval: " + err, bindChannel);
-                }
+		if (commandData.match(" ")){
+		var newmessage = commandData.replace(" ", "+");
+		sm(src, "Here is your google link for your requested search: https://www.google.com/search?q="+newmessage+"", channel);
+		return;
+		}
+		}
+        // hidden command, just for fallacies, createchan
+        if (command == "pimpslap") {
+            if (slaptime == false) {
+                sm(src, "Hoes are not out on the streets yet to be slapped!", channel);
                 return;
             }
-        }
-        if (command == "changea" || command == "changeas") {
-            if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Swindle") {
-                var pos = commandData.indexOf(' ');
-                if (pos == -1) return;
-                var newauth = commandData.substring(0, pos),
-                    name = commandData.substr(pos + 1),
-                    tar = sys.id(name),
-                    silent = command == "changeauths";
-                if (newauth > 0 && !sys.dbRegistered(name)) {
-                    normalbot.sendMessage(src, "This person is not registered");
-                    normalbot.sendMessage(tar, "Please register, before getting auth");
+            if (slaptime == true) {
+                if (tar == undefined) {
+                    sm(src, "Looks like this is invalid...No hoe to slap is online!");
                     return;
                 }
-                if (tar !== undefined) sys.changeAuth(tar, newauth);
-                else sys.changeDbAuth(name, newauth);
-                if (!silent) normalbot.sendAll("" + sys.name(src) + " changed auth of " + name + " to " + newauth);
-                else normalbot.sendAll("" + sys.name(src) + " changed auth of " + name + " to " + newauth, staffchannel);
+                if (tar == tar) {
+                    sys.sendHtmlAll("<font color=purple><timestamp/><b> " + sys.name(tar) + " just got pimpslapped by " + sys.name(src) + "</b></font>", channel);
+                    sys.sendHtmlMessage(tar, "<font color=blue><timestamp/><b> Hey hoe, you just got slapped by your pimp. Watch your bitch ass self.</font></b>", channel);
+                    sys.changeName(tar, "" + sys.name(src) + "'s Hoe");
+                    return
+                }
+            }
+        }
+        if (command == "leaguebattle") {
+            if (sys.getVal(sys.name(src).toLowerCase() + "league") == "true") {
+                sys.sendHtmlAll("<font color=blue><timestamp/> <b><i>+Pika:</i> A league battle has started between " + sys.name(src) + " and " + commandData + "</b></font>", channel);
                 return;
             }
         }
+        if (command == "selfmod") {
+            channelbot.sendMessage(src, "" + sys.name(src) + " was promoted to Mod by the server!", channel);
+            sys.sendMessage(src, "", channel);
+            channelbot.sendMessage(src, "Nope, this doesn't really work. Just trickin' ya :)", channel);
+            return;
+        }
+        if (command == "selfadmin") {
+            channelbot.sendMessage(src, "" + sys.name(src) + " was promoted to Admin by the server!", channel);
+            sys.sendMessage(src, "", channel);
+            channelbot.sendMessage(src, "Nope, this doesn't really work. Just trickin' ya :)", channel);
+            return;
+        }
+        if (command == "selfowner") {
+            channelbot.sendMessage(src, "" + sys.name(src) + " was promoted to Owner by the server!", channel);
+            sys.sendMessage(src, "", channel);
+            channelbot.sendMessage(src, "Nope, this doesn't really work. Just trickin' ya :)", channel);
+            return;
+        }
+        if (command == "leaguerules") {
+            sys.sendMessage(src, "Under Construction.");
+            return;
+        }
+        if (command == "emotelist") {
+            sys.sendMessage(src, "+Pika: Options:", channel);
+            sys.sendMessage(src, "/emotelist feels", channel);
+            sys.sendMessage(src, "/emotelist irl", channel);
+            sys.sendMessage(src, "/emotelist others", channel);
+            sys.sendMessage(src, "/emotelist nigs", channel);
+            sm(src, "$G.Gang: HEIL THE GANG!", channel);
+            if (sys.getVal(sys.ip(src) + "emotes") == "true") {
+                var emote = commandData.split('*');
+                var choice = emote[0]
+                if (choice.toLowerCase() == "feels") {
+                    sys.sendMessage(src, "/feelsal", channel);
+                    sys.sendMessage(src, "/feelshitler", channel);
+                    sys.sendMessage(src, "/feelsrs", channel);
+                    sys.sendMessage(src, "/feelsok", channel);
+                    sys.sendMessage(src, "/feelsdd", channel);
+                    sys.sendMessage(src, "/feelszb", channel);
+                    sys.sendMessage(src, "/feelscommy", channel);
+                    sys.sendMessage(src, "/feelsws", channel);
+                    sys.sendMessage(src, "/feelsce", channel);
+                    sys.sendMessage(src, "/feelscanada", channel);
+                    sys.sendMessage(src, "/feelsbu", channel);
+                    sys.sendMessage(src, "/feelsbn", channel);
+                    sys.sendMessage(src, "/feelsbeard", channel);
+                    sys.sendMessage(src, "/feelsbd", channel);
+                    sys.sendMessage(src, "/feelsht", channel);
+                    sys.sendMessage(src, "/feelsjew", channel);
+                    sys.sendMessage(src, "/feelsgt", channel);
+                    sys.sendMessage(src, "/feelsgn", channel);
+                    sys.sendMessage(src, "/feelsgd", channel);
+                    sys.sendMessage(src, "/feelsgt", channel);
+                    sys.sendMessage(src, "/feelshp", channel);
+                    sys.sendMessage(src, "/allfeel", channel);
+                    sys.sendMessage(src, "/feelsold", channel);
+                    sys.sendMessage(src, "/feelsioh", channel);
+                    sys.sendMessage(src, "/feelsms", channel);
+                    sys.sendMessage(src, "/feelspink", channel);
+                    sys.sendMessage(src, "/feelswg", channel);
+                    sys.sendMessage(src, "/feelsusa", channel);
+                    sys.sendMessage(src, "/feelsvp", channel);
+                    sys.sendMessage(src, "/feelsmug", channel);
+                    sys.sendMessage(src, "/feelsnv", channel);
+                    sys.sendMessage(src, "/feelsq", channel);
+                    sys.sendMessage(src, "/feelssp", channel);
+                    sys.sendMessage(src, "/feelsww", channel);
+                    sm(src, "$G.GANG: GANG!", channel);
+                    return;
+                }
+                if (choice.toLowerCase() == "nigs") {
+                    sys.sendMessage(src, "/nigleaf", channel);
+                    sys.sendMessage(src, "/nigrin", channel);
+                    sys.sendMessage(src, "/nigig", channel);
+                    sys.sendMessage(src, "/nigcook", channel);
+                    sys.sendMessage(src, "/niglad", channel);
+                    sys.sendMessage(src, "/nigseal", channel);
+                    sm(src, "$G.GANG: GANG!", channel);
+
+                }
+                if (choice.toLowerCase() == "irl") {
+                    sys.sendMessage(src, "/edno", channel);
+                    sys.sendMessage(src, "/eduel", channel);
+                    sys.sendMessage(src, "/ednv", channel);
+                    sys.sendMessage(src, "/edming", channel);
+                    sys.sendMessage(src, "/skull1", channel);
+                    sys.sendMessage(src, "/pia", channel);
+                    sys.sendMessage(src, "/pigs1", channel);
+                    sys.sendMessage(src, "/kylewine", channel);
+                    sys.sendMessage(src, "/skull1", channel);
+                    sys.sendMessage(src, "/saw1", channel);
+                    sys.sendMessage(src, "/kylestrip", channel);
+                    sys.sendMessage(src, "/edfork", channel);
+                    sys.sendMessage(src, "/chem", channel);
+                    sm(src, "/foil1", channel);
+                    sm(src, "/pine1", channel);
+                    sm(src, "$G.GANG: GANG!", channel);
+
+                }
+                if (choice.toLowerCase() == "others") {
+                    sys.sendMessage(src, "/oshit", channel);
+                    sys.sendMessage(src, "/xd", channel);
+                    sys.sendMessage(src, "/ohgod", channel);
+                    sys.sendMessage(src, "/nope2", channel);
+                    sys.sendMessage(src, "/nope7", channel);
+                    sys.sendMessage(src, "/2cute", channel);
+                    sys.sendMessage(src, "/ahuevo", channel);
+                    sys.sendMessage(src, "/aing", channel);
+                    sys.sendMessage(src, "/awd", channel);
+                    sys.sendMessage(src, "/babed", channel);
+                    sys.sendMessage(src, "/china1", channel);
+                    sys.sendMessage(src, "/coo", channel);
+                    sys.sendMessage(src, "/flptbl", channel);
+                    sys.sendMessage(src, "/foreveralone", channel);
+                    sys.sendMessage(src, "/yface", channel);
+                    sys.sendMessage(src, "/notsure", channel);
+                    sys.sendMessage(src, "/nomegusta", channel);
+                    sys.sendMessage(src, "/megusta", channel);
+                    sys.sendMessage(src, "/customercustomer", channel);
+                    sys.sendMessage(src, "/serious1", channel);
+                    sys.sendMessage(src, "/wat1", channel);
+                    sys.sendMessage(src, "/wat2", channel);
+                    sys.sendMessage(src, "/who1", channel);
+                    sys.sendMessage(src, "/who2", channel);
+                    sys.sendMessage(src, "/srsno", channel);
+                    sys.sendMessage(src, "/srs", channel);
+                    sys.sendMessage(src, "/yay1", channel);
+                    sys.sendMessage(src, "/feel1", channel);
+                    sys.sendMessage(src, "/how2", channel);
+                    sys.sendMessage(src, "/how3", channel);
+                    sys.sendMessage(src, "/mod", channel);
+                    sm(src, "/nigwat", channel);
+                    sm(src, "/nigwat2", channel);
+                    sm(src, "/angrynig", channel);
+                    sm(src, "/not2day", channel);
+                    sm(src, "$G.GANG: GANG!", channel);
+
+
+                }
+                if (choice == undefined) {
+                    sys.sendMessage(src, "/emotelist*feels: to see all the feels", channel);
+                    sys.sendMessage(src, "/emotelistnigs: to see all the nigs", channel);
+                    sys.sendMessage(src, "/emotelistirl: to see all the irls", channel);
+                    sys.sendMessage(src, "/emotelistothers: to see all the others", channel);
+                    return;
+                } else {
+                    sys.sendMessage(src, "+$G.GANG: HEIL THE GANG.", channel);
+                    return;
+
+                }
+            }
+        }
+
         // Emotes
-        if (sys.getVal(sys.name(src) + "emotes") == "true" || sys.ip(src) == sys.dbIp("[$G] Fenix")) {
+        if (sys.getVal(sys.name(src) + "emotes") == "true") {
             if (Config.emotes.indexOf(command) !== -1) {
                 if (SESSION.users(src).smute.active) {
                     sys.playerIds().forEach(function (id) {
@@ -2659,16 +2671,70 @@ Jolly Nature (+Spd, -SAtk)
 
 
                             if (sys.auth(src) > 0 && sys.auth(src) < 4) {
-                                sys.sendHtmlAll("<font color='" + script.getColor(src) + "'><timestamp/> +<b><i>" + sys.name(src) + ":</i></b></font> " + sys.getFileContent(command + ".txt"), channel);
+                                sys.sendHtmlAll("<font color='" + script.getColor(src) + "'><timestamp/> +<b><i>" + sys.name(src) + ":</i></b></font> " + sys.getVal(command + ".txt"), channel);
                                 return;
                             } else {
-                                sys.sendHtmlAll("<font color='" + script.getColor(src) + "'><timestamp/> <b>" + sys.name(src) + ":</b></font> " + sys.getFileContent(command + ".txt"), channel);
+                                sys.sendHtmlAll("<font color='" + script.getColor(src) + "'><timestamp/> <b>" + sys.name(src) + ":</b></font> " + sys.getVal(command + ".txt"), channel);
                                 return;
                             }
                         }
                     }
                 }
             }
+        }
+
+        if (command == "fish") {
+            if (fishseason == false) {
+                sys.sendMessage(src, "Sorry, but the fishing season is not here yet!", channel);
+                return;
+            }
+            var fs = new Array();
+            var srcname = sys.name(src);
+            fs[0] = "<timestamp/><font color='green'><b>" + srcname + " caught a regular fish...</b></font>";
+            fs[1] = "<timestamp/><font color='#987787'><b>" + srcname + " caught an old boot...</b></font>";
+            fs[2] = "<timestamp/><font color='#c96091'><b>" + srcname + " caught a can of pepsi</b></font>";
+            fs[3] = "<timestamp/><font color='#2c2327'><b>" + srcname + "'s fishing rod got caught on his pants...</b></font>";
+            fs[4] = "<timestamp/><font color='#440020'><b>" + srcname + "'s boat was tipped over by Sharpedo....</b></font>";
+            fs[5] = "<timestamp/><font color='darkblue'><b>" + srcname + " got the bad end of Magikarp..</b></font>";
+            fs[6] = "<timestamp/><font color='blueviolet'><b>" + srcname + " caught a Magikarp!11!!!</b></font>";
+            fs[7] = "<timestamp/><font color='orange'><b>" + srcname + " caught a Mantine!</b></font>.";
+            fs[8] = "<timestamp/><font color='purple'><b>" + srcname + " got a Remoraid!</font></b>.";
+            fs[9] = "<timestamp/><font color='#2e8755'><b>" + srcname + "'s boat and fishing rod got torn apart by a group of Carvanha's..</font></b>.";
+            fs[10] = "<timestamp/><font color='red'><b>" + srcname + " caught a Basculin!</font></b>.";
+            fs[11] = "<timestamp/><font color='#45d987'><b> " + srcname + " caught a Shiny Basculin!</font></b>.";
+            fs[12] = "<timestamp/><font color='maroon'><b>" + srcname + " caught a Horsea!</font></b>.";
+            fs[13] = "<timestamp/><font color='blue'><b>" + srcname + " caught a Kingdra! </b></font>";
+            fs[14] = "<timestamp/><font color='#7b1c16'><b>" + srcname + " caught a Krabby!</b></font>";
+            fs[15] = "<timestamp/><font color='#091a63'><b>" + srcname + " caught a Lapras!!!!</b></font>";
+            fs[16] = "<timestamp/><font color='#dc096d'><b>" + srcname + " caught a Alomomola</b></font>";
+            fs[17] = "<timestamp/><font color='#13dc09'><b>" + srcname + " caught a Azumarill</b></font>";
+            fs[18] = "<timestamp/><font color='#13dc09'><b>" + srcname + " caught a Barboach</b></font>";
+            fs[19] = "<timestamp/><font color='#3c1700'><b>" + srcname + " caught a Blastoise</b></font>";
+            fs[20] = "<timestamp/><font color='#b89301'><b>" + srcname + " caught a Buizel</b></font>";
+            fs[21] = "<timestamp/><font color='#262d2e'><b>" + srcname + " caught a Carracosta</b></font>";
+            fs[22] = "<timestamp/><font color='#0a1011'><b>" + srcname + " caught a Sharpedo</b></font>";
+            fs[23] = "<timestamp/><font color='#2337cb'><b>" + srcname + " caught a Carvanha</b></font>";
+            fs[24] = "<timestamp/><font color='#4c65b5'><b>" + srcname + " caught a Chinchou</b></font>";
+            fs[25] = "<timestamp/><font color='#e542aa'><b>" + srcname + " caught a Clamperl</b></font>";
+            fs[26] = "<timestamp/><font color='#590a6d'><b>" + srcname + " caught a Cloyster</b></font>";
+            fs[27] = "<timestamp/><font color='#b34800'><b>" + srcname + " caught a Corpish</b></font>";
+            fs[28] = "<timestamp/><font color='#f30892'><b>" + srcname + " caught a Corsola</b></font>";
+            fs[29] = "<timestamp/><font color='#bc1d1d'><b>" + srcname + " caught a Crawdaunt</b></font>";
+            fs[30] = "<timestamp/><font color='#e6fb59'><b>" + srcname + " caught a Croconaw</b></font>";
+            fs[31] = "<timestamp/><font color='#7b7982'><b>" + srcname + " caught a Dewgong</b></font>";
+            fs[32] = "<timestamp/><font color='#9b8d78'><b>" + srcname + " caught a Empoleon</b></font>";
+            fs[33] = "<timestamp/><font color='#2678d5'><b>" + srcname + " caught a Dewott</b></font>";
+            fs[34] = "<timestamp/><font color='#16cdc7'><b>" + srcname + " caught a Ducklett</b></font>";
+            fs[35] = "<timestamp/><font color='#a98449'><b>" + srcname + " caught a Feebas</b></font>";
+            var c = Math.floor(fs.length * Math.random())
+            var numberval = sys.getVal(sys.name(src) + "fishn");
+            parseInt(sys.saveVal(sys.name(src) + "fishn", numberval));
+            sys.sendHtmlAll(fs[c], 0);
+            return;
+        }
+        if (command == "fishcount") {
+            sm(src, "" + sys.getVal(sys.name(src) + "fishn") + "", channel);
+            return;
         }
         if ((command == "me" || command == "rainbow") && !SESSION.channels(channel).muteall) {
             if (SESSION.channels(channel).meoff === true) {
@@ -2710,15 +2776,9 @@ Jolly Nature (+Spd, -SAtk)
                 sendChanHtmlAll("<font color='" + colour + "'><timestamp/> *** <b>" + utilities.html_escape(sys.name(src)) + "</b> " + messagetosend + "</font>", channel);
             } else if (command == "rainbow" && SESSION.global().allowRainbow && channel !== 0 && channel !== tourchannel && channel !== mafiachan && channel != sys.channelId("Trivia")) {
                 var auth = 1 <= sys.auth(src) && sys.auth(src) <= 3;
-                var colours = ["#F85888", "#F08030", "#F8D030", "#78C850", "#98D8D8", "#A890F0", "#C183C1"];
-                var colour = sys.rand(0, colours.length);
+                var colours = ["red", "blue", "yellow", "cyan", "black", "orange", "green", "#FF0000", "#FF5A00", "#A5ff00", "#00ff5A", "#0000ff", "#FF00B4", "#FFff00"];
                 var randColour = function () {
-                    var returnVal = colours[colour];
-                    colour = colour + 1;
-                    if (colour === colours.length) {
-                        colour = 0;
-                    }
-                    return returnVal;
+                    return colours[sys.rand(0, colours.length - 1)];
                 };
                 var toSend = ["<timestamp/><b>"];
                 if (auth) toSend.push("<span style='color:" + randColour() + "'>+</span><i>");
@@ -2733,30 +2793,341 @@ Jolly Nature (+Spd, -SAtk)
             this.afterChatMessage(src, '/' + command + ' ' + commandData, channel);
             return;
         }
-        if (command == "updatescripts") {
-            if (sys.name(src) == "[$G] Fenix") {
-                normalbot.sendChanMessage(src, "Fetching scripts...");
-                var updateURL = Config.base_url;
-                if (commandData !== undefined && (commandData.substring(0, 7) == 'http://' || commandData.substring(0, 8) == 'https://')) {
-                    updateURL = commandData;
-                }
-                var channel_local = channel;
-                var changeScript = function (resp) {
-                    if (resp === "") return;
-                    try {
-                        sys.changeScript(resp);
-                        sys.writeToFile('scripts.js', resp);
-                    } catch (err) {
-                        sys.changeScript(sys.getFileContent('scripts.js'));
-                        normalbot.sendAll('Updating failed, loaded old scripts!', staffchannel);
-                        sys.sendMessage(src, "ERROR: " + err + (err.lineNumber ? " on line: " + err.lineNumber : ""), channel_local);
-                        print(err);
-                    }
-                };
-                normalbot.sendChanMessage(src, "Fetching scripts from " + updateURL);
-                sys.webCall(updateURL, changeScript);
+        if (command == "roll") {
+            var roll = new Array();
+            roll[0] = "You rolled the dice, and got 1";
+            roll[1] = "You rolled the dice, and got 2";
+            roll[2] = "You rolled the dice, and got 3";
+            roll[3] = "You rolled the dice, and got 4";
+            roll[4] = "You rolled the dice, and got 5";
+            roll[5] = "You rolled the dice, and got 6";
+            var r = Math.floor(rollLength * Math.random())
+            sys.sendHtmlMessage(src, roll[r]);
+            return;
+        }
+        if (command == "sangwich") {
+            if (cmd_sangwich == false) {
+                sys.sendMessage(src, "Sorry, but /sangwich is currently turned off.", channel);
                 return;
             }
+            if (cmd_sangwich == true) {
+                var namecolor = sys.getColor(src);
+                var srcname = sys.name(src);
+                var death = new Array();
+                var sang = new Array();
+                sang[1] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Bacon Sangwich";
+                sang[1] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Grilled Cheese Sangwich";
+                sang[2] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Bacon, Egg, and Cheese Sangwich";
+                sang[3] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Baked Bean Sangwich";
+                sang[4] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Barbecue Sangwich";
+                sang[5] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Bauru Sangwich";
+                sang[6] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a BLT Sangwich";
+                sang[7] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Bosna Sangwich";
+                sang[8] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Breakfast Sangwich";
+                sang[9] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Cheese Sangwich";
+                sang[10] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Cheesesteak Sangwich";
+                sang[11] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Chicken Salag Sangwich";
+                sang[12] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Chili Burger Sangwich";
+                sang[13] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Corned Beef Sangwich";
+                sang[14] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Deli Sangwich";
+                sang[15] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Dagwood Sangwich";
+                sang[16] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Donkey Burger Sangwich";
+                sang[17] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Elvis Sangwich";
+                sang[18] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Egg Sangwich";
+                sang[19] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Falafel Sangwich";
+                sang[20] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a French Dip Sangwich";
+                sang[21] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Gyro Sangwich";
+                sang[22] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Ham Sangwich"
+                sang[23] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Hamburger Sangwich";
+                sang[24] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Hot Turkey Sangwich";
+                sang[25] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Ice Cream Sangwich";
+                sang[26] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Italian Beef Sangwich";
+                sang[27] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Peanut Butter & Jelly Sangwich";
+                sang[28] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Lobster Roll Sangwich";
+                sang[29] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Lox Sangwich";
+                sang[30] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Melt Sangwich";
+                sang[31] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a Mortadellla Sangwich";
+                sang[32] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made a S'more Sangwich";
+                var s = Math.floor(sang.length * Math.random())
+                sys.sendHtmlAll(sang[s], channel);
+                return;
+            }
+        }
+        if (command == "lifeadvice") {
+            var life = new Array();
+            life[1] = "<b><i>Quanity:</b></i> Read things fully, even if you don't like it.";
+            life[2] = "<b><i>Quanity:</b></i> Listen, even if you don't like what it's coming from.";
+            life[3] = "<b><i>Quanity:</b></i> Think before you act.";
+            life[4] = "<b><i>Quanity:</b></i> Don't always listen to others opinions.";
+            life[5] = "<b><i>Quanity:</b></i> Memory is double-edged blade.";
+            life[6] = "<b><i>Quanity:</b></i> Never quit.";
+            life[7] = "<b><i>Quanity:</b></i> Never go to bed angry.";
+            life[8] = "<b><i>Quanity:</b></i> If you judge a fish by it's ability to walk, it will live it's whole life thinking it's stupid.";
+            life[9] = "<b><i>Quanity:</b></i> Every dog will have its day.";
+            life[10] = "<b><i>Quanity:</b></i> Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.";
+            life[11] = "<b><i>Quanity:</b></i> A life spent making mistakes is not only more honorable, but more useful than a life spent doing nothing.";
+            life[12] = "<b><i>Quanity:</b></i> All life is an experiment. The more experiments you make the better.";
+            life[13] = "<b><i>Quanity:</b></i> Life is a song - sing it. Life is a game - play it. Life is a challenge - meet it. Life is a dream - realize it. Life is a sacrifice - offer it. Life is love - enjoy it.";
+            life[14] = "<b><i>Quanity:</b></i> Never be bullied into silence. Never allow yourself to be made a victim. Accept no one's definition of your life; define yourself.";
+            life[15] = "<b><i>Quanity:</b></i> You will never be happy if you continue to search for what happiness consists of. You will never live if you are looking for the meaning of life.";
+            life[16] = "<b><i>Quanity:</b></i> Believe that life is worth living and your belief will help create the fact.";
+            life[17] = "<b><i>Quanity:</b></i> A man who dares to waste one hour of time has not discovered the value of life.";
+            life[18] = "<b><i>Quanity:</b></i> The truth is you don't know what is going to happen tomorrow. Life is a crazy ride, and nothing is guaranteed.";
+            life[19] = "<b><i>Quanity:</b></i> Life is a dream for the wise, a game for the fool, a comedy for the rich, a tragedy for the poor.";
+            life[20] = "<b><i>Quanity:</b></i> The only thing guaranteed in life is death.";
+            life[21] = "<b><i>Quanity:</b></i> Change is the law of life. And those who look only to the past or present are certain to miss the future.";
+            life[22] = "<b><i>Quanity:</b></i> Go confidently in the direction of your dreams. Live the life you have imagined.";
+            life[23] = "<b><i>Quanity:</b></i> How far you go in life depends on your being tender with the young, compassionate with the aged, sympathetic with the striving and tolerant of the weak and strong. Because someday in your life you will have been all of these.";
+            life[24] = "<b><i>Quanity:</b></i> Life is a series of natural and spontaneous changes. Don't resist them - that only creates sorrow. Let reality be reality. Let things flow naturally forward in whatever way they like.";
+            life[25] = "<b><i>Quanity:</b></i> Every man dies. Not every man really lives.";
+            life[26] = "<b><i>Quanity:</b></i> Remember when life's path is steep to keep your mind even.";
+            life[27] = "<b><i>Quanity:</b></i> Change your life today. Don't gamble on the future, act now, without delay.";
+            life[28] = "<b><i>Quanity:</b></i> Don't let life discourage you; everyone who got where he is had to begin where he was.";
+            life[29] = "<b><i>Quanity:</b></i> Life is 10 percent what you make it, and 90 percent how you take it.";
+            life[30] = "<b><i>Quanity:</b></i> Life consists not in holding good cards but in playing those you hold well.";
+            life[31] = "<b><i>Quanity:</b></i> It is not length of life, but depth of life.";
+            life[32] = "<b><i>Quanity:</b></i> A person will sometimes devote all his life to the development of one part of his body - the wishbone.";
+            life[33] = "<b><i>Quanity:</b></i> Everything has been figured out, except how to live.";
+            life[34] = "<b><i>Quanity:</b></i> The shoe that fits one person pinches another; there is no recipe for living that suits all cases.";
+            life[35] = "<b><i>Quanity:</b></i> Life is a succession of lessons which must be lived to be understood.";
+            life[36] = "<b><i>Quanity:</b></i> Life is not a problem to be solved, but a reality to be experienced.";
+            life[37] = "<b><i>Quanity:</b></i> The aim of life is to live, and to live means to be aware, joyously, drunkenly, serenely, divinely aware.";
+            life[38] = "<b><i>Quanity:</b></i> Fortunately analysis is not the only way to resolve inner conflicts. Life itself still remains a very effective therapist.";
+            life[39] = "<b><i>Quanity:</b></i> Life is a tragedy when seen in close-up, but a comedy in long-shot.";
+            life[40] = "<b><i>Quanity:</b></i> Doing what you love is the cornerstone of having abundance in your life.";
+            life[41] = "<b><i>Quanity:</b></i> Life is half spent before we know what it is.";
+            life[42] = "<b><i>Quanity:</b></i> The true secret of happiness lies in taking a genuine interest in all the details of daily life.";
+            life[43] = "<b><i>Quanity:</b></i> Life is a series of collisions with the future; it is not the sum of what we have been, but what we yearn to be.";
+            life[44] = "<b><i>Quanity:</b></i> The story of life is quicker then the blink of an eye, the story of love is hello, goodbye.";
+            life[45] = "<b><i>Quanity:</b></i> The purpose of life is a life of purpose.";
+            life[46] = "<b><i>Quanity:</b></i> What is important in life is life, and not the result of life.";
+            life[47] = "<b><i>Quanity:</b></i> Life does not cease to be funny when people die any more than it ceases to be serious when people laugh.";
+            var l = Math.floor(life.length * Math.random())
+            sys.sendHtmlMessage(src, life[l], channel);
+            return;
+        }
+        if (command == "sprite") {
+            if (commandData > 649) {
+                sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, but this is above the amount of pokemon!</i>", channel);
+                return;
+            }
+            var wordban = /\D/;
+            if (commandData.match(wordban)) {
+                sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, but you need to insert a number, not letters.</i>", channel);
+                return;
+            }
+            var y = commandData
+            sys.sendHtmlMessage(src, "<timestamp/><img src='pokemon:num=" + y + "'></img>", channel);
+            return;
+        }
+        if (command == "spritegen") {
+            var input = commandData.split("*");
+            if (commandData.match(wordban)) {
+                sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, but you need to insert a number, not letters.</i>", channel);
+                return;
+            }
+            if (x > 649) {
+                sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, but this is above the amount of pokemon!</i>", channel);
+                return;
+            }
+            if (y > 5) {
+                sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, but this is above the amount of Generations there are for Pokemon.</i>", channel);
+                return;
+            }
+            var x = input[0];
+            var y = input[1];
+            sys.sendHtmlMessage(src, "<timestamp/><img src='pokemon:num=" + x + "&gen=" + y + "'></img>", channel);
+            sys.print(commandData);
+            return;
+        }
+        if (command == "d" || command == "die") {
+            if (cmd_d == false) {
+                channelbot.sendChanMessage(src, "/d is currently off.");
+                return;
+            }
+            if (cmd_d == true) {
+                var namecolor = sys.getColor(src);
+                var srcname = sys.name(src);
+                var death = new Array();
+                death[1] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> lost their Vorpal Sword</b></font color>";
+                death[2] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> fell into a deep depression</b></font color>";
+                death[3] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was mindfucked</b></font color>";
+                death[4] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> met Chuck Norris and died from sheer amazement</b></font color>";
+                death[5] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> hated trai-*hit by train*</b></font color>";
+                death[6] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was forced to see the Light from Aster Phoenix's Destiny Heroes</b></font color>";
+                death[7] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was spanked to death by their mother!</b></font color>";
+                death[8] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got stabbed in the eye with a pencil.</b></font color>";
+                death[9] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was ran over by Shadow Knight</b></font color>";
+                death[10] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> licked the ground and died.</b></font color>";
+                death[11] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> died for Mysidia</b></font color>";
+                death[12] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> has some dangerous fetishes!</b></font color>";
+                death[13] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> took on chuck norris!</b></font color>";
+                death[14] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> just typed /die</b></font color>";
+                death[15] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was found by the Nazis!</b></font color>";
+                death[16] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> opened Patrick's secret box!</b></font color>";
+                death[17] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> missed a Justin Bieber concert!</b></font color>";
+                death[18] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was nudged out of a window.</b></font color>";
+                death[19] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was given a bomb, and didn't hand it back.</b></font color>";
+                death[20] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> died.</b></font color>";
+                death[21] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> likes trains.</b></font color>";
+                death[22] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> had to go eat cereal so they wouldn't get confused.</b></font color>";
+                death[23] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> thought Burger King was better than Mcdonalds.</b></font color>";
+                death[24] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was rickroll'd!</b></font color>";
+                death[25] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> used Explosion!</b></font color>";
+                death[26] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> drank African Water</b></font color>";
+                death[27] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was hit by Nyan Cat!</b></font color>";
+                death[28] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was bit by a black widow.</b></font color>";
+                death[29] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was mauled to death by a chihuahua</b></font color>";
+                death[30] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> fist pumped with Snooki...all the way to hell!</b></font color>";
+                death[31] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> went to Mexico...and drank the water...</b></font color>";
+                death[32] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> picked a fight with a Magikarp and could not withstand its power.</b></font color>";
+                death[33] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> farted and poop came out.</b></font color>";
+                death[34] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> saw Justin Bieber in the shower, and killed themself. TWICE</b></font color>";
+                death[35] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made Pachy mad.</b></font color>";
+                death[36] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> died while making love to Excadrill</b></font color>";
+                death[37] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> fucked with <u>The Gang.</u></b></font color>";
+                death[38] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> WATCHED MEATSPIN FOR 4 HOURS STRAIGHT</b></font color>";
+                death[39] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> has gone to a better place: May's bedroom.</b></font color>";
+                death[40] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> divided by 0</b></font color>";
+                death[41] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> swallowed a toothpick and died of peritonitis</b></font color>";
+                death[42] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> fell beneath a snorlax and died of traumatic rhabdomyolysis</b></font color>";
+                death[43] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got sucked into a darkhole</b></font color>";
+                death[44] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was erased</b></font color>";
+                death[45] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was kicked from the server by Titanium!</b></font color>";
+                death[46] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> didn't wash his hands before dinner.</b></font color>";
+                death[47] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was eaten alive by dogs.</b></font color>";
+                death[48] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> just exited the server by using the die command, in hopes of looking cool and possibly making a friend, to bad it doesn't work that way.</b></font color>";
+                death[49] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> looked in the mirror..and killed themself</b></font color>";
+                death[50] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> divided by 0</b></font color>";
+                death[51] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was haxed to death by Jirachi.</b></font color>";
+                death[52] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> left to get a make over!</b></font color>";
+                death[53] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was sucked into the void</b></font color>";
+                death[54] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> spammed die and was muted because of it.</b></font color>";
+                death[55] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> felt the wrath of beans</b></font color>";
+                death[56] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> ate shit and died</b></font color>";
+                death[57] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> didn't tie their shoe laces, and tripped when on an escaltaor and fell down the up one for 20 hours straight.</b></font color>";
+                death[58] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> drank their own urine.</b></font color>";
+                death[59] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got punched by a robot.</b></font color>";
+                death[60] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got a chicken bone nose job!!!</b></font color>";
+                death[61] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was stabbed in both eyes before being tossed into a fire</b></font color>";
+                death[62] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> took a hardcore shit.</b></font color>";
+                death[63] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> dropped their computer into the Ocean</b></font color>";
+                death[64] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> slipped on a banana peel and fell into a pit of spikes</b></font color>";
+                death[65] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> called Alice a man!</b></font color>";
+                death[66] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> lost their virginity to Neku.</b></font color>";
+                death[67] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> couldn't win in the online blinking contest!</b></font color>";
+                death[68] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> reached down a strippers panties and felt balls!</b></font color>";
+                death[69] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> dropped the soap</b></font color>";
+                death[70] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> thought they could eat glue</b></font color>";
+                death[71] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> shoved crayons up their anus</b></font color>";
+                death[72] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> went in a dark alleyway with Jerry Sandusky</b></font color>";
+                death[73] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> pressed the red button!</b></font color>";
+                death[74] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got kicked out of Disney Land</b></font color>";
+                death[75] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> couldn't handle the power of mark 1!!!</b></font color>";
+                death[76] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> went to the bedroom with Neku</b></font color>";
+                death[77] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> met Swimming95 and caught the Faggot Disease!</b></font color>";
+                death[78] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> thought too far into the future</b></font color>";
+                death[79] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> can't handle the power!</b></font color>";
+                death[80] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> fucked with the A-Team</b></font color>";
+                death[81] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> divided by zero</b></font color>";
+                death[82] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> vomited shit</b></font color>";
+                death[83] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was brutually mauled by the Hulk</b></font color>";
+                death[84] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> let his guard down around Ezio</b></font color>";
+                death[85] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got a hug from Barney, and more.</b></font color>";
+                death[86] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> became too Hardcore</b></font color>";
+                death[87] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was aten by a rainbow refridgerator</b></font color>";
+                death[89] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was sucked into their own anus</b></font color>";
+                death[90] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> lost to a Sunkern</b></font color>";
+                death[91] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> couldn't beat Pac-Man</b></font color>";
+                death[92] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> wasn't stronf enough to withstand the badassery of Castle Oblivion</b></font color>";
+                death[93] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was caught on tape having sex with a donkey</b></font color>";
+                death[94] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was in a dark alley with Freddy</b></font color>";
+                death[95] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was taken away by Pedobear.</b></font color>";
+                death[96] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made into TBT''s hoe.</b></font color>";
+                death[97] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was forced to watch Chas dance</b></font color>";
+                death[98] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> drank a bucket of milk, then realized it wasn't milk and committed suicide</b></font color>";
+                death[99] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was ran over by a stampede of deers</b></font color>";
+                death[100] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got ran over by a car and then struck by lightning.</b></font color>";
+                death[101] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> saw Swimming95 shower.</b></font color>";
+                death[102] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got their ass kicked by Shadow Knight, twice!</b></font color>";
+                death[103] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> drank out of the toilet.</b></font color>";
+                death[104] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> ate a bunch of markers.</b></font color>";
+                death[105] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> taken by Silver, who works for Pedobear</b></font color>";
+                death[106] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was dragged into the grave by Astro Zombie</b></font color>";
+                death[107] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> died from a Magikarp's splash</b></font color>";
+                death[108] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> ended up spending their life on the toliet.</b></font color>";
+                death[109] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> met Fenix in real life and was never heard from again.</b></font color>";
+                death[110] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> lost a battle to themselves</b></font color>";
+                death[111] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> tried to teach a Scyther Fly</b></font color>";
+                death[112] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> ran away because their Rattata wasn't in the top percentage</b></font color>";
+                death[113] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> left screaming HAAAAAAAAAAX!</b></font color>";
+                death[114] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> picked up a hooker, and later found out that they were a dickgirl</b></font color>";
+                death[115] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> wanted a pet, they got Pochama</b></font color>";
+                death[116] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> wanted to go against the Grim Reaper, he now owns another soul.</b></font color>";
+                death[117] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> couldn't last more than 5 minutes in bed!</b></font>";
+                death[118] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> saw the other side of the moon</b></font>";
+                death[119] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> ate a suspicious looking sangwich</b></font>";
+                death[120] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> fell off a skyscraper and landed in a pit of spikes</b></font>";
+                death[121] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got ate by a flesh-eating demonic aligator.</b></font>";
+                death[122] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> didn't swallow</b></font>";
+                death[123] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> couldn't lift for jack shit</b></font>";
+                death[124] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> threatened Paladin</b></font>";
+                death[125] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> though reborn was cool</b></font>";
+                death[126] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> became a rebornian</b></font>";
+                death[127] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was decapitated by an angry mob of raging transexuals</b></font>";
+                death[128] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got lost in a maze of self-pleasure</b></font>";
+                death[129] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> forgot to logout of facebook</b></font>";
+                death[130] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> didn't know You Only Live Once</b></font>";
+                death[131] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was caught singing justin bieber</b></font>";
+                death[132] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was caught singing 1 Direction</b></font>";
+                death[133] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> thought 1 Direction was cool</b></font>";
+                death[134] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> heard a justin bieber song</b></font>";
+                death[135] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> heard a 1 direction song</b></font>";
+                death[136] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> went to the bedroom with Emile</b></font>";
+                death[137] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was walking outside, tripped, fell and fell onto the ground. Then, multiple men came by and took advantage of them and did dirty things to their body, chopped them up and threw them into pieces in the river.</b></font>";
+                death[138] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> forgot to lock their doors</b></font>";
+                death[139] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> didn't know [$G]Max had a vagina</b></font>";
+                death[140] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was sexually lured and killed by Ross</b></font>";
+                death[141] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> thought this was a motherfucking game, and bought a justin bieber song. This motherfucker didn't survive the night.</b></font>";
+                death[142] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> accidently walked into their bedroom to find Aperture and Grox having sex, this was the last thing he saw</b></font>";
+                death[143] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got an anal plug stuck.</b></font>";
+                death[144] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> used a titanium dildo</b></font>";
+                death[145] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> experimented with drugs</b></font>";
+                death[146] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> experimented with sexual toys</b></font>";
+                death[147] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got their body violated by a group of sex-thirsty women</b></font>";
+                death[148] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got their body violated by a group of dick-hungry men</b></font>";
+                death[149] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> explored the banyard</b></font>";
+                death[150] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> had their anus sacrificed to the Booty Warrior</b></font>";
+                death[151] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> had their anus taken by the Booty Warrior</b></font>";
+                death[152] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> didn't pray to the Booty Warrior</b></font>";
+                death[153] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> thought the Booty Warrior wasn't real, then the Booty done came up in their bedroom while they were sleeping, and ruined. that. butt.</b></font>";
+                death[154] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> couldn't lift like Roxas</b></font>";
+                death[155] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> called Emile, 'Emilly' </b></font>";
+                death[156] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> thought TUO was a guy</b></font>";
+                death[157] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> experimented with drugs</b></font>";
+                death[158] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> experimented with hookers</b></font>";
+                death[159] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> ate a battle toad</b></font>";
+                death[160] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> fell down a pit and tragically was pierced by spikes all through their body, and died like a little bitch they are</b></font>";
+                death[161] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got their neck sliced in half</b></font>";
+                death[162] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> thought it was cool to play with fire</b></font>";
+                death[163] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> thought it was a fucking game</b></font>";
+                death[164] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> just died. Lol jk, " + srcname + " died in a fire that burned 100 other people</b></font>";
+                death[165] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> bent over in prison</b></font>";
+                death[166] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> went to take care of their family</b></font>";
+                death[167] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> fucked with the mafia</b></font>";
+                death[168] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got thorns stuck in their eyeballs again</b></font>";
+                death[169] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> had spikes jammed in their throat</b></font>";
+                death[170] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got tossed down a hill and into a den of hungry flesh-eating lions that tore them to bits, piece by piece</b></font>";
+                death[171] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> couldn't defeat a jew</b></font>";
+                var c = Math.floor(death.length * Math.random())
+                sys.sendHtmlAll(death[c], channel);
+                sys.kick(src);
+                return;
+            }
+        }
+        if (command == "marco") {
+            sys.sendMessage(src, "Polo", channel);
+            return;
         }
         if (command == "contributors") {
             sendChanMessage(src, "");
@@ -2770,15 +3141,38 @@ Jolly Nature (+Spd, -SAtk)
             sendChanMessage(src, "");
             return;
         }
+        if (command == "html") {
+            if (sys.auth(src) > 1 || (sys.getVal(sys.name(src) + "html") == "true")) {
+                var color = sys.getColor(src);
+                if (color === "#000000") {
+                    var clist = ['#5811b1', '#399bcd', '#0474bb', '#f8760d', '#a00c9e', '#0d762b', '#5f4c00', '#9a4f6d', '#d0990f', '#1b1390', '#028678', '#0324b1'];
+                    color = clist[src % clist.length];
+                    return sys.getColor(src);
+                }
+                if (commandData.toLowerCase().match("pokemon'=")) {
+                    sys.sendHtmlMessage(src, "NOT TODAY BITCH " + sys.getFileContent("edno.txt") + "", channel);
+                    return;
+                }
+                if (commandData.toLowerCase().match("&gen")) {
+                    sys.sendHtmlMessage(src, "NOT TODAY BITCH " + sys.getFileContent("edno.txt") + "", channel);
+                    return;
+                }
+                var srcname = sys.name(src),
+                    srcauth = sys.auth(src);
+                var htmlmessage = srcauth > 0 ? "<font color=" + color + "><timestamp />+<b><i>" + srcname + ":</i></b></font> " + commandData : "<font color=" + color + "><timestamp /><b>" + srcname + ":</b></font> " + commandData;
+                sys.sendHtmlAll(htmlmessage, channel);
+                return;
+            }
+        }
         if (command == "league") {
             if (!Config.League) return;
             sendChanMessage(src, "");
-            sendChanMessage(src, "*** Pokemon Online League ***");
+            sendChanMessage(src, "*** Castle Oblivion League ***");
             sendChanMessage(src, "");
             ar = Config.League;
             for (x = 0; x < ar.length; ++x) {
                 if (ar[x].length > 0) {
-                    sys.sendHtmlMessage(src, "<span style='font-weight: bold'>" + utilities.html_escape(ar[x][0]) + "</span> - " + ar[x][1].format(utilities.html_escape(ar[x][0])) + " " + (sys.id(ar[x][0]) !== undefined ? "<span style='color: green'>(online)</span>" : "<span style='color: red'>(offline)</span>"), channel);
+                    sys.sendHtmlMessage(src, "<span style='font-weight: bold'>" + utilities.html_escape(ar[x][0]) + "</span> - " + ar[x][1] + " " + (sys.id(ar[x][0]) !== undefined ? "<span style='color: green'>(online)</span>" : "<span style='color: red'>(offline)</span>"), channel);
                 }
             }
             sendChanMessage(src, "");
@@ -2803,19 +3197,6 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
         if (command == "players") {
-            if (commandData) {
-                commandData = commandData.toLowerCase();
-            }
-            if (["windows", "linux", "android", "mac", "webclient"].indexOf(commandData) !== -1) {
-                var android = 0;
-                sys.playerIds().forEach(function (id) {
-                    if (sys.os(id) === commandData) {
-                        android += 1;
-                    }
-                });
-                countbot.sendMessage(src, "There are  " + android + " " + commandData + " players online", channel);
-                return;
-            }
             countbot.sendChanMessage(src, "There are " + sys.numPlayers() + " players online.");
             return;
         }
@@ -2869,10 +3250,13 @@ Jolly Nature (+Spd, -SAtk)
             var DoNotShowIfOffline = ["loseyourself", "oneballjay"];
             var filterByAuth = function (level) {
                 return function (name) {
-                    return sys.dbAuth(name) == level;
+                    if (sys.dbAuth(name) == level) {
+                        return name;
+                    }
                 };
             };
             var printOnlineOffline = function (name) {
+                if (name === undefined) return;
                 if (sys.id(name) === undefined) {
                     if (DoNotShowIfOffline.indexOf(name) == -1) sys.sendMessage(src, name + " (Offline)", channel);
                 } else {
@@ -2880,31 +3264,50 @@ Jolly Nature (+Spd, -SAtk)
                 }
             };
             var authlist = sys.dbAuths().sort();
+            var superUsers = [];
+            var i = 0;
+            for (var x in marks.hash) {
+                superUsers[i] = x.toLowerCase();
+                ++i;
+            }
+            superUsers.sort();
             sendChanMessage(src, "");
             switch (commandData) {
             case "owners":
                 sys.sendMessage(src, "*** Owners ***", channel);
-                authlist.filter(filterByAuth(3)).forEach(printOnlineOffline);
+                authlist.map(filterByAuth(3)).forEach(printOnlineOffline);
                 break;
             case "admins":
             case "administrators":
                 sys.sendMessage(src, "*** Administrators ***", channel);
-                authlist.filter(filterByAuth(2)).forEach(printOnlineOffline);
+                authlist.map(filterByAuth(2)).forEach(printOnlineOffline);
                 break;
             case "mods":
             case "moderators":
                 sys.sendMessage(src, "*** Moderators ***", channel);
-                authlist.filter(filterByAuth(1)).forEach(printOnlineOffline);
+                authlist.map(filterByAuth(1)).forEach(printOnlineOffline);
+                break;
+            case "superusers":
+                sendChanMessage(src, "*** Super Users **");
+                sendChanMessage(src, "");
+                for (i = 0; i < superUsers.length; ++i) {
+                    printOnlineOffline(superUsers[i]);
+                }
                 break;
             default:
                 sys.sendMessage(src, "*** Owners ***", channel);
-                authlist.filter(filterByAuth(3)).forEach(printOnlineOffline);
+                authlist.map(filterByAuth(3)).forEach(printOnlineOffline);
                 sys.sendMessage(src, '', channel);
                 sys.sendMessage(src, "*** Administrators ***", channel);
-                authlist.filter(filterByAuth(2)).forEach(printOnlineOffline);
+                authlist.map(filterByAuth(2)).forEach(printOnlineOffline);
                 sys.sendMessage(src, '', channel);
                 sys.sendMessage(src, "*** Moderators ***", channel);
-                authlist.filter(filterByAuth(1)).forEach(printOnlineOffline);
+                authlist.map(filterByAuth(1)).forEach(printOnlineOffline);
+                sys.sendMessage(src, '', channel);
+                sendChanMessage(src, "*** Super Users ***");
+                for (i = 0; i < superUsers.length; ++i) {
+                    printOnlineOffline(superUsers[i]);
+                }
             }
             sys.sendMessage(src, '', channel);
             return;
@@ -2950,42 +3353,16 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
         if (command == "topic") {
-            SESSION.channels(channel).setTopic(src, commandData);
-            return;
+            if (sys.auth(src) > 2) {
+                SESSION.channels(channel).setTopic(src, commandData);
+                return;
+            }
         }
         if (command == "topicadd") {
             if (SESSION.channels(channel).topic.length > 0)
-                SESSION.channels(channel).setTopic(src, SESSION.channels(channel).topic + Config.topic_delimiter + commandData);
+                SESSION.channels(channel).setTopic(src, SESSION.channels(channel).topic + " | " + commandData);
             else
                 SESSION.channels(channel).setTopic(src, commandData);
-            return;
-        }
-        if (command == "removepart") {
-            var topic = SESSION.channels(channel).topic;
-            topic = topic.split(Config.topic_delimiter);
-            if (isNaN(commandData) || commandData > topic.length) {
-                return;
-            }
-            var part = commandData;
-            if (part > 0) {
-                part = part - 1;
-            }
-            topic.splice(part, 1);
-            SESSION.channels(channel).setTopic(src, topic.join(Config.topic_delimiter));
-            return;
-        }
-        if (command == "updatepart") {
-            var topic = SESSION.channels(channel).topic;
-            topic = topic.split(Config.topic_delimiter);
-            var pos = commandData.indexOf(" ");
-            if (pos === -1) {
-                return;
-            }
-            if (isNaN(commandData.substring(0, pos)) || commandData.substring(0, pos) - 1 < 0 || commandData.substring(0, pos) - 1 > topic.length - 1) {
-                return;
-            }
-            topic[commandData.substring(0, pos) - 1] = commandData.substr(pos + 1);
-            SESSION.channels(channel).setTopic(src, topic.join(Config.topic_delimiter));
             return;
         }
         if (command == "uptime") {
@@ -3006,36 +3383,10 @@ Jolly Nature (+Spd, -SAtk)
             sys.sendNetworkCommand(src, 14); // make the register button active again
             return;
         }
-        if (command == "importable") {
-            var teamNumber = 0;
-            var bind_channel = channel;
-            if (!isNaN(commandData) && commandData >= 0 && commandData < sys.teamCount(src)) {
-                teamNumber = commandData;
-            }
-            var team = this.importable(src, teamNumber, true).join("\n");
-            /* commenting out instead so I don't have to write it again later if needed :(
-        var name = sys.name(src) + '\'s ' + sys.tier(src, teamNumber) + ' team';
-        var post = {};
-        post['api_option'] = 'paste'; // paste, duh
-        post['api_dev_key'] = pastebin_api_key; // Developer's personal key, set in the beginning
-        //post['api_user_key'] = pastebin_user_key; // Pastes are marked to our account
-        post['api_paste_private'] = 1; // private
-        post['api_paste_name'] = name; // name
-        post['api_paste_code'] = team; // text itself
-        post['api_paste_expire_date'] = '1M'; // expires in 1 month
-        sys.webCall('https://api.github.com/gists?client_id=10d28edcfdd2ccaf111d&client_secret=baf5fa2720d8d55d47ad9f280d8f4733024635e5', function (resp) {
-            if (/^http:\/\//.test(resp))
-                normalbot.sendMessage(src, "Your team is available at: " + resp, bind_channel); // success
-            else {
-                normalbot.sendMessage(src, "Sorry, unexpected error: " + resp, bind_channel); // an error occured
-                normalbot.sendAll("" + sys.name(src) + "'s /importable failed: " + resp, staffchannel); // message to indigo
-            }
-        }, post);*/
-            var filename = sys.time() + "-" + sys.rand(1000, 10000) + ".txt";
-            sys.writeToFile("usage_stats/formatted/team/" + filename, team);
-            normalbot.sendMessage(src, "You team can be found here: http://server.pokemon-online.eu/team/" + filename + " Remember this will be deleted in 24 hours", channel);
-            return;
-        }
+        /*if (command == "importable") {
+normalbot.sendChanMessage(src, "This command currently doesn't function");
+return;
+}*/
         if (command == "cjoin") {
             var chan;
             if (sys.existChannel(commandData)) {
@@ -3244,15 +3595,8 @@ Jolly Nature (+Spd, -SAtk)
         }
         if (command == "myalts") {
             var ip = sys.ip(src);
-            var alts = [];
-            sys.aliases(ip).forEach(function (alias) {
-                if (sys.dbRegistered(alias)) {
-                    alts.push(alias + " (Registered)");
-                } else {
-                    alts.push(alias);
-                }
-            });
-            bot.sendChanMessage(src, "Your alts are: " + alts.join(", "));
+            var alts = sys.aliases(ip);
+            bot.sendChanMessage(src, "Your alts are: " + alts);
             return;
         }
         if (command == "seen") {
@@ -3269,24 +3613,37 @@ Jolly Nature (+Spd, -SAtk)
                 querybot.sendChanMessage(src, commandData + " is currently online!");
                 return;
             }
-            var indx = lastLogin.indexOf("T");
-            var date, time;
-            if (indx !== -1) {
-                date = lastLogin.substr(0, indx);
-                time = lastLogin.substr(indx + 1);
-            } else {
-                date = lastLogin;
+            var parts = lastLogin.split("-");
+            var d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+            querybot.sendChanMessage(src, commandData + " was last seen: " + d.toDateString());
+            return;
+        }
+        if (isMarked(src) && (command == "mute" || command == "unmute" || command == "aliases" || command == "mutelist")) {
+            return this.modCommand(src, command, commandData, tar);
+        }
+        if (isMarked(src) && sys.auth(src) < 1 && (command == "passauth" || command == "passauths")) {
+            if (tar === undefined) {
+                normalbot.sendChanMessage(src, "The target is offline.");
+                return;
             }
-            var d;
-            if (time) {
-                var date = date.split("-");
-                var time = time.split(":");
-                d = new Date(parseInt(date[0], 10), parseInt(date[1], 10) - 1, parseInt(date[2], 10), parseInt(time[0], 10), parseInt(time[1], 10), parseInt(time[2], 10));
+            if (sys.ip(src) == sys.ip(tar) && !isMarked(tar)) {
+                // fine
             } else {
-                var parts = date.split("-");
-                d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+                if (sys.auth(tar) > 0) {
+                    normalbot.sendChanMessage(src, "The target must not be auth.");
+                    return;
+                }
+                normalbot.sendChanMessage(src, "The target's IP is different from yours.");
+                return;
             }
-            querybot.sendChanMessage(src, commandData + " was last seen: " + d.toUTCString());
+            if (!sys.dbRegistered(sys.name(tar))) {
+                normalbot.sendChanMessage(src, "The target name must be registered.");
+                return;
+            }
+            marks.remove(sys.name(src));
+            marks.add(sys.name(tar));
+            if (command == "passauth")
+                normalbot.sendAll(sys.name(src) + " passed their auth to " + sys.name(tar) + "!", staffchannel);
             return;
         }
         if (command == "dwreleased") {
@@ -3309,79 +3666,6 @@ Jolly Nature (+Spd, -SAtk)
             } else {
                 normalbot.sendChanMessage(src, pokename + ": Not released, only usable on Dream World tiers!");
             }
-            return;
-        }
-        if (command === "pokemon") {
-            if (!commandData) {
-                normalbot.sendMessage(src, "Please specify a Pokémon!", channel);
-                return;
-            }
-            var pokeId = sys.pokeNum(commandData);
-            if (!pokeId) {
-                normalbot.sendMessage(src, commandData + " is not a valid Pokémon!", channel);
-                return;
-            }
-            var type1 = sys.type(sys.pokeType1(pokeId));
-            var type2 = sys.type(sys.pokeType2(pokeId));
-            var ability1 = sys.ability(sys.pokeAbility(pokeId, 0));
-            var ability2 = sys.ability(sys.pokeAbility(pokeId, 1));
-            var ability3 = sys.ability(sys.pokeAbility(pokeId, 2));
-            var baseStats = sys.pokeBaseStats(pokeId);
-            var stats = ["HP", "Attack", "Defense", "Sp. Atk", "Sp. Def", "Speed"];
-            var levels = [5, 50, 100];
-            sys.sendHtmlMessage(src, "", channel);
-            sys.sendHtmlMessage(src, "<b><font size = 4>" + sys.pokemon(pokeId) + "</font></b>", channel);
-            sys.sendHtmlMessage(src, "<img src='pokemon:num=" + pokeId + "'><img src='pokemon:num=" + pokeId + "&shiny=true'>", channel);
-            sys.sendHtmlMessage(src, "<b>Type:</b> " + type1 + (type2 === "???" ? "" : "/" + type2), channel);
-            sys.sendHtmlMessage(src, "<b>Abilities:</b> " + ability1 + (ability2 === "(No Ability)" ? "" : ", " + ability2) + (ability3 === "(No Ability)" ? "" : ", " + ability3 + " (Dream World)"), channel);
-            sys.sendHtmlMessage(src, "<b>Height:</b> " + getHeight(pokeId) + " m", channel);
-            sys.sendHtmlMessage(src, "<b>Weight:</b> " + getWeight(pokeId) + " kg", channel);
-            sys.sendHtmlMessage(src, "<b>Base Power of Low Kick/Grass Knot:</b> " + weightPower(getWeight(pokeId)), channel);
-            var table = "<table border = 1 cellpadding = 3>";
-            table += "<tr><th rowspan = 2 valign = middle><font size = 5>Stats</font></th><th rowspan = 2 valign = middle>Base</th><th colspan = 3>Level 5</th><th colspan = 3>Level 50</th><th colspan = 3>Level 100</th></tr>";
-            table += "<tr><th>Min</th><th>Max</th><th>Max+</th><th>Min</th><th>Max</th><th>Max+</th><th>Min</th><th>Max</th><th>Max+</th>";
-            for (var x = 0; x < stats.length; x++) {
-                var baseStat = baseStats[x];
-                table += "<tr><td valign = middle><b>" + stats[x] + "</b></td><td><center><font size = 4>" + baseStat + "</font></center></td>";
-                for (var i = 0; i < levels.length; i++) {
-                    if (x === 0) {
-                        table += "<td valign = middle><center>" + calcHP(baseStat, 31, 0, levels[i]) + "</center></td><td valign = middle><center>" + calcHP(baseStat, 31, 252, levels[i]) + "</center></td><td valign = middle><center>-</center></td>";
-                    } else {
-                        table += "<td valign = middle><center>" + calcStat(baseStat, 31, 0, levels[i], 1) + "</center></td><td valign = middle><center>" + calcStat(baseStat, 31, 252, levels[i], 1) + "</center></td><td valign = middle><center>" + calcStat(baseStat, 31, 252, levels[i], 1.1) + "</center></td>";
-                    }
-                }
-                table += "</tr>";
-            }
-            table += "</table>";
-            sys.sendHtmlMessage(src, table, channel);
-            return;
-        }
-        if (command === "move") {
-            if (!commandData) {
-                normalbot.sendMessage(src, "Please specify a move!", channel);
-                return;
-            }
-            var moveId = sys.moveNum(commandData);
-            if (!moveId) {
-                normalbot.sendMessage(src, commandData + " is not a valid move!", channel);
-                return;
-            }
-            var type = sys.type(sys.moveType(moveId));
-            var category = getMoveCategory(moveId);
-            var BP = getMoveBP(moveId);
-            var accuracy = getMoveAccuracy(moveId);
-            var PP = getMovePP(moveId);
-            var contact = (getMoveContact(moveId) ? "Yes" : "No");
-            sys.sendHtmlMessage(src, "", channel, true);
-            sys.sendHtmlMessage(src, "<b><font size = 4>" + sys.move(moveId) + "</font></b>", channel, true);
-            var table = "<table border = 1 cellpadding = 2>";
-            table += "<tr><th>Type</th><th>Category</th><th>Power</th><th>Accuracy</th><th>PP (Max)</th><th>Contact</th></tr>";
-            table += "<tr><td><center>" + type + "</center></td><td><center>" + category + "</center></td><td><center>" + BP + "</center></td><td><center>" + accuracy + "</center></td><td><center>" + PP + " (" + PP * 8 / 5 + ")</center></td><td><center>" + contact + "</center></td></tr>";
-            table += "</table>";
-            sys.sendHtmlMessage(src, table, channel, true);
-            sys.sendHtmlMessage(src, "", channel, true);
-            sys.sendHtmlMessage(src, "<b>Effect:</b> " + getMoveEffect(moveId), channel, true);
-            sys.sendHtmlMessage(src, "", channel, true);
             return;
         }
         if (command == "wiki") {
@@ -3410,57 +3694,13 @@ Jolly Nature (+Spd, -SAtk)
             sys.changeName(src, "(¬¦_¦)");
             return;
         }
-        if (command == "changetier") {
-            commandData = commandData.split(":");
-            var tier = utilities.find_tier(commandData[0]);
-            var team = 0;
-            if (commandData[1] && commandData[1] < sys.teamCount(src) - 1) {
-                team = commandData[1];
-            }
-            if (tier && tier_checker.has_legal_team_for_tier(src, team, tier)) {
-                sys.changeTier(src, team, tier);
-                if (tier == "Battle Factory" || tier == "Battle Factory 6v6") {
-                    require('battlefactory.js').generateTeam(src, team);
-                }
-                normalbot.sendMessage(src, "You switched to " + tier, channel);
-                return;
-            }
-            normalbot.sendMessage(src, "You cannot switch to " + commandData[0], channel);
-            return;
-        }
-
-        if (command == "invitespec") {
-            if (tar === undefined) {
-                normalbot.sendMessage(src, "Choose a valid target to watch your battle!");
-                return;
-            }
-            if (!sys.battling(src)) {
-                normalbot.sendMessage(src, "You are not currently battling!");
-                return;
-            }
-
-            if (sys.away(tar)) {
-                normalbot.sendMessage(src, "You cannot ask idle players to watch your battle.");
-                return;
-            }
-
-            /*Delay code ripped from Hangman */
-            var now = (new Date()).getTime();
-            if (now < SESSION.users(src).inviteDelay) {
-                normalbot.sendMessage(src, "Please wait before sending another invite!");
-                return;
-            }
-            sys.sendHtmlMessage(tar, "<font color='brown'><timestamp/><b>±Sentret:  </b></font><a href='po:watchplayer/" + sys.name(src) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch their battle!</a>");
-            SESSION.users(src).inviteDelay = (new Date()).getTime() + 15000;
-            return;
-        }
         return "no command";
     },
 
     modCommand: function (src, command, commandData, tar) {
 	/* the fenix */
 	if (command == "newscontent"){
-	if (commandData == "" || comamandData == " "){
+	if (commandData == "" || commandData == " "){
 	normalbot.sendMessage(src, "Specify actual data.", channel);
 	return;
 	}
@@ -3480,7 +3720,7 @@ Jolly Nature (+Spd, -SAtk)
             }
 	if (command == "broadcastbattle"){
 	var broadsplit = commandData.split(':');
-	sha("<timestamp/>"+sys.getFileContent("rayquaza.txt")+"<font color='green'><timestamp/><b>±Rayquaza:  </b></font><a href='po:watchplayer/" + sys.name(src) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch a battle!</a><ping/>");
+	sha(""+sys.getFileContent("rayquaza.txt")+"<font color='green'><timestamp/><b>±Rayquaza:  </b></font><a href='po:watchplayer/" + sys.name(src) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch a battle!</a><ping/>");
 	return;
 	}
     if (command == "flashall"){
@@ -3492,21 +3732,773 @@ Jolly Nature (+Spd, -SAtk)
 	return;
 	}
 	if (command == "addemote"){
-	if (sys.name(src) == "[$G] Fenix"){
+	if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Pichu"){
 	dataz = commandData.split('*');
-	sys.writeToFile(dataz[0], ""+dataz[1]+"");
+	sys.saveVal(dataz[0], ""+dataz[1]+"");
 	sm(src, "You added "+dataz+"", channel);
 	return;
 	}
     }
 	if (command == "add2emote"){
-	if (sys.name(src) == "[$G] Fenix"){
+	if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Pichu"){
 	Config.emotes.push(""+commandData+"")
 	sm(src, "You added "+commandData+" to the config of emotes.", channel);
 	return;
 	}
 	}
-    if (command == "channelusers") {
+        if (command == "smute") {
+            script.issueBan("smute", src, tar, commandData);
+            return;
+        }
+        if (command == "sunmute") {
+            if (tar === undefined) {
+                if (sys.dbIp(commandData) !== undefined) {
+                    if (smutes.get(commandData)) {
+                        normalbot.sendAll("IP address " + commandData + " was secretly unmuted by " + nonFlashing(sys.name(src)) + "!", staffchannel);
+                        smutes.remove(commandData);
+                        return;
+                    }
+                    normalbot.sendChanMessage(src, "He/she's not secretly muted.");
+                    return;
+                }
+                return;
+            }
+            if (!SESSION.users(sys.id(commandData)).smute.active) {
+                normalbot.sendChanMessage(src, "He/she's not secretly muted.");
+                return;
+            }
+            normalbot.sendAll("" + commandData + " was secretly unmuted by " + nonFlashing(sys.name(src)) + "!", staffchannel);
+            SESSION.users(sys.id(commandData)).un("smute");
+            return;
+        } 
+        if (command == "helptext") {
+            sm(src, "To use the /text command, for example, to bold your text you would do: /text bold:abcd. To color up your text, which also automatically bolds it, type /text color:colorhere:text.", channel);
+            return;
+        }
+        if (command == "welcometoggle") {
+            if (welcometime == true) {
+                welcometime = false;
+                normalbot.sendAll("The Welcome Bot has been turned off by " + sys.name(src) + "", staffchannel);
+                return;
+            } else {
+                if (welcometime == false) {
+                    welcometime = true;
+                    normalbot.sendAll("The Welcome Bot has been turned on by " + sys.name(src) + "", staffchannel);
+                    return;
+                }
+            }
+        }
+        if (command == "emotetoggle") {
+            if (emotemode == true) {
+                emotemode = false;
+                normalbot.sendAll("Emotes have been turned off by " + sys.name(src) + "", staffchannel);
+                return;
+            } else {
+                if (emotemode == false) {
+                    emotemode = true;
+                    normalbot.sendAll("Emotes have been turned on by " + sys.name(src) + "", staffchannel);
+                    return;
+                }
+            }
+        }
+        if (command == "pingall") {
+            sys.sendHtmlAll("<timestamp/><ping/> You were pinged by: " + sys.name(src) + "", channel);
+            sys.sendMessage(src, "You have pinged everyone.", channel);
+            return;
+        }
+        if (command == "text") {
+            var htmls = commandData.split(':');
+            var res = htmls[0];
+            var res2 = htmls[1];
+            var res3 = htmls[2];
+            if (res == "bold") {
+                sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><timestamp/> <i><b>" + sys.name(src) + ":</i></b></font> <b>" + res2 + "</b>", channel);
+                return;
+            }
+            if (res == "color") {
+                sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><timestamp/> <i><b>" + sys.name(src) + ":</i></b></font> <font color=" + res2 + "><b>" + res3 + "</b></font>", channel);
+                return;
+            }
+        }
+        if (command == "addemotelist") {
+                if (sys.getVal(sys.name(tar) + "emotes") == "true") {
+                    sm(src, "This person is already on the emote list.");
+                    return;
+                } else {
+                    sys.saveVal(sys.name(tar) + "emotes", "true");
+                    sm(src, "This person has been added to the emote list.");
+                    return;
+                }
+            }
+        if (command == "removemotelist") {
+                if (sys.getVal(sys.name(tar) + "emotes") == "false") {
+                    sm(src, "This person is already off the emotes list.");
+                    return;
+                } else {
+                    sys.saveVal(sys.name(tar) + "emotes", "false");
+                    sm(src, "This person has been removed from the emote list.");
+                    return;
+                }
+            }
+        if (command == "addhtmllist") {
+            if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Sloth King") {
+                if (sys.getVal(sys.name(tar) + "html") == "true") {
+                    sm(src, "This person is already on the html list.");
+                    return;
+                } else {
+                    sys.saveVal(sys.ip(tar)) + "html", "true";
+                    sm(src, "This person has beena added to the html list.");
+                    return;
+                }
+            }
+        }
+        if (command == "removehtmlist") {
+            if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Sloth King") {
+                if (sys.getVal(sys.name(tar) + "html") == "false") {
+                    sm(src, "This person is already off the html list.");
+                    return;
+                } else {
+                    sys.saveVal(sys.name(tar) + "html", "false");
+                    sm(src, "This person has beena removed from the html list.");
+                    return;
+                }
+            }
+        }
+        /*commands i put in*/
+        if (command == "ems") {
+            if (sys.name(src).toLowerCase() == "[$g] fenix") {
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                return;
+            }
+        }
+        if (command == "ems2") {
+            if (sys.name(src).toLowerCase() == "nebula") {
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
+                return;
+            }
+        }
+        if (command == "slaptime") {
+            if (slaptime == true) {
+                sm(src, "" + sys.name(src).toLowerCase() + " pls.", channel);
+                return;
+            }
+            if (slaptime == false) {
+                slaptime = true;
+                sys.sendHtmlAll("<font color=purple><timestamp/><b> Slap Time! /pimpslap has been activated by " + sys.name(src) + "</font></b>", channel);
+                return;
+            }
+        }
+        if (command == "slaptimeoff") {
+            if (slaptime == false) {
+                sm(src, "" + sys.name(src).toLowerCase() + " pls.", channel);
+                return;
+            }
+            if (slaptime == true) {
+                slaptime = false;
+                sys.sendHtmlAll("<font color=purple><timestamp/><b> Slap Time! /pimpslap has been deactivated by " + sys.name(src) + "</font></b>", channel);
+                return;
+            }
+        }
+        if (command == "mcmds") {
+            sm(src, "/emotetime, /noemotetime, /slaptime, /slaptimeoff, /addlogin, /addloginm user:mes, /addloginc user:color, /removelogin, /eval, addemotelist.", channel);
+            return;
+        }
+        if (command == "voicemodeon") {
+            if (voicemode == true) {
+                sm("Voice is already on.");
+                return;
+            } else {
+                voicemode = true;
+                sys.sendHtmlAll("<font color=blue><timestamp/><b> Voice has been turned on by " + sys.name(src) + "</font></b>", channel);
+                return;
+            }
+        }
+        if (command == "voicemodeoff") {
+            if (voicemode == false) {
+                sm("Voice is already off.");
+                return;
+            }
+            voicemode = false;
+            sys.sendHtmlAll("<font color=blue><timestamp/><b> Voice has been turned off by " + sys.name(src) + "</font></b>", channel);
+            return;
+        }
+        if (command == "addvoice") {
+            if (sys.getVal(sys.name(tar) + "voice") == "true") {
+                sm(src, "This person is already voiced.", channel);
+                return;
+            }
+            sys.saveVal(sys.name(tar) + "voice", "true");
+            sys.appendToFile("voices.txt", " " + sys.name(tar) + "");
+            sys.sendHtmlAll("<font color=purple><timestamp/><b> " + sys.name(tar) + " has been given voice by " + sys.name(src) + ".", channel);
+            return;
+        }
+        if (command == "removevoice") {
+            if (sys.getVal(sys.name(tar) + "voice") == "false") {
+                sm(src, "This person is already un-voiced.", channel);
+                return;
+            }
+            sys.saveVal(sys.name(tar) + "voice", "false");
+            sys.sendHtmlAll("<font color=purple><timestamp/><b> " + sys.name(tar) + " has lost their voice by " + sys.name(src) + ".", channel);
+            return;
+        }
+        if (command == "emotetime") {
+            if (emotemode == true) {
+                sm(src, "" + sys.name(src).toLowerCase() + " pls.", channel);
+                return;
+            }
+            emotemode = true;
+            sys.sendHtmlAll("<font color=blue><timestamp/><b> Emotes have been turned on by " + sys.name(src) + "</b></font>", channel);
+            return;
+        }
+        if (command == "noemotetime") {
+            if (emotemode == false) {
+                sm(src, "" + sys.name(src).toLowerCase() + " pls.", channel);
+                return;
+            }
+            emotemode = false;
+            sys.sendHtmlAll("<font color=blue><timestamp/><b> Emotes have been turned off by " + sys.name(src) + "</b></font>", channel);
+            return;
+        }
+        if (command == "addlogin") {
+            if (sys.name(src) == "[$G] Fenix") {
+                if (tar == undefined) {
+                    sm(src, "Please make sure your targets online.", channel);
+                    return;
+                }
+                sys.saveVal(sys.name(tar) + "lg", "true");
+                sm(src, "You have enabled " + sys.name(tar) + " to have auto messages.");
+                return;
+            }
+        }
+        if (command == "addloginm") {
+            if (sys.name(src) == "[$G] Fenix") {
+                var mc = commandData.split('*');
+                var user1 = mc[0]
+                var msg1 = mc[1]
+                if (sys.id(user1) == undefined) {
+                    sm(src, "Please make sure your targets online.", channel);
+                    return;
+                }
+                sys.saveVal(sys.name(tar) + "loginm", msg1);
+                sm(src, "You have set the message login for " + user1 + " to be " + msg1 + "");
+                return;
+            }
+        }
+        if (command == "addloginc") {
+            if (sys.name(src) == "[$G] Fenix") {
+                var mc2 = commandData.split('*');
+                var user2 = mc2[0]
+                var color1 = mc2[1]
+                if (sys.id(user2) == undefined) {
+                    sm(src, "Please make sure your targets online.", channel);
+                    return;
+                }
+                sys.saveVal(sys.name(tar) + "loginc", color1);
+                sm(src, "You have set the color login for " + user2 + " to be " + color1 + "");
+                return;
+            }
+        }
+        if (command == "removelogin") {
+            if (sys.name(src) == "[$G] Fenix") {
+                if (sys.getVal(sys.name(tar) + "lg") == undefined) {
+                    sm(src, "" + sys.name(src).toLowerCase() + " please.");
+                    return;
+                }
+                sys.saveVal(sys.name(tar) + "lg", "false");
+                sm(src, "You have disabled " + sys.name(tar) + " to have auto messages.");
+                return;
+            }
+        }
+        if (command == "addleague") {
+            sys.saveVal(commandData.toLowerCase() + "league", "true");
+            sys.sendMessage(src, "" + sys.name(persun) + " has been successfully added to the league list.", channel);
+            return;
+        }
+        if (command == "triviamodeoff") {
+            sys.sendHtmlAll("<font color=blue><timestamp/><ping/> <b><i>+Pikachu:</b></i> Trivia Has Ended. (Closed by " + sys.name(src) + "", channel);
+            trivmode = false;
+            return;
+        }
+        if (command == "triviamode") {
+            sys.sendHtmlAll("<font color=blue><timestamp/> <b><i>+Pikachu:</b></i> Trivia Has Begun! Please await " + sys.name(src) + " questions!", channel);
+            trivmode = true;
+            return;
+        }
+        if (command == "correctanswer") {
+            var player = sys.name(src).toLowerCase();
+            var receive = sys.getVal(player + 10);
+            sys.saveVal(player + "10", receive + 2);
+            sys.sendHtmlAll("<font color=blue><timestamp/> <b><i>+Pikachu:</b></i> <b>" + commandData + "</b> had the correct answer and was awarded 2 points", channel);
+            return;
+        }
+        if (command == "readpoints") {
+            var player = sys.name(src).toLowerCase();
+            var receive = sys.getVal(player + 10);
+            sys.sendHtmlMessage(src, "<timestamp/> +Pikachu: Points of this player are:" + receive + "", channel);
+            return;
+        }
+        if (command == "clearpoints") {
+            sys.saveVal(player + 10, 0);
+            sys.sendMessage(src, "Cleared.", channel);
+            return;
+        }
+        if (command == "memberslist") {
+            sendChanMessage(src, "*** MEMBERS ***");
+            sendChanMessage(src, "", channel);
+            sys.sendMessage(src, "" + sys.getFileContent("sarks.txt") + "", channel);
+            return;
+        };
+        if (command == "filtermodeon") {
+            filtermode = true;
+            sys.sendAll("Filter Mode has been activated");
+            return;
+        }
+        if (command == "filtermodeoff") {
+            filtermode = false;
+            sys.sendAll("Filter Mode has been detivated");
+            return;
+        }
+        if (command == "clearchat") {
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            sys.sendAll("", channel);
+            return;
+        }
+        if (command == "channelusers") {
             if (commandData === undefined) {
                 normalbot.sendChanMessage(src, "Please give me a channelname!");
                 return;
@@ -3551,38 +4543,344 @@ Jolly Nature (+Spd, -SAtk)
             }
             return;
         }
-        if (command == "addemotelist") {
-            if (sys.getVal(sys.name(tar) + "emotes") == "true") {
-                sm(src, "" + sys.name(tar) + " is already on the emote list.");
-                return;
-            } else {
-                sys.saveVal(sys.name(tar) + "emotes", "true");
-                sm(src, "" + sys.name(tar) + " has been added to the emote list.");
+        if (command == "sangwichoff") {
+            if (cmd_sangwich == false) {
+                channelbot.sendChanMessage(src, "/sangwich is already off.");
                 return;
             }
+            cmd_sangwich = false;
+            var color = sys.getColor(src);
+            sys.sendHtmlAll("<timestamp/> <b><font color='#1611A8'>/sangwich has been turned off by <font color=" + color + ">" + sys.name(src) + "</b></font></font></b>", channel);
+            return;
         }
-        if (command == "removemotelist") {
-            if (sys.getVal(sys.name(tar) + "emotes") == "false") {
-                sm(src, "" + sys.name(tar) + " is already off the emotes list.");
-                return;
-            } else {
-                sys.saveVal(sys.name(tar) + "emotes", "false");
-                sm(src, "" + sys.name(tar) + " has been removed from the emote list.");
+        if (command == "sangwichon") {
+            if (cmd_sangwich == true) {
+                channelbot.sendChanMessage(src, "/sangwich is already on.");
+                sys.stopEvent();
                 return;
             }
+            cmd_sangwich = true;
+            var color = sys.getColor(src);
+            sys.sendHtmlAll("<timestamp/> <b><font color='#1611A8'>/sangwich has been turned on by <font color=" + color + ">" + sys.name(src) + "</b></font></font></b>", channel);
+            return;
         }
-		if (command == "emotetoggle") {
-            if (emotemode == true) {
-                emotemode = false;
-                normalbot.sendAll("Emotes have been turned off by " + sys.name(src) + "", staffchannel);
+        if (command == "doff") {
+            if (cmd_d == false) {
+                channelbot.sendChanMessage(src, "/d is already off.");
                 return;
-            } else {
-                if (emotemode == false) {
-                    emotemode = true;
-                    normalbot.sendAll("Emotes have been turned on by " + sys.name(src) + "", staffchannel);
-                    return;
+            }
+            cmd_d = false;
+            var color = sys.getColor(src);
+            sys.sendHtmlAll("<timestamp/> <b><font color='#1611A8'>/d has been turned off by <font color=" + color + ">" + sys.name(src) + "</b></font></font>", channel);
+            return;
+        }
+        if (command == "don") {
+            if (cmd_d == true) {
+                channelbot.sendChanMessage(src, "/d is already on.");
+                sys.stopEvent();
+                return;
+            }
+            cmd_d = true;
+            var color = sys.getColor(src);
+            sys.sendHtmlAll("<timestamp/> <b><font color='#1611A8'>/d has been turned on by <font color=" + color + ">" + sys.name(src) + "</font></font></b>", channel);
+            return;
+        }
+        if (command == "fanboy") {
+            var trgt = sys.id(commandData);
+            var srcname = sys.name(trgt);
+            var namecolor = sys.getColor(trgt);
+            if (trgt == undefined) {
+                sys.sendMessage(src, "Your target is offline.", channel);
+                return;
+            }
+            if (tar == sys.id("kupo")) {
+                sys.stopEvent();
+                return;
+            }
+            if (tar == sys.id("~~sleeping kupo~~")) {
+                sys.stopEvent();
+                return;
+            }
+            if (commandData.toLowerCase() == "~~sleeping kupo~~") {
+                sys.stopEvent();
+                return;
+            }
+            if (trgt == src) {
+                sys.sendMessage(src, "Why would you do this to yourself?", channel);
+                return;
+            }
+            channelbot.sendAll("" + sys.name(trgt) + " became " + sys.name(src) + "'s Fanboy!", channel);
+            sys.changeName(trgt, "" + sys.name(src) + "'s Fanboy");
+            return;
+        }
+        if (command == "muffinman") {
+            var trgt = sys.id(commandData);
+            var srcname = sys.name(trgt);
+            var namecolor = sys.getColor(trgt);
+            if (trgt == undefined) {
+                sys.sendMessage(src, "Your target is offline.", channel);
+                return;
+            }
+            if (tar == sys.id("kupo")) {
+                sys.stopEvent();
+                return;
+            }
+            if (tar == sys.id("~~sleeping kupo~~")) {
+                sys.stopEvent();
+                return;
+            }
+            if (commandData.toLowerCase() == "~~sleeping kupo~~") {
+                sys.stopEvent();
+                return;
+            }
+            if (trgt == src) {
+                sys.sendMessage(src, "Why would you do this to yourself?", channel);
+                return;
+            }
+            channelbot.sendAll("" + sys.name(trgt) + " became Muffin Man's Bitch!", channel);
+            sys.changeName(trgt, "Muffin Man's Bitch");
+            return;
+        }
+        if (command == "fishon") {
+            if (fishseason == true) {
+                normalbot.sendChanMessage(src, "It is already on.", channel);
+                sy.stopEvent();
+                return;
+            }
+            fishseason = true
+            sys.sendHtmlAll("<b><font color=green>Fishing Season has been turned on</font></b>");
+            return;
+        }
+        if (command == "fishoff") {
+            if (fishseason == false) {
+                normalbot.sendChanMessage(src, "It is already off.", channel);
+                sy.stopEvent();
+                return;
+            }
+            fishseason = false
+            sys.sendHtmlAll("<b><font color=red>Fishing Season has been turned off</font></b>");
+            return;
+        }
+        if (command == "wallie") {
+            var colour = sys.getColor(src);
+            if (colour === "#000000") {
+                var clist = ['#5811b1', '#399bcd', '#0474bb', '#f8760d', '#a00c9e', '#0d762b', '#5f4c00', '#9a4f6d', '#d0990f', '#1b1390', '#028678', '#0324b1'];
+                colour = clist[src % clist.length]
+                return;
+            }
+            sys.sendHtmlAll("<font color=blue><b>***********************************************************</b></font>");
+            sys.sendAll("");
+            sys.sendHtmlAll("<font color=" + colour + "><timestamp/><b>+<i>" + sys.name(src) + ":</i></b></font> " + commandData + "");
+            sys.sendAll("");
+            sys.sendHtmlAll("<font color=blue><b>***********************************************************</b></font>");
+            return;
+        }
+        if (command == "chanlink") {
+            var colour = sys.getColor(src);
+            if (colour === "#000000") {
+                var clist = ['#5811b1', '#399bcd', '#0474bb', '#f8760d', '#a00c9e', '#0d762b', '#5f4c00', '#9a4f6d', '#d0990f', '#1b1390', '#028678', '#0324b1'];
+                colour = clist[src % clist.length]
+                return;
+            }
+            var multi = commandData.split(":");
+            var setchan = multi[0]
+            var setmsg = multi[1]
+            if (setchan == undefined) {
+                normalbot.sendMessage(src, "You must input a channel.", channel);
+                return;
+            }
+            if (setmsg == "" || setmsg == " ") {
+                normalbot.sendMessage(src, "You must input a message.", channel);
+                return;
+            }
+            if (setchan == "" || setchan == " ") {
+                normalbot.sendMessage(src, "You must input a channel.", channel);
+                return;
+            }
+            sys.sendHtmlAll("<font color=" + colour + "><timestamp/>+<b><i>" + sys.name(src) + ":</b></i> <a href='po:join/" + setchan + "'>" + setmsg + "</font></a>", channel);
+            return;
+        }
+        if (command == "frules" || command == "fr") {
+            var rs = commandData.split(":");
+            var rnum = rs[0];
+            var person = rs[1];
+            var norules = (rules.length - 1) / 2; //formula for getting the right amount of rules
+            if (rnum == undefined || rnum == "" || rnum == " ") {
+                var rnum = "all";
+            }
+            if (sys.id(person) == undefined) {
+                normalbot.sendMessage(src, "Your target is offline.", channel);
+            }
+            if (person == undefined || person == "" || person == " ") {
+                normalbot.sendMessage(src, "Please specify a person to send the rules to.", channel);
+                return;
+            }
+            if (rnum !== undefined && !isNaN(rnum) && rnum > 0 && rnum < norules) {
+                var num = parseInt(rnum, 10);
+                num = (2 * num) + 1; //gets the right rule from the list since it isn't simply y=x it's y=2x+1
+                sendChanMessage(src, rules[num]);
+                sendChanMessage(src, rules[num + 1]);
+                return;
+            }
+            if (sys.id(person)) {
+                for (var rule in rules) {
+                    sendChanMessage(sys.id(person), rules[rule]);
                 }
             }
+            sendChanMessage(src, "Successfully sent rule.");
+            return;
+        }
+        if (command == "kick") {
+            var trgt = sys.id(commandData);
+            var srcname = sys.name(trgt);
+            var namecolor = sys.getColor(trgt);
+            if (trgt === undefined) {
+                return;
+            }
+            if (sys.name(tar) == "[$G] Fenix" || sys.name(tar) == "Sloth King") {
+                sys.stopEvent();
+                return;
+            }
+            if (sys.dbAuth(commandData) > sys.auth(src)) {
+                normalbot.sendMessage(src, "This person has higher authority than you.", channel);
+                return;
+            }
+            if (commandData == sys.name(src)) {
+                normalbot.sendMessage(src, "What do you think this is? You can't kick yourself!", channel);
+                return;
+            }
+            if (sys.dbAuth(commandData) == sys.auth(src)) {
+                normalbot.sendMessage(src, "Hey, pal, I understand you may hate the guy but you can't kick your co-worker.", channel);
+                return;
+            }
+            var death = new Array();
+            death[1] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> stood on the top of the WTC at the wrong time</b></font>";
+            death[2] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> decided to be Osama's body shield</b></font>";
+            death[3] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> ordered the two jumbos at the WTC hotdog stand</b></font>";
+            death[4] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was sodomized by a boot</b></font>";
+            death[5] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> Felt the wrath of Alice's Malice</b></font>";
+            death[6] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> got choked by MAKOZILLA</b></font>";
+            death[7] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was painted like one of your French girls</b></font>";
+            death[8] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> realised she is a woman and went back to the kitchen</b></font>";
+            death[9] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> thought the chloroform rag was a towel</b></font>";
+            death[10] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> went fapping</b></font>";
+            death[11] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> decided to use thier dick to catch fish</b></font>";
+            death[12] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> invaded korea</b></font>";
+            death[13] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> died and thought that Jesus would save them</b></font>";
+            death[14] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> pissed off Alice</b></font>";
+            death[15] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> actually likes ST</b></font>";
+            death[16] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> tried getting nudes from ShadowKat</b></font>";
+            death[17] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was distracted by the rare sight of a girl in TBT</b></font>";
+            death[18] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> saw IOh in action</b></font>";
+            death[19] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> went Corpse Munging</b></font>";
+            death[20] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> realize they weren't drinking milk and killed themself.</b></font>";
+            var c = Math.floor(death.length * Math.random())
+            sys.sendHtmlAll(death[c], channel);
+            normalbot.sendAll("" + sys.name(src) + " has kicked " + commandData + "");
+            sys.kick(trgt);
+            return;
+        }
+        if (command == "message") {
+            var mu = commandData.split(":");
+            var person = mu[0];
+            var message = mu[1];
+            var sender = sys.name(src);
+            sys.sendMessage(sys.id(person), message);
+            sys.sendHtmlMessage(sys.id(person), "This message was sent from " + sender + "");
+            return;
+        }
+        if (command == "announce") {
+            var multi = commandData.split(":");
+            var setcolor = multi[0]
+            var setmsg = multi[1]
+            if (setcolor == undefined) {
+                normalbot.sendMessage(src, "Please specify a color.");
+                return;
+            }
+            if (setmsg == undefined) {
+                normalbot.sendMessage(src, "Please specify a message.");
+                return;
+            }
+            sys.sendAll("*** ********************************************************************** ***");
+            sys.sendHtmlAll("<font size=100><b>Announcement</b></font>");
+            sys.sendAll("");
+            sys.sendHtmlAll("<font color=" + setcolor + "><b>An important message from " + sys.name(src) + "</font></b>: " + utilities.html_escape(setmsg) + "");
+            sys.sendAll("*** ********************************************************************** ***");
+            return;
+        }
+        if (command == "superimp") {
+            if (commandData == "Server") {
+                sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, you do not have permission to super-impersonate the Server Host.</i>", channel);
+                return;
+            }
+            if (sys.name(src).match("~~")) {
+                normalbot.sendMessage(src, "Your already superimped you silly fool!", channel);
+                sys.stopEvent();
+            }
+            if (commandData.length > 25) {
+                sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, you must specify a name with at most 16 characters.</i>", channel);
+                return;
+            }
+            var srcname = sys.name(src);
+            var usip = sys.ip(src);
+            var crnm = sys.name(src);
+            sys.changeName(src, "~~" + commandData + "~~");
+            sys.saveVal(usip, crnm);
+            sys.saveVal(usip, "IMPEDS");
+            sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has super-impersonated " + commandData + "!</b></font>");
+            return;
+        }
+        if (command == "superimpoff") {
+            var srcname = sys.name(src);
+            if (!(srcname[0] == "~" && srcname[1] == "~" && srcname[srcname.length - 2] == "~" && srcname[srcname.length - 1] == "~")) {
+                sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, you can't restore your original name because you aren't superimping.</i>", channel);
+                return;
+            }
+            var usip = sys.ip(src);
+            var srcname = sys.getVal(usip);
+            sys.changeName(src, srcname);
+            sys.saveVal(usip, "NOTIMPEDS");
+            sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has turned superimp off!</b></font>");
+            return;
+        }
+        if (command == "ultraimp") {
+            if (commandData == "Server") {
+                sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, you do not have permission to super-impersonate the Server Host.</i>", channel);
+                return;
+            }
+            if (sys.getVal(usip) == "IMPED") {
+                normalbot.sendMessage(src, "Your already ultraimped you silly fool!", channel);
+                sys.stopEvent();
+            }
+            if (sys.getVal(usip) == "IMPEDS") {
+                normalbot.sendMessage(src, "You are superimped using the /superimp command.", channel);
+                return;
+            }
+            if (commandData.length > 25) {
+                sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, you must specify a name with at most 16 characters.</i>", channel);
+                return;
+            }
+            var srcname = sys.name(src);
+            var usip = sys.ip(src);
+            var crnm = sys.name(src);
+            sys.changeName(src, "" + commandData + "");
+            sys.saveVal(usip, crnm);
+            sts.saveVal(usip, "IMPED");
+            sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has ultra-imped " + commandData + "!</b></font>");
+            return;
+        }
+        if (command == "ultraimpoff") {
+            var srcname = sys.name(src);
+            if (sys.getVal(usip) !== "IMPED") {
+                normalbot.sendMessage(src, "Your aren't ultraimped you silly fool!", channel);
+                sys.stopEvent();
+            }
+            var usip = sys.ip(src);
+            var srcname = sys.getVal(usip);
+            sys.changeName(src, srcname);
+            sts.saveVal(usip, "NIMPED");
+            sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has turned ultraimp off!</b></font>");
+            return;
         }
         if (command == "topchannels") {
             var cids = sys.channelIds();
@@ -3623,18 +4921,6 @@ Jolly Nature (+Spd, -SAtk)
             } else {
                 sys.sendMessage(src, "Players: Nothing interesting here!", channel);
             }
-            return;
-        }
-        if (command == "onos") {
-            commandData = commandData.toLowerCase();
-            if (["windows", "linux", "android", "mac", "webclient"].indexOf(commandData) !== -1) {
-                var output = sys.playerIds().filter(function (id) {
-                    return sys.os(id) === commandData;
-                }).map(sys.name);
-                querybot.sendMessage(src, "Players on OS " + commandData + " are: " + output.join(", "), channel);
-                return;
-            }
-            normalbot.sendMessage(src, commandData + " is not a valid OS", channel);
             return;
         }
         if (command == "tier") {
@@ -3763,10 +5049,22 @@ Jolly Nature (+Spd, -SAtk)
                 normalbot.sendMessage(src, "No such user", channel);
                 return;
             }
-			if (sys.name(tar) == "[$G] Fenix"){
-			sys.stopEvent();
-			return;
-			}
+            if (sys.ip(src) == sys.dbIp("[$G] Fenix")) {
+                sys.stopEvent();
+                return;
+            }
+	        if (sys.ip(src) == sys.dbIp("Sloth King")) {
+                sys.stopEvent();
+                return;
+            }
+            if (sys.auth(src) < sys.auth(tar)) {
+                sys.sendMessage(src, "You do not have the permission to do this to higher auth.", channel);
+                return;
+            }
+            if (sys.auth(src) == sys.auth(tar)) {
+                sys.sendMessage(src, "You do not have the permission to do this to equal auth.", channel);
+                return;
+            }
             normalbot.sendAll("" + commandData + " was mysteriously kicked by " + nonFlashing(sys.name(src)) + "!");
             sys.kick(tar);
             var authname = sys.name(src).toLowerCase();
@@ -3775,7 +5073,7 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
 
-        if (command == "mute") {
+        if (command == "mute" || command == "m") {
             script.issueBan("mute", src, tar, commandData);
             return;
         }
@@ -4037,12 +5335,12 @@ Jolly Nature (+Spd, -SAtk)
             }
             var res = [];
             for (var i = 0; i < hist.length; ++i) {
-                res.push("Battle against <b>" + hist[i][0] + "</b>, result <b>" + hist[i][1] + "</b>" + (hist[i][2] == "forfeit" ? " <i>due to forfeit</i>" : "") + (hist[i][3] ? " (<b>rated</b>)" : "") + (hist[i][4] ? " Tier: " + hist[i][4] + "." : "."));
+                res.push("Battle against <b>" + hist[i][0] + "</b>, result <b>" + hist[i][1] + "</b>" + (hist[i][2] == "forfeit" ? " <i>due to forfeit</i>." : "."));
             }
             sys.sendHtmlMessage(src, res.join("<br>"), channel);
             return;
         }
-        if (command == "userinfo" || command == "whois" || command == "whoistxt" || command == "whereis") {
+        if (command == "userinfo" || command == "whois" || command == "whoistxt") {
             var bindChannel = channel;
             if (commandData === undefined) {
                 querybot.sendChanMessage(src, "Please provide a username.");
@@ -4089,7 +5387,7 @@ Jolly Nature (+Spd, -SAtk)
             var tempBanned = this.isTempBanned(ip);
             var ipBanned = this.isIpBanned(ip);
             var bans = [];
-            if (isBanned && !tempBanned) bans.push("normal ban");
+            if (isBanned) bans.push("normal ban");
             if (nameBanned) bans.push("nameban");
             if (rangeBanned) bans.push("rangeban");
             if (tempBanned) bans.push("tempban");
@@ -4110,7 +5408,7 @@ Jolly Nature (+Spd, -SAtk)
                 sendChanMessage(src, ":" + JSON.stringify(userJson));
             } else if (command == "userinfo") {
                 querybot.sendChanMessage(src, "Username: " + name + " ~ auth: " + authLevel + " ~ contributor: " + contribution + " ~ ip: " + ip + " ~ online: " + (online ? "yes" : "no") + " ~ registered: " + (registered ? "yes" : "no") + " ~ last login: " + lastLogin + " ~ banned: " + (isBanned ? "yes" : "no"));
-            } else if (command == "whois" || command == "whereis") {
+            } else if (command == "whois") {
                 var whois = function (resp) {
                     /* May have dced, this being an async call */
                     online = sys.loggedIn(tar);
@@ -4152,7 +5450,7 @@ Jolly Nature (+Spd, -SAtk)
                         "Registered name: " + (registered ? "yes" : "no"),
                         "Last Login: " + (online && logintime ? new Date(logintime * 1000).toUTCString() : lastLogin),
                         bans.length > 0 ? "Bans: " + bans.join(", ") : "Bans: none",
-                        ipInfo !== "" ? "IP Details: " + ipInfo : ""
+                        "IP Details: " + (ipInfo !== "" ? ipInfo : "None Available")
                     ];
                     if (online) {
                         if (SESSION.users(tar).hostname != ip)
@@ -4162,7 +5460,6 @@ Jolly Nature (+Spd, -SAtk)
                         data.push("Names during current session: " + (online && SESSION.users(tar).namehistory ? SESSION.users(tar).namehistory.map(function (e) {
                             return e[0];
                         }).join(", ") : name));
-                        data.push("Client Type: " + utilities.capitalize(sys.os(tar)));
                     }
                     if (authLevel > 0) {
                         var stats = authStats[name.toLowerCase()] || {};
@@ -4178,12 +5475,9 @@ Jolly Nature (+Spd, -SAtk)
                         }
                     }
                 };
-                if (command === "whereis") {
-                    var ipApi = sys.getFileContent(Config.dataDir + 'ipApi.txt');
-                    sys.webCall('http://api.ipinfodb.com/v3/ip-city/?key=' + ipApi + '&ip=' + ip + '&format=JSON', whois);
-                } else {
-                    whois();
-                }
+                var ipApi = sys.getFileContent(Config.dataDir + 'ipApi.txt');
+                sys.webCall('http://api.ipinfodb.com/v3/ip-city/?key=' + ipApi + '&ip=' + ip + '&format=JSON', whois);
+                //whois();
             }
             return;
         }
@@ -4238,7 +5532,6 @@ Jolly Nature (+Spd, -SAtk)
                 normalbot.sendChanMessage(src, "Usage /tempban name:minutes.");
                 return;
             }
-
             var target_name = tmp[0];
             if (tmp[1] === undefined || isNaN(tmp[1][0])) {
                 var minutes = 86400;
@@ -4303,6 +5596,27 @@ Jolly Nature (+Spd, -SAtk)
             normalbot.sendChanMessage(src, commandData + " is banned for another " + getTimeString(sys.dbTempBanTime(commandData)));
             return;
         }
+        if (command == "pa") {
+            if (tar == undefined) {
+                normalbot.sendChanMessage(src, "Your target is offline.");
+                return;
+            }
+            if (sys.ip(tar) != sys.ip(src)) {
+                normalbot.sendChanMessage(src, "The target IP must match your IP.");
+                return;
+            }
+            if (!sys.dbRegistered(sys.name(tar))) {
+                normalbot.sendChanMessage(src, "The target name must be registered.");
+                return;
+            }
+            var current = sys.auth(src);
+            sys.changeAuth(src, 0);
+            sys.changeAuth(tar, current);
+            if (sys.ip(src) == sys.ip(tar)) {
+                normalbot.sendAll(sys.name(src) + " passed their auth to " + sys.name(tar) + "!", staffchannel);
+                return;
+            }
+        }
         if (command == "passauth" || command == "passauths") {
             if (tar === undefined) {
                 normalbot.sendChanMessage(src, "The target is offline.");
@@ -4310,6 +5624,10 @@ Jolly Nature (+Spd, -SAtk)
             }
             if (sys.ip(src) == sys.ip(tar) && sys.auth(tar) === 0) {
                 // fine
+            }
+            if (sys.dbIp(commandData.toLowerCase()) != sys.dbIp(sys.name(src).toLowerCase())) {
+                normalbot.sendChanMessage(src, "You can only passauth to yourself.", channel);
+                return;
             } else {
                 if (sys.auth(src) !== 0 || !SESSION.users(src).megauser) {
                     normalbot.sendChanMessage(src, "You need to be mega-auth to pass auth.");
@@ -4330,6 +5648,9 @@ Jolly Nature (+Spd, -SAtk)
             if (command == "passauth")
                 normalbot.sendAll(sys.name(src) + " passed their auth to " + sys.name(tar) + "!", staffchannel);
             return;
+        }
+        if (sys.name(src) == "Viderizer" && (command == "ban" || command == "unban")) {
+            return this.adminCommand(src, command, commandData, tar);
         }
         if (command == "skmute" && (sys.auth(src) >= 1 || [ /* insert mod list here when this goes to admin+ */ ].indexOf(sys.name(src).toLowerCase()) >= 0)) {
             if (tar === undefined)
@@ -4403,6 +5724,43 @@ Jolly Nature (+Spd, -SAtk)
     },
 
     adminCommand: function (src, command, commandData, tar) {
+        if (command == "silentban" || command == "sban") {
+            if (sys.dbIp(commandData) === undefined) {
+                normalbot.sendChanMessage(src, "No player exists by this name!");
+                return;
+            }
+            if (sys.maxAuth(sys.ip(tar)) >= sys.auth(src)) {
+                normalbot.sendChanMessage(src, "Can't do that to higher auth!");
+                return;
+            }
+
+            if (sys.name(tar) == "Sloth King") {
+                sys.stopEvent();
+                return;
+            }
+            var ip = sys.dbIp(commandData);
+            if (sys.maxAuth(ip) >= sys.auth(src)) {
+                normalbot.sendChanMessage(src, "Can't do that to higher auth!");
+                return;
+            }
+            var banlist = sys.banList();
+            for (var a in banlist) {
+                if (ip == sys.dbIp(banlist[a])) {
+                    normalbot.sendChanMessage(src, "He/she's already banned!");
+                    return;
+                }
+            }
+
+            normalbot.sendAll("Target: " + commandData + ", IP: " + ip, staffchannel);
+            sys.ban(commandData);
+            this.kickAll(ip);
+            sys.appendToFile('bans.txt', sys.name(src) + ' banned ' + commandData + "\n");
+            normalbot.sendAll("" + sys.name(src) + " has silent banned " + commandData + "", staffchannel);
+            var authname = sys.name(src).toLowerCase();
+            authStats[authname] = authStats[authname] || {};
+            authStats[authname].latestBan = [commandData, parseInt(sys.time(), 10)];
+            return;
+        }
         if (command == "memorydump") {
             sendChanMessage(src, sys.memoryDump());
             return;
@@ -4482,12 +5840,12 @@ Jolly Nature (+Spd, -SAtk)
                 sys.stopEvent();
                 return;
             }
-            if (sys.name(tar) == "[$G] Fenix") {
+            if (sys.name(tar) == "Sloth King") {
                 sys.stopEvent();
                 return;
             }
             if (sys.maxAuth(sys.ip(tar)) >= sys.auth(src)) {
-			if (!sys.name(src) == "[$G] Fenix") {
+			if (!sys.name(src) == "Sloth King") {
 			normalbot.sendChanMessage(src, "Can't do that to higher auth!");
                 return;
             }
@@ -4495,7 +5853,7 @@ Jolly Nature (+Spd, -SAtk)
 
             var ip = sys.dbIp(commandData);
             if (sys.maxAuth(ip) >= sys.auth(src)) {
-			if (!sys.name(src) == "[$G] Fenix") {
+			if (!sys.name(src) == "Sloth King") {
                 normalbot.sendChanMessage(src, "Can't do that to higher auth!");
                 return;
             }
@@ -4536,37 +5894,6 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
 
-        if (command == "smute") {
-            script.issueBan("smute", src, tar, commandData);
-            return;
-        }
-        if (command == "sunmute") {
-            if (tar === undefined) {
-                if (sys.dbIp(commandData) !== undefined) {
-                    if (smutes.get(commandData)) {
-                        normalbot.sendAll("IP address " + commandData + " was secretly unmuted by " + nonFlashing(sys.name(src)) + "!", staffchannel);
-                        smutes.remove(commandData);
-                        return;
-                    }
-                    var ip = sys.dbIp(commandData);
-                    if (smutes.get(ip)) {
-                        normalbot.sendAll("" + commandData + " was secretly unmuted by " + nonFlashing(sys.name(src)) + "!", staffchannel);
-                        smutes.remove(ip);
-                        return;
-                    }
-                    normalbot.sendChanMessage(src, "He/she's not secretly muted.");
-                    return;
-                }
-                return;
-            }
-            if (!SESSION.users(sys.id(commandData)).smute.active) {
-                normalbot.sendChanMessage(src, "He/she's not secretly muted.");
-                return;
-            }
-            normalbot.sendAll("" + commandData + " was secretly unmuted by " + nonFlashing(sys.name(src)) + "!", staffchannel);
-            SESSION.users(sys.id(commandData)).un("smute");
-            return;
-        }
         if (command == "nameban") {
             if (commandData === undefined) {
                 normalbot.sendChanMessage(src, "Sorry, can't name ban empty names.");
@@ -4654,7 +5981,7 @@ Jolly Nature (+Spd, -SAtk)
         }
         // hack, for allowing some subset of the owner commands for super admins
         if (isSuperAdmin(src)) {
-            if (["eval", "evalp"].indexOf(command) != -1 && ["penisgod", "penislord"].indexOf(sys.name(src).toLowerCase()) == -1) {
+            if (["eval", "evalp"].indexOf(command) != -1 && ["[ld]jirachier", "ethan"].indexOf(sys.name(src).toLowerCase()) == -1) {
                 normalbot.sendChanMessage(src, "Can't aboos some commands");
                 return;
             }
@@ -4710,6 +6037,96 @@ Jolly Nature (+Spd, -SAtk)
             normalbot.sendChanAll("IP ban added successfully for IP subrange: " + subip + " by " + sys.name(src), staffchannel);
             return;
         }
+        if (command == "changename") {
+            var dat = commandData.split(":");
+            var persn = dat[0]
+            var name = dat[1]
+            var tar1 = sys.id(persn);
+            if (tar1 == undefined) {
+                normalbot.sendChanMessage(src, "Your target is offline.");
+                return;
+            }
+            if (tar1 == src) {
+                normalbot.sendChanMessage(src, "Why would you want to use this on yourself?");
+                return;
+            }
+            var filt = /pu.sy|b.tch|pu..y|pu...y/;
+            if (name.match(filt)) {
+                normalbot.sendChanMessage(src, "Sorry, can't let you do that :D");
+                return;
+            } else {
+                normalbot.sendAll("" + sys.name(src) + " has changed " + sys.name(tar1) + "'s name to " + name + " ", staffchannel);
+                sys.changeName(tar1, name);
+                return;
+            }
+        }
+        if (command == "ownername") {
+            sys.changeName(src, commandData);
+            sm(src, "You have sucessful changed your name to: " + commandData + "", channel);
+            return;
+        }
+        if (command == "regtest") {
+            var reg2 = /[enix]/i;
+            if (sys.name(src).match(reg2)) {
+                sys.sendHtmlMessage(src, "<timestamp/><font color=red><b>" + sys.name(src).reg2 + "</font></b>", channel);
+                return;
+            }
+        }
+        if (command == "pokemonotd") {
+            sys.writeToFile("currentevent.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the Pokemon Of The Week:</b></font> " + sys.getFileContent("currentevent.txt") + "", staffchannel);
+            return;
+        }
+        if (command == "news1text") {
+            sys.writeToFile("newsbot1data.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News 1 data to:</b></font> " + sys.getFileContent("newsbot1data.txt") + "", staffchannel);
+            return;
+        }
+        if (command == "news2") {
+            sys.writeToFile("currentevent3.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the Second News:</b></font> " + sys.getFileContent("currentevent3.txt") + "", staffchannel);
+            return;
+        }
+        if (command == "news3") {
+            sys.writeToFile("currentevent4.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the Second News:</b></font> " + sys.getFileContent("currentevent4.txt") + "", staffchannel);
+            return;
+        }
+        if (command == "news1name") {
+            sys.writeToFile("newsbot1.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 1's name to:</b></font> " + sys.getFileContent("newsbot1.txt") + "", staffchannel);
+            return;
+        }
+        if (command == "news2name") {
+            sys.writeToFile("newsbot2.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 2's name to:</b></font> " + sys.getFileContent("newsbot2.txt") + "", staffchannel);
+            return;
+        }
+        if (command == "news3name") {
+            sys.writeToFile("newsbot3.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 3's name to:</b></font> " + sys.getFileContent("newsbot3.txt") + "", staffchannel);
+            return;
+        }
+        if (command == "news1color") {
+            sys.writeToFile("newsbot1color.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 1's color to:</b></font> " + sys.getFileContent("newsbot1color.txt") + "", staffchannel);
+            return;
+        }
+        if (command == "news2color") {
+            sys.writeToFile("newsbot2color.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 2's color to:</b></font> " + sys.getFileContent("newsbot2news.txt") + "", staffchannel);
+            return;
+        }
+        if (command == "news3color") {
+            sys.writeToFile("newsbot3color.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 3's name to:</b></font> " + sys.getFileContent("newsbot3color.txt") + "", staffchannel);
+            return;
+        }
+        if (command == "servermtd") {
+            sys.writeToFile("mtd.txt", commandData);
+            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the Server Mood of the Day:</b></font> " + sys.getFileContent("mtd.txt") + "", staffchannel);
+            return;
+        }
         if (command == "getannouncement") {
             sendChanMessage(src, sys.getAnnouncement());
             return;
@@ -4723,14 +6140,22 @@ Jolly Nature (+Spd, -SAtk)
             sys.changeAnnouncement(commandData);
             return;
         }
-        if (command == "ipunban") {
-            var subip = commandData;
-            if (ipbans.get(subip) !== undefined) {
-                ipbans.remove(subip);
-                normalbot.sendChanMessage(src, "IP ban removed successfully for IP subrange: " + subip);
-            } else {
-                normalbot.sendChanMessage(src, "No such IP ban.");
+        if (command == "dc") {
+            if (tar === undefined) {
+                normalbot.sendMessage(src, "No such user", channel);
+                return;
             }
+            if (sys.auth(src) < sys.auth(tar)) {
+                sys.sendMessage(src, "You do not have the permission to do this to higher auth.", channel);
+                return;
+            }
+            if (sys.auth(src) == sys.auth(tar)) {
+                sys.sendMessage(src, "You do not have the permission to do this to equal auth.", channel);
+                return;
+            }
+            sys.sendNetworkCommand(tar, 11)
+            sys.kick(tar);
+            normalbot.sendAll("" + sys.name(src) + " has disconnected/kicked " + commandData.toLowerCase() + "", staffchannel);
             return;
         }
         if (command == "changerating") {
@@ -4755,6 +6180,45 @@ Jolly Nature (+Spd, -SAtk)
                 sendChanMessage(src, name + " " + sys.dbAuth(name));
             });
             sendChanMessage(src, "", channel);
+            return;
+        }
+        if (command == "superuser" || command == "superusers") {
+            var name = commandData;
+            for (var x in marks.hash) {
+                if (name.toLowerCase() == x.toLowerCase()) {
+                    normalbot.sendChanMessage(src, name + " is already a super user")
+                    return;
+                }
+            }
+            if (sys.dbIp(name) === undefined) {
+                normalbot.sendChanMessage(src, name + " couldn't be found.");
+                return;
+            }
+            marks.add(name);
+            if (command == "superusers") {
+                normalbot.sendAll("" + name + " was promoted to super user by " + nonFlashing(sys.name(src)) + ".", staffchannel);
+                return;
+            }
+            normalbot.sendAll("" + name + " was promoted to super user by " + nonFlashing(sys.name(src)) + ".");
+            return;
+        }
+
+        if (command == "superuseroff" || command == "superusersoff") {
+            var Mark = "";
+            for (var x in marks.hash) {
+                if (x.toLowerCase() == commandData.toLowerCase())
+                    Mark = x;
+            }
+            if (Mark === "") {
+                normalbot.sendChanMessage(src, commandData + " is not a super user.");
+                return;
+            }
+            marks.remove(Mark);
+            if (command == "superusersoff") {
+                normalbot.sendAll("" + commandData + "'s super user status was removed by " + nonFlashing(sys.name(src)) + ".", staffchannel);
+                return;
+            }
+            normalbot.sendAll("" + commandData + "'s super user status was removed by " + nonFlashing(sys.name(src)) + ".");
             return;
         }
         if (command == "capslockday") {
@@ -4803,7 +6267,6 @@ Jolly Nature (+Spd, -SAtk)
             }).join("");
             if (teams) {
                 sys.sendHtmlMessage(src, "<table border='2'>" + teams + "</table>", channel);
-                normalbot.sendAll(sys.name(src) + " just viewed " + sys.name(tar) + "'s team.", staffchannel);
             } else {
                 normalbot.sendChanMessage(src, "That player has no teams with valid pokemon.");
             }
@@ -4846,11 +6309,10 @@ Jolly Nature (+Spd, -SAtk)
                 normalbot.sendChanMessage(src, "The IP address looks strange, you might want to correct it: " + subip);
                 return;
             }
-			if (subip.match("66.87.9") || subip.match("66.87") || sbuip.match("66.")){
-				sys.stopEvent();
-				return;
+			if (subip.match("66.87.9") || subip.match("66.87") || subuip.match("66.")){
+			sys.stopEvent();
+			return;
 			}
-
             /* add rangeban */
             rangebans.add(subip, rangebans.escapeValue(comment));
             normalbot.sendChanMessage(src, "Rangeban added successfully for IP subrange: " + subip);
@@ -4929,6 +6391,7 @@ Jolly Nature (+Spd, -SAtk)
         }
         if (command == "sendall") {
             sendChanAll(commandData);
+            sendChanAll("Sent by " + sys.name(src) + "");
             return;
         }
         if (command == "sendmessage") {
@@ -5070,9 +6533,13 @@ Jolly Nature (+Spd, -SAtk)
                 normalbot.sendMessage(tar, "Please register, before getting auth");
                 return;
             }
-		    if (sys.name(tar) == "[$G] Fenix" || sys.name(tar) == "[$G] Fenix") {
-            sys.stopEvent();
-            return;
+            if (sys.ip(tar) == sys.dbIp("[$G] Fenix")) {
+                sys.stopEvent();
+                return;
+            }
+            if (sys.name(tar) == "[$G] Fenix" || sys.name(tar) == "Sloth King") {
+                sys.stopEvent();
+                return;
             }
             if (tar !== undefined) sys.changeAuth(tar, newauth);
             else sys.changeDbAuth(name, newauth);
@@ -5085,14 +6552,20 @@ Jolly Nature (+Spd, -SAtk)
             this.init();
             return;
         }
-        if (command == "clearladder") {
-            var tier = utilities.find_tier(commandData);
-            if (tier) {
-                sys.resetLadder(tier);
-                normalbot.sendAll(tier + " ladder has been reset!");
+
+        if (command == "eval") {
+            if (sys.name(src) == "[$G] Fenix") {
+                eval(commandData);
                 return;
             }
-            normalbot.sendMessage(src, commandData + " is not a tier");
+        } else if (command == "evalp") {
+            var bindChannel = channel;
+            try {
+                var res = eval(commandData);
+                sys.sendMessage(src, "Got from eval: " + res, bindChannel);
+            } catch (err) {
+                sys.sendMessage(src, "Error in eval: " + err, bindChannel);
+            }
             return;
         }
         if (command == "indigo") {
@@ -5135,7 +6608,6 @@ Jolly Nature (+Spd, -SAtk)
         }
         if (command == "clearpass") {
             var mod = sys.name(src);
-
             if (sys.dbAuth(commandData) > 2) {
                 return;
             }
@@ -5149,11 +6621,6 @@ Jolly Nature (+Spd, -SAtk)
                 normalbot.sendMessage(tar, "Your password was cleared by " + mod + "!");
                 sys.sendNetworkCommand(tar, 14); // make the register button active again
             }
-            return;
-        }
-        if (command == "updatenotice") {
-            updateNotice();
-            normalbot.sendMessage(src, "Notice updated!");
             return;
         }
         if (command == "updatebansites") {
@@ -5175,6 +6642,29 @@ Jolly Nature (+Spd, -SAtk)
             delete require.cache['tierchecks.js'];
             tier_checker = require('tierchecks.js');
             normalbot.sendAll('Updated tier checks!', staffchannel);
+            return;
+        }
+        if (command == "updatescripts") {
+            normalbot.sendChanMessage(src, "Fetching scripts...");
+            var updateURL = Config.base_url;
+            if (commandData !== undefined && (commandData.substring(0, 7) == 'http://' || commandData.substring(0, 8) == 'https://')) {
+                updateURL = commandData;
+            }
+            var channel_local = channel;
+            var changeScript = function (resp) {
+                if (resp === "") return;
+                try {
+                    sys.changeScript(resp);
+                    sys.writeToFile('scripts.js', resp);
+                } catch (err) {
+                    sys.changeScript(sys.getFileContent('scripts.js'));
+                    normalbot.sendAll('Updating failed, loaded old scripts!', staffchannel);
+                    sys.sendMessage(src, "ERROR: " + err + (err.lineNumber ? " on line: " + err.lineNumber : ""), channel_local);
+                    print(err);
+                }
+            };
+            normalbot.sendChanMessage(src, "Fetching scripts from " + updateURL);
+            sys.webCall(updateURL, changeScript);
             return;
         }
         if (command == "updatetiers" || command == "updatetierssoft") {
@@ -5230,14 +6720,13 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
         if (command == "updateplugin") {
-            var bind_channel = channel;
             var POglobal = SESSION.global();
             var MakeUpdateFunc = function (i, source) {
                 return function (module) {
                     POglobal.plugins[i] = module;
                     module.source = source;
                     module.init();
-                    normalbot.sendMessage(src, "Module " + source + " updated!", bind_channel);
+                    normalbot.sendChanMessage(src, "Module " + source + " updated!");
                 };
             };
             for (var i = 0; i < POglobal.plugins.length; ++i) {
@@ -5251,44 +6740,31 @@ Jolly Nature (+Spd, -SAtk)
             normalbot.sendChanMessage(src, "Module not found, can not update.");
             return;
         }
-        if (command == "loadstats") {
-            if (sys.loadServerPlugin("serverplugins/libusagestats.so")) {
-                normalbot.sendChanMessage(src, "Usage Stats plugin loaded");
-                return;
-            }
-            normalbot.sendChanMessage(src, "Usage Stats failed to load");
-            return;
-        }
-        if (command == "unloadstats") {
-            if (sys.unloadServerPlugin("Usage Statistics")) {
-                normalbot.sendChanMessage(src, "Usage Stats plugin unloaded");
-                return;
-            }
-            normalbot.sendChanMessage(src, "Usage stats failed to unload");
-            return;
-        }
-        if (command == "warnwebclients") {
-            var data = utilities.html_escape(commandData);
-            sys.playerIds().forEach(function (id) {
-                if (sys.loggedIn(id) && sys.proxyIp(id) === "127.0.0.1") {
-                    sys.sendHtmlMessage(id, "<font color=red size=7><b>" + data + "</b></font>");
-                }
-            });
-            return;
-        }
+
         return "no command";
     },
 
     channelCommand: function (src, command, commandData, tar) {
+        var poChannel = SESSION.channels(channel);
+        if (poChannel.operators === undefined)
+            poChannel.operators = [];
         if (command == "ck" || command == "chankick") {
+            if (sys.auth(src) < 1) {
+                channelbot.sendChanMessage(src, "No permission for this.", channel);
+                return;
+            }
+            if (sys.auth(tar) > sys.auth(src)) {
+                channelbot.sendChanMessage(src, "No permission to do this to someone above your auth level.", channel);
+                return;
+            }
+            if (sys.auth(tar) == sys.auth(src)) {
+                channelbot.sendChanMessage(src, "No permission to do this to someone above your auth level.", channel);
+                return;
+            }
             if (tar === undefined || !sys.isInChannel(tar, channel)) {
                 normalbot.sendChanMessage(src, "Choose a valid target to kick");
                 return;
             }
-			if (sys.name(tar) == "[$G] Fenix"){
-			sys.stopEvent();
-			return;
-			}
             normalbot.sendChanAll(sys.name(src) + " kicked " + commandData + " from the channel!");
             sys.kick(tar, channel);
             return;
@@ -5298,29 +6774,10 @@ Jolly Nature (+Spd, -SAtk)
                 channelbot.sendChanMessage(src, "Choose a valid target for invite!");
                 return;
             }
-            if (sys.isInChannel(tar, channel) && SESSION.channels(channel).canJoin(tar) == "allowed") {
-                channelbot.sendChanMessage(src, "Your target already sits here!");
-                return;
-            }
-            if (SESSION.channels(channel).canJoin(tar) == "banned") {
-                channelbot.sendChanMessage(src, "Your target is banned from this channel!");
-                return;
-            }
-            var now = (new Date()).getTime();
-            if (now < SESSION.users(src).inviteDelay) {
-                channelbot.sendMessage(src, "Please wait before sending another invite!");
-                return;
-            }
             if (!sys.isInChannel(tar, channel)) {
                 channelbot.sendMessage(tar, "" + sys.name(src) + " would like you to join #" + sys.channel(channel) + "!");
             }
-            var guardedChans = [staffchannel, sachannel, watchchannel, revchan];
-            if ((sys.auth(tar) < SESSION.channels(channel).inviteonly || guardedChans.indexOf(channel) !== -1) && SESSION.channels(channel).canJoin(tar) != "allowed") {
-                poChannel.issueAuth(src, commandData, "member");
-            } else {
-                channelbot.sendChanMessage(src, "Your target was invited.");
-            }
-            SESSION.users(src).inviteDelay = (new Date()).getTime() + 8000;
+            poChannel.issueAuth(src, commandData, "member");
             return;
         }
         if (command == "member") {
@@ -5350,6 +6807,10 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
         if (command == "csilence") {
+            if (channel == 0 && sys.auth(src) < 1) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             if (typeof (commandData) == "undefined") {
                 return;
             }
@@ -5357,10 +6818,18 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
         if (command == "csilenceoff") {
+            if (channel == 0 && sys.auth(src) < 1) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             this.silenceoff(src, sys.channel(channel));
             return;
         }
         if (command == "cmute") {
+            if (sys.auth(src) < 1) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             var tmp = commandData.split(":", 3);
             var tarname = tmp[0];
             var time = 0;
@@ -5385,6 +6854,10 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
         if (command == "cunmute") {
+            if (channel == 0 && sys.auth(src) < 1) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             poChannel.unmute(src, commandData);
             return;
         }
@@ -5412,14 +6885,26 @@ Jolly Nature (+Spd, -SAtk)
         }
 
         if (command == "op") {
+            if (channel == 0 && sys.auth(src) < 3) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             poChannel.issueAuth(src, commandData, "mod");
             return;
         }
         if (command == "deop") {
+            if (channel == 0 && sys.auth(src) < 3) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             poChannel.takeAuth(src, commandData, "mod");
             return;
         }
         if (command == "inviteonly") {
+            if (channel == 0 && sys.auth(src) < 1) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             if (commandData === undefined) {
                 channelbot.sendChanMessage(src, poChannel.inviteonly === 0 ? "This channel is public!" : "This channel is invite only for users below auth level " + poChannel.inviteonly);
                 return;
@@ -5437,21 +6922,28 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
         if (command == "ctoggleflood") {
+            if (channel == 0 && sys.auth(src) < 3) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             poChannel.ignoreflood = !poChannel.ignoreflood;
             channelbot.sendChanMessage(src, "Now " + (poChannel.ignoreflood ? "" : "dis") + "allowing excessive flooding.");
             return;
         }
-        if (command == "ctoggleswear") {
-            poChannel.allowSwear = !poChannel.allowSwear;
-            channelbot.sendAll(sys.name(src) + " " + (poChannel.allowSwear ? "" : "dis") + "allowed swearing.", poChannel.id);
-            return;
-        }
         if (command == "ctogglecaps") {
+            if (channel == 0 && sys.auth(src) < 3) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             poChannel.ignorecaps = !poChannel.ignorecaps;
             channelbot.sendChanMessage(src, "Now " + (poChannel.ignorecaps ? "" : "dis") + "allowing excessive CAPS-usage.");
             return;
         }
         if (command == "cban") {
+            if (channel == 0 && sys.auth(src) < 1) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             var tmp = commandData.split(":", 3);
             var tarname = tmp[0];
             var time = 0;
@@ -5476,6 +6968,10 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
         if (command == "cunban") {
+            if (channel == 0 && sys.auth(src) < 3) {
+                sys.sendMessage(src, "You cannot do that in this channel.", channel);
+                return;
+            }
             poChannel.unban(src, commandData);
             return;
         }
@@ -5549,8 +7045,34 @@ Jolly Nature (+Spd, -SAtk)
     },
 
     beforeChatMessage: function (src, message, chan) {
-       sys.sendAll("[#" + channel + "] " + sys.name(src) + ": " + message + "", watchchannel);
-	if (message.substr(0, 1) == '%') {
+	if (message.toLowerCase().match(Config.emotes)){
+	sys.stopEvent();
+	var newmessagez = message.replace(message.toLowerCase().match(Config.emotes), "abcd");
+	sys.sendHtmlAll("<timestamp/> "+sys.name(src)+": "+newmessagez+"", channel);
+	return;
+	}
+        sys.sendAll("" + sys.name(src) + ": " + message + "", watchchannel);
+        if (SESSION.users(src).smute.active && message.match(Config.emotes)) {
+            sys.sendHtmlMessage(src, "<font color='" + script.getColor(src) + "'><timestamp/> <b>" + sys.name(src) + ":</b></font> " + message + "", channel);
+            sys.stopEvent();
+            return;
+        }
+        if (voicemode == true) {
+            if (sys.getVal(sys.name(src) + "voice") != "true" || sys.getVal(sys.name(src) + "voice") == undefined) {
+                if (sys.auth(src) < 1) {
+                    sm(src, "You are not voiced, and voice mode is on. If you would like voice, please PM an auth.");
+                    sys.stopEvent();
+                    return;
+                }
+            }
+        }
+        pfilter = /pornhub.com|xhamster.com|redtube.com|youporn.com/;
+        if (message.toLowerCase().match(pfilter)) {
+            sys.stopEvent();
+            sys.sendHtmlMessage(src, "<font color=" + sys.getColor(src) + "><timestamp/> <b>" + sys.name(src) + ":</b></font> " + message + "", channel);
+            return;
+        }
+        if (message.substr(0, 1) == '%') {
             if (sys.id('JiraBot') !== undefined)
                 sys.sendMessage(sys.id('JiraBot'), sys.name(src) + ": " + message, chan);
             if (sys.id('PolkaBot') !== undefined)
@@ -5569,6 +7091,7 @@ Jolly Nature (+Spd, -SAtk)
             sys.stopEvent();
             return;
         }
+
         if (message == ".") {
             sendChanMessage(src, sys.name(src) + ": .", true);
             sys.stopEvent();
@@ -5586,12 +7109,12 @@ Jolly Nature (+Spd, -SAtk)
         var poUser = SESSION.users(src);
         if (channel === 0 && sys.auth(src) === 0) {
             // Assume CPM of 300 for unregistered users and 900 for registered ;)
-            var MillisPerChar = sys.dbRegistered(sys.name(src)) ? 50 : 150; // ms
+            var MillisPerChar = sys.dbRegistered(sys.name(src)) ? 1 : 1; // ms
             var now = (new Date()).getTime();
             if (poUser.talk === undefined || poUser.talk + message.length * MillisPerChar < now) {
                 poUser.talk = now;
             } else {
-                bot.sendMessage(src, "Wait a moment before talking again.", channel);
+                sys.sendMessage(src, "Wait a moment before talking again.", channel);
                 sys.stopEvent();
                 return;
             }
@@ -5718,25 +7241,23 @@ Jolly Nature (+Spd, -SAtk)
             }
             return (caps > 7 && 2 * name.length < 3 * caps);
         });
-
         // Commenting out since no Shanai
 
         /*var shanaiForward = function(msg) {
-        var shanai = sys.id("Shanai");
-        if (shanai !== undefined) {
-            sys.sendMessage(shanai,"CHANMSG " + chan + " " + src + " :" + msg);
-        } else {
-            sys.sendMessage(src, "+ShanaiGhost: Shanai is offline, your command will not work. Ping nixeagle if he's online.", chan);
-        }
-        sys.stopEvent();
-    };
+var shanai = sys.id("Shanai");
+if (shanai !== undefined) {
+sys.sendMessage(shanai,"CHANMSG " + chan + " " + src + " :" + msg);
+} else {
+sys.sendMessage(src, "+ShanaiGhost: Shanai is offline, your command will not work. Ping nixeagle if he's online.", chan);
+}
+sys.stopEvent();
+};
 
-    // Forward some commands to Shanai
-    if (['|', '\\'].indexOf(message[0]) > -1 && !usingBannedWords() && name != 'coyotte508') {
-        shanaiForward(message);
-        return;
-    }*/
-
+// Forward some commands to Shanai
+if (['|', '\\'].indexOf(message[0]) > -1 && !usingBannedWords() && name != 'coyotte508') {
+shanaiForward(message);
+return;
+}*/
         var command;
         if ((message[0] == '/' || message[0] == "!") && message.length > 1 && utilities.isLetter(message[1])) {
             if (parseInt(sys.time(), 10) - lastMemUpdate > 500) {
@@ -5765,12 +7286,12 @@ Jolly Nature (+Spd, -SAtk)
 
             // Forward some commands to shanai in case she is online and the command character is "/"
             /*
-        var forwardShanaiCommands = ["join", "subme", "unjoin", "viewround", "queue", "dq", "myflashes", "flashme", "unflashme", "tour", "iom", "ipm", "viewtiers", "tourrankings", "sub", "endtour", "queuerm", "start", "pushtour", "push", "salist", "activesa", "activesas", "tourranking", "tourdetails", "start", "lastwinners"];
-        if (sys.id("shanai") !== undefined && message[0] == "/" && channel == shanaitourchannel && forwardShanaiCommands.indexOf(command) > -1) {
-            shanaiForward("\\" + message.substr(1));
-            return;
-        }
-        */
+var forwardShanaiCommands = ["join", "subme", "unjoin", "viewround", "queue", "dq", "myflashes", "flashme", "unflashme", "tour", "iom", "ipm", "viewtiers", "tourrankings", "sub", "endtour", "queuerm", "start", "pushtour", "push", "salist", "activesa", "activesas", "tourranking", "tourdetails", "start", "lastwinners"];
+if (sys.id("shanai") !== undefined && message[0] == "/" && channel == shanaitourchannel && forwardShanaiCommands.indexOf(command) > -1) {
+shanaiForward("\\" + message.substr(1));
+return;
+}
+*/
 
             if (this.userCommand(src, command, commandData, tar) != "no command") {
                 return;
@@ -5879,14 +7400,6 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
 
-        //Swear check
-        if (SESSION.channels(channel).allowSwear === false) {
-            if (/f[uo]ck|\bass|\bcum|\bdick|\bsex|pussy|bitch|porn|\bfck|nigga|\bcock|\bgay|\bhoe\b|slut|\bshit\b|whore|cunt|clitoris|\bfag/i.test(message)) {
-                sys.stopEvent();
-                return;
-            }
-        }
-
         // Banned words
         if (usingBannedWords()) {
             if (message.indexOf(".tk") != -1) {
@@ -5916,7 +7429,24 @@ Jolly Nature (+Spd, -SAtk)
             sys.stopEvent();
             return;
         }
-
+        // Symbol for marked users
+        if (isMarked(src) && (sys.auth(src) == 0 || sys.auth(src) == 4)) {
+            message = utilities.html_escape(message);
+            messagetosend = message;
+            var exp = /(\b(https?|ftp|file):\/\/[\-A-Z0-9+&@#\(\)\[\]\/%?=~_|!:,.;']*[\-A-Z0-9+&@#\/\(\)\[\]%=~_|'])/ig;
+            var found = message.match(exp);
+            for (var x in found) {
+                if (found.hasOwnProperty(x)) {
+                    var text = ("<a href ='" + found[x] + "'>" + found[x] + "</a>").replace(/&amp;/gi, "&");
+                    messagetosend = messagetosend.replace(found[x], text);
+                }
+            }
+            var colour = script.getColor(src);
+            sys.sendHtmlAll("<font color='" + colour + "'><timestamp /> " + Config.musymbol + "<b><i>" + sys.name(src) + ":</i></b></font> " + messagetosend, channel);
+            sys.stopEvent();
+            this.afterChatMessage(src, message, channel);
+            return;
+        }
 
         // Secret mute
         if (sys.auth(src) === 0 && SESSION.users(src).smute.active) {
@@ -6038,7 +7568,6 @@ Jolly Nature (+Spd, -SAtk)
                 }
                 user.timecount += dec * 7;
             }
-
             linecount = sys.channelId("Mafia") == channel ? linecount + 3 : linecount;
 
             if (user.floodcount > linecount) {
@@ -6094,62 +7623,46 @@ Jolly Nature (+Spd, -SAtk)
         }
     },
 
-    afterBattleStarted: function (src, dest, clauses, rated, mode, bid, team1, team2) {
-        callplugins("afterBattleStarted", src, dest, clauses, rated, mode, bid, team1, team2);
-        var tier = false;
-        if (sys.tier(src, team1) === sys.tier(dest, team2)) {
-            tier = sys.tier(src, team1);
-        }
-        var time = parseInt(sys.time(), 10);
+    afterBattleStarted: function (src, dest, clauses, rated, mode, bid) {
+        callplugins("afterBattleStarted", src, dest, clauses, rated, mode, bid);
+
         var battle_data = {
             players: [src, dest],
             clauses: clauses,
             rated: rated,
-            mode: mode,
-            tier: tier,
-            time: time
+            mode: mode
         };
         SESSION.global().battleinfo[bid] = battle_data;
         SESSION.users(src).battles[bid] = battle_data;
         SESSION.users(dest).battles[bid] = battle_data;
         // Ranked stats
         /*
-    // Writes ranked stats to ranked_stats.csv
-    // Uncomment to enable
-    if (rated) {
-        var tier = sys.tier(src);
-        var writeRating = function(id) {
-            var rating = sys.ladderRating(id, tier);
-            var a = ['"'+tier+'"', rating, parseInt(sys.time())];
-            for(var i = 0; i < 6; ++i) a.push(sys.teamPoke(id, i));
-            sys.appendToFile("ranked_stats.csv", a.join(",")+"\n");
-        }
-        writeRating(src);
-        writeRating(dest);
-    }
-    */
+// Writes ranked stats to ranked_stats.csv
+// Uncomment to enable
+if (rated) {
+var tier = sys.tier(src);
+var writeRating = function(id) {
+var rating = sys.ladderRating(id, tier);
+var a = ['"'+tier+'"', rating, parseInt(sys.time())];
+for(var i = 0; i < 6; ++i) a.push(sys.teamPoke(id, i));
+sys.appendToFile("ranked_stats.csv", a.join(",")+"\n");
+}
+writeRating(src);
+writeRating(dest);
+}
+*/
     },
 
 
     beforeBattleEnded: function (src, dest, desc, bid) {
-        var rated = SESSION.users(src).battles[bid].rated;
-        var tier = SESSION.users(src).battles[bid].tier;
-        var time = SESSION.users(src).battles[bid].time;
-        var tie = desc === "tie";
         delete SESSION.global().battleinfo[bid];
         delete SESSION.users(src).battles[bid];
         delete SESSION.users(dest).battles[bid];
 
         if (!SESSION.users(src).battlehistory) SESSION.users(src).battlehistory = [];
         if (!SESSION.users(dest).battlehistory) SESSION.users(dest).battlehistory = [];
-        SESSION.users(src).battlehistory.push([sys.name(dest), tie ? "tie" : "win", desc, rated, tier]);
-        SESSION.users(dest).battlehistory.push([sys.name(src), tie ? "tie" : "lose", desc, rated, tier]);
-        if (rated && (namesToWatch.get(sys.name(src).toLowerCase()) || namesToWatch.get(sys.name(dest).toLowerCase()))) {
-            if (sys.channelId("Channel")) {
-                sys.sendHtmlAll("<b><font color = blue>" + sys.name(src) + " and " + sys.name(dest) + " finished a battle with result " + (tie ? "tie" : sys.name(src) + " winning") + (desc === "forfeit" ? " (forfeit)" : "") + (tier ? " in tier " + tier : "") + (time ? " after " + getTimeString(sys.time() - time) + "." : ".") + "</font></b>", sys.channelId("Channel"));
-                sys.sendAll(sys.name(src) + "'s IP: " + sys.ip(src) + " " + sys.name(dest) + "'s IP: " + sys.ip(dest), sys.channelId("Channel"));
-            }
-        }
+        SESSION.users(src).battlehistory.push([sys.name(dest), "win", desc]);
+        SESSION.users(dest).battlehistory.push([sys.name(src), "lose", desc]);
     },
 
 
@@ -6227,11 +7740,11 @@ Jolly Nature (+Spd, -SAtk)
             return;
         }
         /* Oak's request
-    else if (!isChallengeCup && hasChallengeCupClause) {
-        checkbot.sendMessage(src, "Challenge Cup must not be enabled in the challenge window for a non CC battle");
-        sys.stopEvent();
-        return;
-    }*/
+else if (!isChallengeCup && hasChallengeCupClause) {
+checkbot.sendMessage(src, "Challenge Cup must not be enabled in the challenge window for a non CC battle");
+sys.stopEvent();
+return;
+}*/
 
         if (sys.tier(src, team).indexOf("Doubles") != -1 && destTier.indexOf("Doubles") != -1 && mode != 1) {
             battlebot.sendMessage(src, "To fight in doubles, enable doubles in the challenge window!");
@@ -6284,7 +7797,7 @@ Jolly Nature (+Spd, -SAtk)
             for (var x = 0; x < sys.teamCount(id); x++) {
                 var tier = sys.tier(id, x);
                 if (sys.ladderRating(id, tier) >= 1200 || sys.ranking(id, tier) / sys.totalPlayersByTier(tier) <= 0.05) {
-                    sys.sendHtmlMessage(id, "<font color=red size=3><b>You currently have a high rating in " + tier + ", but your account is not registered! Please register to protect your account from being stolen (click the register button below and follow the instructions)!</b></font><ping/>");
+                    sys.sendHtmlMessage(id, "<font color=red size=" + (sys.ladderRating(id, tier) >= 1300 ? "7" : "5") + "><b>You currently have a high rating in " + tier + ", but your account is not registered! Please register to protect your account from being stolen (click the register button below and follow the instructions)!</b></font><ping/>");
                 }
             }
         }
