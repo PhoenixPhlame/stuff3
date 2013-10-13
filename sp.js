@@ -15,6 +15,7 @@ voicemode = false;
 welcometime = false;
 sm = sys.sendMessage
 sha = sys.sendHtmlAll
+shm = sys.sendHtmlMessage
 var Config = {
     base_url: "http://raw.github.com/PhoenixPhlame/stuff3/master/sp.js",
     dataDir: "scriptdata/",
@@ -3729,10 +3730,11 @@ return;
 	}
 	if (command == "flash"){
 	shm(sys.id(tar), "<timestamp/><ping/><b><center> "+sys.name(src)+" has flashed you.</b></center>", channel);
+	sm(src, ""+sys.name(tar)+" has been flashed.", channel);
 	return;
 	}
 	if (command == "addemote"){
-	if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Pichu"){
+	if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "Pichu"){
 	dataz = commandData.split('*');
 	sys.saveVal(dataz[0], ""+dataz[1]+"");
 	sm(src, "You added "+dataz+"", channel);
@@ -3740,7 +3742,7 @@ return;
 	}
     }
 	if (command == "add2emote"){
-	if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Pichu"){
+	if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "Pichu"){
 	Config.emotes.push(""+commandData+"")
 	sm(src, "You added "+commandData+" to the config of emotes.", channel);
 	return;
@@ -4826,7 +4828,7 @@ return;
             var crnm = sys.name(src);
             sys.changeName(src, "~~" + commandData + "~~");
             sys.saveVal(usip, crnm);
-            sys.saveVal(usip, "IMPEDS");
+            sys.saveVal(usip+"1", "IMPEDS");
             sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has super-impersonated " + commandData + "!</b></font>");
             return;
         }
@@ -4839,7 +4841,7 @@ return;
             var usip = sys.ip(src);
             var srcname = sys.getVal(usip);
             sys.changeName(src, srcname);
-            sys.saveVal(usip, "NOTIMPEDS");
+            sys.saveVal(usip+"0", "IMPEDS");
             sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has turned superimp off!</b></font>");
             return;
         }
@@ -4848,11 +4850,11 @@ return;
                 sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, you do not have permission to super-impersonate the Server Host.</i>", channel);
                 return;
             }
-            if (sys.getVal(usip) == "IMPED") {
+            if (sys.getVal(usip+"2") == "IMPED") {
                 normalbot.sendMessage(src, "Your already ultraimped you silly fool!", channel);
                 sys.stopEvent();
             }
-            if (sys.getVal(usip) == "IMPEDS") {
+            if (sys.getVal(usip+"1") == "IMPEDS") {
                 normalbot.sendMessage(src, "You are superimped using the /superimp command.", channel);
                 return;
             }
@@ -4865,20 +4867,20 @@ return;
             var crnm = sys.name(src);
             sys.changeName(src, "" + commandData + "");
             sys.saveVal(usip, crnm);
-            sts.saveVal(usip, "IMPED");
+            sys.saveVal(usip+"2", "IMPED");
             sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has ultra-imped " + commandData + "!</b></font>");
             return;
         }
         if (command == "ultraimpoff") {
             var srcname = sys.name(src);
-            if (sys.getVal(usip) !== "IMPED") {
+            if (sys.getVal(usip+"2") !== "IMPED") {
                 normalbot.sendMessage(src, "Your aren't ultraimped you silly fool!", channel);
                 sys.stopEvent();
             }
             var usip = sys.ip(src);
             var srcname = sys.getVal(usip);
             sys.changeName(src, srcname);
-            sts.saveVal(usip, "NIMPED");
+            sys.saveVal(usip+"0", "IMPED");
             sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has turned ultraimp off!</b></font>");
             return;
         }
