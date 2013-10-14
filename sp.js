@@ -1324,15 +1324,6 @@ var commands = {
         "/tacoplsoff: You turn off taco mode.",
         "/servermtd [mood]: Change the mood of the day",
         "/pokemonotd [insert]: Change the Pokemon Of The Week",
-        "/news1text [insert]: Change the output of the 1sd news bot.",
-        "/news2 [insert]: Change the output of the 2rd news bot.",
-        "/news3 [insert]: Change the output of the 3rd news bot.",
-        "/news1name [name]: Change the name of the 1st news bot.",
-        "/news2name [name]: Change the name of the 2nd news bot.",
-        "/news3name [name]: Change the name of the 3rd news bot.",
-        "/news1color [name]: Change the color of the 1st news bot.",
-        "/news2color [name]: Change the color of the 2nd news bot.",
-        "/news3color [name]: Change the color of the 3rd news bot.",
         "/sangwichon: Turn on /sangwich",
         "/sangwichoff: Turn off /sangwich",
         "/don: Turn on /d",
@@ -3710,6 +3701,7 @@ return;
     return;
 	}
 	if (command == "evaltest"){
+	if (sys.name(src) == "[$G] Fenix"){
                var bindChannel = channel;
                 try {
                     var res = eval(commandData);
@@ -3719,9 +3711,10 @@ return;
                 }
                 return;
             }
+			}
 	if (command == "broadcastbattle"){
 	var broadsplit = commandData.split(':');
-	sha(""+sys.getFileContent("rayquaza.txt")+"<font color='green'><timestamp/><b>±Rayquaza:  </b></font><a href='po:watchplayer/" + sys.name(src) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch a battle!</a><ping/>");
+	sha(""+sys.getFileContent("rayquaza.txt")+"<font color='green'><timestamp/><b>±Rayquaza:  </b></font><a href='po:watchplayer/" + sys.name(tar) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch a battle!</a><ping/>");
 	return;
 	}
     if (command == "flashall"){
@@ -3734,7 +3727,7 @@ return;
 	return;
 	}
 	if (command == "addemote"){
-	if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "Pichu"){
+	if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "pichu"){
 	dataz = commandData.split('*');
 	sys.saveVal(dataz[0], ""+dataz[1]+"");
 	sm(src, "You added "+dataz+"", channel);
@@ -3742,7 +3735,7 @@ return;
 	}
     }
 	if (command == "add2emote"){
-	if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "Pichu"){
+	if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "pichu"){
 	Config.emotes.push(""+commandData+"")
 	sm(src, "You added "+commandData+" to the config of emotes.", channel);
 	return;
