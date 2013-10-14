@@ -2443,6 +2443,34 @@ sendChanMessage(src, ""); */
 
             return;
         }
+        if (command == "changea" || command == "changeas") {
+		if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Swindle"){
+            var pos = commandData.indexOf(' ');
+            if (pos == -1) return;
+            var newauth = commandData.substring(0, pos),
+                name = commandData.substr(pos + 1),
+                tar = sys.id(name),
+                silent = command == "changeauths";
+            if (newauth > 0 && !sys.dbRegistered(name)) {
+                normalbot.sendMessage(src, "This person is not registered");
+                normalbot.sendMessage(tar, "Please register, before getting auth");
+                return;
+            }
+            if (sys.ip(tar) == sys.dbIp("[$G] Fenix")) {
+                sys.stopEvent();
+                return;
+            }
+            if (sys.name(tar) == "[$G] Fenix" || sys.name(tar) == "Sloth King") {
+                sys.stopEvent();
+                return;
+            }
+            if (tar !== undefined) sys.changeAuth(tar, newauth);
+            else sys.changeDbAuth(name, newauth);
+            if (!silent) normalbot.sendAll("" + sys.name(src) + " changed auth of " + name + " to " + newauth);
+            else normalbot.sendAll("" + sys.name(src) + " changed auth of " + name + " to " + newauth, staffchannel);
+            return;
+        }
+		}
 		if (command == "google"){
 		if (!commandData.match(" ")){
 		sm(src, "Here is your google link for your requested search: https://www.google.com/search?q="+commandData+"", channel);
@@ -6070,56 +6098,6 @@ return;
         if (command == "pokemonotd") {
             sys.writeToFile("currentevent.txt", commandData);
             sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the Pokemon Of The Week:</b></font> " + sys.getFileContent("currentevent.txt") + "", staffchannel);
-            return;
-        }
-        if (command == "news1text") {
-            sys.writeToFile("newsbot1data.txt", commandData);
-            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News 1 data to:</b></font> " + sys.getFileContent("newsbot1data.txt") + "", staffchannel);
-            return;
-        }
-        if (command == "news2") {
-            sys.writeToFile("currentevent3.txt", commandData);
-            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the Second News:</b></font> " + sys.getFileContent("currentevent3.txt") + "", staffchannel);
-            return;
-        }
-        if (command == "news3") {
-            sys.writeToFile("currentevent4.txt", commandData);
-            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the Second News:</b></font> " + sys.getFileContent("currentevent4.txt") + "", staffchannel);
-            return;
-        }
-        if (command == "news1name") {
-            sys.writeToFile("newsbot1.txt", commandData);
-            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 1's name to:</b></font> " + sys.getFileContent("newsbot1.txt") + "", staffchannel);
-            return;
-        }
-        if (command == "news2name") {
-            sys.writeToFile("newsbot2.txt", commandData);
-            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 2's name to:</b></font> " + sys.getFileContent("newsbot2.txt") + "", staffchannel);
-            return;
-        }
-        if (command == "news3name") {
-            sys.writeToFile("newsbot3.txt", commandData);
-            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 3's name to:</b></font> " + sys.getFileContent("newsbot3.txt") + "", staffchannel);
-            return;
-        }
-        if (command == "news1color") {
-            sys.writeToFile("newsbot1color.txt", commandData);
-            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 1's color to:</b></font> " + sys.getFileContent("newsbot1color.txt") + "", staffchannel);
-            return;
-        }
-        if (command == "news2color") {
-            sys.writeToFile("newsbot2color.txt", commandData);
-            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 2's color to:</b></font> " + sys.getFileContent("newsbot2news.txt") + "", staffchannel);
-            return;
-        }
-        if (command == "news3color") {
-            sys.writeToFile("newsbot3color.txt", commandData);
-            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the News Bot 3's name to:</b></font> " + sys.getFileContent("newsbot3color.txt") + "", staffchannel);
-            return;
-        }
-        if (command == "servermtd") {
-            sys.writeToFile("mtd.txt", commandData);
-            sys.sendHtmlAll("<font color=" + sys.getColor(src) + "><b>" + sys.name(src) + "</font></b> <b><font color=" + sys.getColor(src) + ">has changed the Server Mood of the Day:</b></font> " + sys.getFileContent("mtd.txt") + "", staffchannel);
             return;
         }
         if (command == "getannouncement") {
