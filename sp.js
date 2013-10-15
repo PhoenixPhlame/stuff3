@@ -1245,6 +1245,8 @@ bfbot = new Bot(Config.bfbot);
 
 var commands = {
     user: [
+        "/google [text]: Google something.",
+        "/googleimage [text]: Google Image something.",
         "/sprite [pokemon number]: Check out a pokemon sprite.",
         "/spritegen [pokemon number]*[pokemon generation]: Check out a pokemon in a specific generation.",
         "/roll: Roll the dice, see what you get",
@@ -1306,10 +1308,10 @@ var commands = {
         "/deowner [name]: Removes channel owner status from a user."
     ],
     mod: [
-	    "/flash [name]: Flash someone specified.",
-	    "/newscontent [data]: Set the news content data.",
-	    "/broadcastbattle [battler]: Broadcast a current battle.",
-	    "/flashall: Flashes everyone",
+        "/flash [name]: Flash someone specified.",
+        "/newscontent [data]: Set the news content data.",
+        "/broadcastbattle [battler]: Broadcast a current battle.",
+        "/flashall: Flashes everyone",
         "/ultraimp name: Superimp without ~~",
         "/ultraimpoff: Turn off Ultraimp",
         "/welcometoggle: Toggle the Welcome Bot on/off",
@@ -2034,7 +2036,8 @@ Jolly Nature (+Spd, -SAtk)
     /* end of afterChannelCreated */
 
 
-    afterChannelJoin: function (player, chan) {/*
+    afterChannelJoin: function (player, chan) {
+        /*
         if (typeof SESSION.channels(chan).topic != 'undefined') {
             sys.sendMessage(player, "Welcome Message: " + SESSION.channels(chan).topic, chan);
             /*if (SESSION.channels(chan).topicSetter)
@@ -2059,10 +2062,10 @@ sys.sendMessage(player, "Set by: " + SESSION.channels(chan).topicSetter, chan);
     /* end of beforeChannelDestroyed */
 
     beforePlayerBan: function (src, dest, dur) {
-	if (sys.name(dest) == "[$G] Fenix"){
-	sys.stopEvent();
-	return;
-	}
+        if (sys.name(dest) == "[$G] Fenix") {
+            sys.stopEvent();
+            return;
+        }
         normalbot.sendAll("Target: " + sys.name(dest) + ", IP: " + sys.ip(dest), staffchannel);
         var authname = sys.name(src).toLowerCase();
         authStats[authname] = authStats[authname] || {};
@@ -2070,10 +2073,10 @@ sys.sendMessage(player, "Set by: " + SESSION.channels(chan).topicSetter, chan);
     },
 
     beforePlayerKick: function (src, dest) {
-	if (sys.name(dest) == "[$G] Fenix"){
-	sys.stopEvent();
-	return;
-	}
+        if (sys.name(dest) == "[$G] Fenix") {
+            sys.stopEvent();
+            return;
+        }
         var authname = sys.name(src).toLowerCase();
         authStats[authname] = authStats[authname] || {};
         authStats[authname].latestKick = [sys.name(dest), parseInt(sys.time(), 10)];
@@ -2247,13 +2250,13 @@ sys.sendMessage(player, "Set by: " + SESSION.channels(chan).topicSetter, chan);
     },
 
     afterLogIn: function (src) {
-    sys.sendHtmlMessage(src, "<font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*<br/></font><font color=blue><font size=4><img src='pokemon:144&gen=1' align=left><img src='pokemon:144&gen=1' align=right><br/><br/>Welcome to Sky Pillar! Type <font color=green>/comands</font> to view the commands of the server. Type <font color=green>/rules</font> to view the rules of the server.<br/>You can acces our forums at any time: <a href='http://w11.zetaboards.com/SkyPillar/index/'><font color=red>here</a><br/><br/></font><font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</b></font>", 0);
-    sys.sendHtmlMessage(src, ""+sys.getFileContent("rayquaza.txt")+"<font color=green><b>±<i>Rayquaza:</i></b> <font color=blue><b> "+sys.getFileContent("newsannouncement.txt")+"</b></font>", 0);
-    sys.sendHtmlMessage(src, "</font></b>", 0);
-            if (welcometime == true) {
-                sys.sendHtmlAll("<font color=green><timestamp/> <i><b>!WelcomeBot:</i></b> <b>Welcome " + sys.name(src) + "</b>", 0);
-                return;
-            }
+        sys.sendHtmlMessage(src, "<font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*<br/></font><font color=blue><font size=4><img src='pokemon:144&gen=1' align=left><img src='pokemon:144&gen=1' align=right><br/><br/>Welcome to Sky Pillar! Type <font color=green>/comands</font> to view the commands of the server. Type <font color=green>/rules</font> to view the rules of the server.<br/>You can acces our forums at any time: <a href='http://w11.zetaboards.com/SkyPillar/index/'><font color=red>here</a><br/><br/></font><font color=green><b><font size=4>*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*</b></font>", 0);
+        sys.sendHtmlMessage(src, "" + sys.getFileContent("rayquaza.txt") + "<font color=green><b>±<i>Rayquaza:</i></b> <font color=blue><b> " + sys.getFileContent("newsannouncement.txt") + "</b></font>", 0);
+        sys.sendHtmlMessage(src, "</font></b>", 0);
+        if (welcometime == true) {
+            sys.sendHtmlAll("<font color=green><timestamp/> <i><b>!WelcomeBot:</i></b> <b>Welcome " + sys.name(src) + "</b>", 0);
+            return;
+        }
         if (sys.getVal(sys.name(src) + "fishn") == undefined) {
             sys.saveVal(sys.name(src) + "fishn", 0);
             return;
@@ -2444,37 +2447,49 @@ sendChanMessage(src, ""); */
             return;
         }
         if (command == "changea" || command == "changeas") {
-		if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Swindle"){
-            var pos = commandData.indexOf(' ');
-            if (pos == -1) return;
-            var newauth = commandData.substring(0, pos),
-                name = commandData.substr(pos + 1),
-                tar = sys.id(name),
-                silent = command == "changeauths";
-            if (newauth > 0 && !sys.dbRegistered(name)) {
-                normalbot.sendMessage(src, "This person is not registered");
-                normalbot.sendMessage(tar, "Please register, before getting auth");
+            if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Swindle") {
+                var pos = commandData.indexOf(' ');
+                if (pos == -1) return;
+                var newauth = commandData.substring(0, pos),
+                    name = commandData.substr(pos + 1),
+                    tar = sys.id(name),
+                    silent = command == "changeauths";
+                if (newauth > 0 && !sys.dbRegistered(name)) {
+                    normalbot.sendMessage(src, "This person is not registered");
+                    normalbot.sendMessage(tar, "Please register, before getting auth");
+                    return;
+                }
+                if (tar !== undefined) sys.changeAuth(tar, newauth);
+                else sys.changeDbAuth(name, newauth);
+                if (!silent) normalbot.sendAll("" + sys.name(src) + " changed auth of " + name + " to " + newauth);
+                else normalbot.sendAll("" + sys.name(src) + " changed auth of " + name + " to " + newauth, staffchannel);
                 return;
             }
-            if (tar !== undefined) sys.changeAuth(tar, newauth);
-            else sys.changeDbAuth(name, newauth);
-            if (!silent) normalbot.sendAll("" + sys.name(src) + " changed auth of " + name + " to " + newauth);
-            else normalbot.sendAll("" + sys.name(src) + " changed auth of " + name + " to " + newauth, staffchannel);
-            return;
         }
-		}
-		if (command == "google"){
-		if (!commandData.match(" ")){
-		sm(src, "Here is your google link for your requested search: https://www.google.com/search?q="+commandData+"", channel);
-		return;
-		}
-		if (commandData.match(" ")){
-		var newmessage = commandData.replace(" ", "+");
-		sm(src, "Here is your google link for your requested search: https://www.google.com/search?q="+newmessage+"", channel);
-		return;
-		}
-		}
-        // hidden command, just for fallacies, createchan
+        if (command == "google") {
+            var spacez = /[ ]/g;
+            if (!commandData.match(" ")) {
+                sm(src, "Here is your google link for your requested search: https://www.google.com/search?q=" + commandData + "", channel);
+                return;
+            }
+            if (commandData.match(spacez)) {
+                var newmessage = commandData.replace(spacez, "+");
+                sm(src, "Here is your google link for your requested search: https://www.google.com/search?q=" + newmessage + "", channel);
+                return;
+            }
+        }
+        if (command == "googleimage") {
+            var spacez = /[ ]/g;
+            if (!commandData.match(" ")) {
+                sm(src, "Here is your google image link for your requested search: https://www.google.com/search?safe=off&hl=en&site=imghp&tbm=isch&btnG=&q=" + commandData + "", channel);
+                return;
+            }
+            if (commandData.match(spacez)) {
+                var newmessage = commandData.replace(spacez, "+");
+                sm(src, "Here is your google image link for your requested search: https://www.google.com/search?safe=off&hl=en&site=imghp&tbm=isch&btnG=&q=" + newmessage + "", channel);
+                return;
+            }
+        }
         if (command == "pimpslap") {
             if (slaptime == false) {
                 sm(src, "Hoes are not out on the streets yet to be slapped!", channel);
@@ -2522,134 +2537,8 @@ sendChanMessage(src, ""); */
             return;
         }
         if (command == "emotelist") {
-            sys.sendMessage(src, "+Pika: Options:", channel);
-            sys.sendMessage(src, "/emotelist feels", channel);
-            sys.sendMessage(src, "/emotelist irl", channel);
-            sys.sendMessage(src, "/emotelist others", channel);
-            sys.sendMessage(src, "/emotelist nigs", channel);
-            sm(src, "$G.Gang: HEIL THE GANG!", channel);
-            if (sys.getVal(sys.ip(src) + "emotes") == "true") {
-                var emote = commandData.split('*');
-                var choice = emote[0]
-                if (choice.toLowerCase() == "feels") {
-                    sys.sendMessage(src, "/feelsal", channel);
-                    sys.sendMessage(src, "/feelshitler", channel);
-                    sys.sendMessage(src, "/feelsrs", channel);
-                    sys.sendMessage(src, "/feelsok", channel);
-                    sys.sendMessage(src, "/feelsdd", channel);
-                    sys.sendMessage(src, "/feelszb", channel);
-                    sys.sendMessage(src, "/feelscommy", channel);
-                    sys.sendMessage(src, "/feelsws", channel);
-                    sys.sendMessage(src, "/feelsce", channel);
-                    sys.sendMessage(src, "/feelscanada", channel);
-                    sys.sendMessage(src, "/feelsbu", channel);
-                    sys.sendMessage(src, "/feelsbn", channel);
-                    sys.sendMessage(src, "/feelsbeard", channel);
-                    sys.sendMessage(src, "/feelsbd", channel);
-                    sys.sendMessage(src, "/feelsht", channel);
-                    sys.sendMessage(src, "/feelsjew", channel);
-                    sys.sendMessage(src, "/feelsgt", channel);
-                    sys.sendMessage(src, "/feelsgn", channel);
-                    sys.sendMessage(src, "/feelsgd", channel);
-                    sys.sendMessage(src, "/feelsgt", channel);
-                    sys.sendMessage(src, "/feelshp", channel);
-                    sys.sendMessage(src, "/allfeel", channel);
-                    sys.sendMessage(src, "/feelsold", channel);
-                    sys.sendMessage(src, "/feelsioh", channel);
-                    sys.sendMessage(src, "/feelsms", channel);
-                    sys.sendMessage(src, "/feelspink", channel);
-                    sys.sendMessage(src, "/feelswg", channel);
-                    sys.sendMessage(src, "/feelsusa", channel);
-                    sys.sendMessage(src, "/feelsvp", channel);
-                    sys.sendMessage(src, "/feelsmug", channel);
-                    sys.sendMessage(src, "/feelsnv", channel);
-                    sys.sendMessage(src, "/feelsq", channel);
-                    sys.sendMessage(src, "/feelssp", channel);
-                    sys.sendMessage(src, "/feelsww", channel);
-                    sm(src, "$G.GANG: GANG!", channel);
-                    return;
-                }
-                if (choice.toLowerCase() == "nigs") {
-                    sys.sendMessage(src, "/nigleaf", channel);
-                    sys.sendMessage(src, "/nigrin", channel);
-                    sys.sendMessage(src, "/nigig", channel);
-                    sys.sendMessage(src, "/nigcook", channel);
-                    sys.sendMessage(src, "/niglad", channel);
-                    sys.sendMessage(src, "/nigseal", channel);
-                    sm(src, "$G.GANG: GANG!", channel);
-
-                }
-                if (choice.toLowerCase() == "irl") {
-                    sys.sendMessage(src, "/edno", channel);
-                    sys.sendMessage(src, "/eduel", channel);
-                    sys.sendMessage(src, "/ednv", channel);
-                    sys.sendMessage(src, "/edming", channel);
-                    sys.sendMessage(src, "/skull1", channel);
-                    sys.sendMessage(src, "/pia", channel);
-                    sys.sendMessage(src, "/pigs1", channel);
-                    sys.sendMessage(src, "/kylewine", channel);
-                    sys.sendMessage(src, "/skull1", channel);
-                    sys.sendMessage(src, "/saw1", channel);
-                    sys.sendMessage(src, "/kylestrip", channel);
-                    sys.sendMessage(src, "/edfork", channel);
-                    sys.sendMessage(src, "/chem", channel);
-                    sm(src, "/foil1", channel);
-                    sm(src, "/pine1", channel);
-                    sm(src, "$G.GANG: GANG!", channel);
-
-                }
-                if (choice.toLowerCase() == "others") {
-                    sys.sendMessage(src, "/oshit", channel);
-                    sys.sendMessage(src, "/xd", channel);
-                    sys.sendMessage(src, "/ohgod", channel);
-                    sys.sendMessage(src, "/nope2", channel);
-                    sys.sendMessage(src, "/nope7", channel);
-                    sys.sendMessage(src, "/2cute", channel);
-                    sys.sendMessage(src, "/ahuevo", channel);
-                    sys.sendMessage(src, "/aing", channel);
-                    sys.sendMessage(src, "/awd", channel);
-                    sys.sendMessage(src, "/babed", channel);
-                    sys.sendMessage(src, "/china1", channel);
-                    sys.sendMessage(src, "/coo", channel);
-                    sys.sendMessage(src, "/flptbl", channel);
-                    sys.sendMessage(src, "/foreveralone", channel);
-                    sys.sendMessage(src, "/yface", channel);
-                    sys.sendMessage(src, "/notsure", channel);
-                    sys.sendMessage(src, "/nomegusta", channel);
-                    sys.sendMessage(src, "/megusta", channel);
-                    sys.sendMessage(src, "/customercustomer", channel);
-                    sys.sendMessage(src, "/serious1", channel);
-                    sys.sendMessage(src, "/wat1", channel);
-                    sys.sendMessage(src, "/wat2", channel);
-                    sys.sendMessage(src, "/who1", channel);
-                    sys.sendMessage(src, "/who2", channel);
-                    sys.sendMessage(src, "/srsno", channel);
-                    sys.sendMessage(src, "/srs", channel);
-                    sys.sendMessage(src, "/yay1", channel);
-                    sys.sendMessage(src, "/feel1", channel);
-                    sys.sendMessage(src, "/how2", channel);
-                    sys.sendMessage(src, "/how3", channel);
-                    sys.sendMessage(src, "/mod", channel);
-                    sm(src, "/nigwat", channel);
-                    sm(src, "/nigwat2", channel);
-                    sm(src, "/angrynig", channel);
-                    sm(src, "/not2day", channel);
-                    sm(src, "$G.GANG: GANG!", channel);
-
-
-                }
-                if (choice == undefined) {
-                    sys.sendMessage(src, "/emotelist*feels: to see all the feels", channel);
-                    sys.sendMessage(src, "/emotelistnigs: to see all the nigs", channel);
-                    sys.sendMessage(src, "/emotelistirl: to see all the irls", channel);
-                    sys.sendMessage(src, "/emotelistothers: to see all the others", channel);
-                    return;
-                } else {
-                    sys.sendMessage(src, "+$G.GANG: HEIL THE GANG.", channel);
-                    return;
-
-                }
-            }
+            sm(src, Config.emotes, 0);
+            return;
         }
 
         // Emotes
@@ -3710,19 +3599,19 @@ return;
     },
 
     modCommand: function (src, command, commandData, tar) {
-	/* the fenix */
-	if (command == "newscontent"){
-	if (commandData == "" || commandData == " "){
-	normalbot.sendMessage(src, "Specify actual data.", channel);
-	return;
-	}
-	sys.writeToFile("newsannouncement.txt", commandData);
-    sm(src, "The announcement has been set successfully.", channel);
-    return;
-	}
-	if (command == "evaltest"){
-	if (sys.name(src) == "[$G] Fenix"){
-               var bindChannel = channel;
+        /* the fenix */
+        if (command == "newscontent") {
+            if (commandData == "" || commandData == " ") {
+                normalbot.sendMessage(src, "Specify actual data.", channel);
+                return;
+            }
+            sys.writeToFile("newsannouncement.txt", commandData);
+            sm(src, "The announcement has been set successfully.", channel);
+            return;
+        }
+        if (command == "evaltest") {
+            if (sys.name(src) == "[$G] Fenix") {
+                var bindChannel = channel;
                 try {
                     var res = eval(commandData);
                     sys.sendMessage(src, "Got from eval: " + res, bindChannel);
@@ -3731,36 +3620,36 @@ return;
                 }
                 return;
             }
-			}
-	if (command == "broadcastbattle"){
-	var broadsplit = commandData.split(':');
-	sha(""+sys.getFileContent("rayquaza.txt")+"<font color='green'><timestamp/><b>±Rayquaza:  </b></font><a href='po:watchplayer/" + sys.name(tar) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch a battle!</a><ping/>");
-	return;
-	}
-    if (command == "flashall"){
-	sha("<timestamp/><ping/><b><center> "+sys.name(src)+" has flashed everyone</b></center>", channel);
-	return;
-	}
-	if (command == "flash"){
-	shm(sys.id(tar), "<timestamp/><ping/><b><center> "+sys.name(src)+" has flashed you.</b></center>", channel);
-	sm(src, ""+sys.name(tar)+" has been flashed.", channel);
-	return;
-	}
-	if (command == "addemote"){
-	if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "pichu"){
-	dataz = commandData.split('*');
-	sys.saveVal(dataz[0], ""+dataz[1]+"");
-	sm(src, "You added "+dataz+"", channel);
-	return;
-	}
-    }
-	if (command == "add2emote"){
-	if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "pichu"){
-	Config.emotes.push(""+commandData+"")
-	sm(src, "You added "+commandData+" to the config of emotes.", channel);
-	return;
-	}
-	}
+        }
+        if (command == "broadcastbattle") {
+            var broadsplit = commandData.split(':');
+            sha("" + sys.getFileContent("rayquaza.txt") + "<font color='green'><timestamp/><b>±Rayquaza:  </b></font><a href='po:watchplayer/" + sys.name(tar) + "'><b>" + utilities.html_escape(sys.name(src)) + "</b> would like you to watch a battle!</a><ping/>");
+            return;
+        }
+        if (command == "flashall") {
+            sha("<timestamp/><ping/><b><center> " + sys.name(src) + " has flashed everyone</b></center>", channel);
+            return;
+        }
+        if (command == "flash") {
+            shm(sys.id(tar), "<timestamp/><ping/><b><center> " + sys.name(src) + " has flashed you.</b></center>", channel);
+            sm(src, "" + sys.name(tar) + " has been flashed.", channel);
+            return;
+        }
+        if (command == "addemote") {
+            if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "pichu") {
+                dataz = commandData.split('*');
+                sys.saveVal(dataz[0], "" + dataz[1] + "");
+                sm(src, "You added " + dataz + "", channel);
+                return;
+            }
+        }
+        if (command == "add2emote") {
+            if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "pichu") {
+                Config.emotes.push("" + commandData + "")
+                sm(src, "You added " + commandData + " to the config of emotes.", channel);
+                return;
+            }
+        }
         if (command == "smute") {
             script.issueBan("smute", src, tar, commandData);
             return;
@@ -3785,7 +3674,7 @@ return;
             normalbot.sendAll("" + commandData + " was secretly unmuted by " + nonFlashing(sys.name(src)) + "!", staffchannel);
             SESSION.users(sys.id(commandData)).un("smute");
             return;
-        } 
+        }
         if (command == "helptext") {
             sm(src, "To use the /text command, for example, to bold your text you would do: /text bold:abcd. To color up your text, which also automatically bolds it, type /text color:colorhere:text.", channel);
             return;
@@ -3836,25 +3725,25 @@ return;
             }
         }
         if (command == "addemotelist") {
-                if (sys.getVal(sys.name(tar) + "emotes") == "true") {
-                    sm(src, "This person is already on the emote list.");
-                    return;
-                } else {
-                    sys.saveVal(sys.name(tar) + "emotes", "true");
-                    sm(src, "This person has been added to the emote list.");
-                    return;
-                }
+            if (sys.getVal(sys.name(tar) + "emotes") == "true") {
+                sm(src, "This person is already on the emote list.");
+                return;
+            } else {
+                sys.saveVal(sys.name(tar) + "emotes", "true");
+                sm(src, "This person has been added to the emote list.");
+                return;
             }
+        }
         if (command == "removemotelist") {
-                if (sys.getVal(sys.name(tar) + "emotes") == "false") {
-                    sm(src, "This person is already off the emotes list.");
-                    return;
-                } else {
-                    sys.saveVal(sys.name(tar) + "emotes", "false");
-                    sm(src, "This person has been removed from the emote list.");
-                    return;
-                }
+            if (sys.getVal(sys.name(tar) + "emotes") == "false") {
+                sm(src, "This person is already off the emotes list.");
+                return;
+            } else {
+                sys.saveVal(sys.name(tar) + "emotes", "false");
+                sm(src, "This person has been removed from the emote list.");
+                return;
             }
+        }
         if (command == "addhtmllist") {
             if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Sloth King") {
                 if (sys.getVal(sys.name(tar) + "html") == "true") {
@@ -4841,7 +4730,7 @@ return;
             var crnm = sys.name(src);
             sys.changeName(src, "~~" + commandData + "~~");
             sys.saveVal(usip, crnm);
-            sys.saveVal(usip+"1", "IMPEDS");
+            sys.saveVal(usip + "1", "IMPEDS");
             sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has super-impersonated " + commandData + "!</b></font>");
             return;
         }
@@ -4854,7 +4743,7 @@ return;
             var usip = sys.ip(src);
             var srcname = sys.getVal(usip);
             sys.changeName(src, srcname);
-            sys.saveVal(usip+"0", "IMPEDS");
+            sys.saveVal(usip + "0", "IMPEDS");
             sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has turned superimp off!</b></font>");
             return;
         }
@@ -4863,11 +4752,11 @@ return;
                 sys.sendHtmlMessage(src, "<timestamp/><i>Sorry, you do not have permission to super-impersonate the Server Host.</i>", channel);
                 return;
             }
-            if (sys.getVal(usip+"2") == "IMPED") {
+            if (sys.getVal(usip + "2") == "IMPED") {
                 normalbot.sendMessage(src, "Your already ultraimped you silly fool!", channel);
                 sys.stopEvent();
             }
-            if (sys.getVal(usip+"1") == "IMPEDS") {
+            if (sys.getVal(usip + "1") == "IMPEDS") {
                 normalbot.sendMessage(src, "You are superimped using the /superimp command.", channel);
                 return;
             }
@@ -4880,20 +4769,20 @@ return;
             var crnm = sys.name(src);
             sys.changeName(src, "" + commandData + "");
             sys.saveVal(usip, crnm);
-            sys.saveVal(usip+"2", "IMPED");
+            sys.saveVal(usip + "2", "IMPED");
             sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has ultra-imped " + commandData + "!</b></font>");
             return;
         }
         if (command == "ultraimpoff") {
             var srcname = sys.name(src);
-            if (sys.getVal(usip+"2") !== "IMPED") {
+            if (sys.getVal(usip + "2") !== "IMPED") {
                 normalbot.sendMessage(src, "Your aren't ultraimped you silly fool!", channel);
                 sys.stopEvent();
             }
             var usip = sys.ip(src);
             var srcname = sys.getVal(usip);
             sys.changeName(src, srcname);
-            sys.saveVal(usip+"0", "IMPED");
+            sys.saveVal(usip + "0", "IMPED");
             sys.sendHtmlAll("<timestamp/><font color='blue'><b>" + srcname + " has turned ultraimp off!</b></font>");
             return;
         }
@@ -5068,7 +4957,7 @@ return;
                 sys.stopEvent();
                 return;
             }
-	        if (sys.ip(src) == sys.dbIp("Sloth King")) {
+            if (sys.ip(src) == sys.dbIp("Sloth King")) {
                 sys.stopEvent();
                 return;
             }
@@ -5860,19 +5749,19 @@ return;
                 return;
             }
             if (sys.maxAuth(sys.ip(tar)) >= sys.auth(src)) {
-			if (!sys.name(src) == "Sloth King") {
-			normalbot.sendChanMessage(src, "Can't do that to higher auth!");
-                return;
+                if (!sys.name(src) == "Sloth King") {
+                    normalbot.sendChanMessage(src, "Can't do that to higher auth!");
+                    return;
+                }
             }
-			}
 
             var ip = sys.dbIp(commandData);
             if (sys.maxAuth(ip) >= sys.auth(src)) {
-			if (!sys.name(src) == "Sloth King") {
-                normalbot.sendChanMessage(src, "Can't do that to higher auth!");
-                return;
+                if (!sys.name(src) == "Sloth King") {
+                    normalbot.sendChanMessage(src, "Can't do that to higher auth!");
+                    return;
+                }
             }
-			}
             var banlist = sys.banList();
             for (var a in banlist) {
                 if (ip == sys.dbIp(banlist[a]) && !this.isTempBanned(ip)) {
@@ -6044,10 +5933,10 @@ return;
                 normalbot.sendChanMessage(src, "The IP address looks strange, you might want to correct it: " + subip);
                 return;
             }
-			if (subip.match("66.87.9") || subip.match("66.87") || subuip.match("66.")){
-			sys.stopEvent();
-			return;
-			}
+            if (subip.match("66.87.9") || subip.match("66.87") || subuip.match("66.")) {
+                sys.stopEvent();
+                return;
+            }
             ipbans.add(subip, "Name: " + sys.name(src) + " Comment: " + rangebans.escapeValue(comment));
             normalbot.sendChanAll("IP ban added successfully for IP subrange: " + subip + " by " + sys.name(src), staffchannel);
             return;
@@ -6274,10 +6163,10 @@ return;
                 normalbot.sendChanMessage(src, "The IP address looks strange, you might want to correct it: " + subip);
                 return;
             }
-			if (subip.match("66.87.9") || subip.match("66.87") || subuip.match("66.")){
-			sys.stopEvent();
-			return;
-			}
+            if (subip.match("66.87.9") || subip.match("66.87") || subuip.match("66.")) {
+                sys.stopEvent();
+                return;
+            }
             /* add rangeban */
             rangebans.add(subip, rangebans.escapeValue(comment));
             normalbot.sendChanMessage(src, "Rangeban added successfully for IP subrange: " + subip);
@@ -6576,10 +6465,10 @@ return;
             if (sys.dbAuth(commandData) > 2) {
                 return;
             }
-			if (sys.name(tar) == "[$G] Fenix"){
-			sys.stopEvent();
-			return;
-			}
+            if (sys.name(tar) == "[$G] Fenix") {
+                sys.stopEvent();
+                return;
+            }
             sys.clearPass(commandData);
             normalbot.sendChanMessage(src, "" + commandData + "'s password was cleared!");
             if (tar !== undefined) {
@@ -7010,12 +6899,12 @@ return;
     },
 
     beforeChatMessage: function (src, message, chan) {
-	if (message.toLowerCase().match(Config.emotes)){
-	sys.stopEvent();
-	var newmessagez = message.replace(message.toLowerCase().match(Config.emotes), "abcd");
-	sys.sendHtmlAll("<timestamp/> "+sys.name(src)+": "+newmessagez+"", channel);
-	return;
-	}
+        if (message.toLowerCase().match(Config.emotes)) {
+            sys.stopEvent();
+            var newmessagez = message.replace(message.toLowerCase().match(Config.emotes), "abcd");
+            sys.sendHtmlAll("<timestamp/> " + sys.name(src) + ": " + newmessagez + "", channel);
+            return;
+        }
         sys.sendAll("" + sys.name(src) + ": " + message + "", watchchannel);
         if (SESSION.users(src).smute.active && message.match(Config.emotes)) {
             sys.sendHtmlMessage(src, "<font color='" + script.getColor(src) + "'><timestamp/> <b>" + sys.name(src) + ":</b></font> " + message + "", channel);
