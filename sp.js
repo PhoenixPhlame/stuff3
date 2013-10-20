@@ -2257,24 +2257,6 @@ sys.sendMessage(player, "Set by: " + SESSION.channels(chan).topicSetter, chan);
             sys.sendHtmlAll("<font color=green><timestamp/> <i><b>!WelcomeBot:</i></b> <b>Welcome " + sys.name(src) + "</b>", 0);
             return;
         }
-        if (sys.getVal(sys.name(src) + "fishn") == undefined) {
-            sys.saveVal(sys.name(src) + "fishn", 0);
-            return;
-        }
-        if (sys.getVal(sys.name(src) + "lg") == "true") {
-            var loginfo = sys.getVal(sys.name(src) + "loginm");
-            var loginfo2 = sys.getVal(sys.name(src) + "loginptc");
-            sys.sendHtmlAll("<font color=" + loginfo2 + "><timestamp/> <b>" + loginfo + "</b></font>", 0);
-            return;
-        }
-        if (sys.getFileContent("" + sys.name(src) + ".txt")) {
-            sys.sendHtmlAll("" + sys.getFileContent(sys.name(src).txt) + "", channel);
-            return;
-        }
-        if (sys.getVal(sys.name(src).toLowerCase() + "league") == "true") {
-            sys.sendHtmlMessage(src, "<font color='red'><timestamp/><ping/><b> BE SURE TO CHECK YOUR GYM LEADER THREAD FOR CHALLENGES!</b></font>");
-            return
-        }
         sys.sendMessage(src, "");
         sys.sendMessage(src, "");
         sys.sendMessage(src, "");
