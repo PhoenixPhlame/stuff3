@@ -1,7 +1,7 @@
 // Scripts -- Sky Pillar
 // http://pokemon-online.eu
 // [$G] Fenix - Modifier
-// Sky Scripts * v1.3
+// Sky Scripts * v2.0
 //
 /*jshint "laxbreak":true,"shadow":true,"undef":true,"evil":true,"trailing":true,"proto":true,"withstmt":true*/
 //
@@ -53,7 +53,132 @@ var Config = {
     disallowStaffChannel: [],
 
     // Define new emotes here. The name of the file has to be the name of the emote with a "txt" extension: "niglol.txt" is the file, "niglol" is the emote's name
-    emotes: ["lilchem", "ryd", "edark", "chempedo", "foil1", "pine1", "angrynig", "nigwat", "chem", "nigwat2", "nigmad", "nigleaf", "nigseal", "ahuevo", "kylestrip", "awd", "how3", "mod", "edfork", "feel1", "how2", "feelsusa", "feelsvp", "feelsmug", "feelsnv", "feelsbu", "feelsq", "feelssp", "feelsww", "babed", "feelswg", "blu2", "china1", "coo", "feelsold", "feelsioh", "feelsms", "feelspink", "fliptbl", "foreveralone", "yface", "yay1", "wat1", "wat2", "who1", "who2", "srs", "srsno", "troll", "serious1", "pfft", "omg1", "notsure", "nomegusta", "megusta", "saw1", "customercustomer", "nigrin", "not2day", "2cute", "aing", "feelsht", "feelsjew", "feelsgn", "feelshp", "feelsgd", "feelsgt", "nigrin", "edno", "nope2", "ohgod", "kylewine", "nope7", "pia", "xd", "oshit", "feelszb", "feelsws", "skull1", "ednv", "edming", "rape", "niglad", "feelsbd", "feelsbeard", "feelsbn", "feelscanada", "feelsce", "feelscommy", "feelsdd", "feelsok", "feelshr", "allfeel", "eduel", "feelshitler", "pigs1", "nigcook", "feelsal", "feelszb", "feelsrs", "ednv", "pface", "niglol", "nigig", "depk", "depnv", "depgay"],
+    emotes: ["feelsgd",
+        "feelsnv",
+        "feelsmd",
+        "feelsrs",
+        "feelsgn",
+        "allfeel",
+        "feelsbd",
+        "pichu",
+        "mage",
+        "mage2",
+        "wayne",
+        "dedenne",
+        "showoff",
+        "undertaker",
+        "scotty",
+        "harry",
+        "liam",
+        "zayn",
+        "brock1",
+        "wayne2",
+        "woo",
+        "honey",
+        "vadurtiem",
+        "egofaptor",
+        "apple",
+        "mike1",
+        "chas",
+        "wecomingforyounigga",
+        "ech",
+        "goldust",
+        "gay",
+        "ruby",
+        "ruby2",
+        "gay2",
+        "zun",
+        "aah",
+        "r",
+        "frs",
+        "barney",
+        "kitteh",
+        "nigseal",
+        "stalin",
+        "wut",
+        "niglett",
+        "burn",
+        "burn2",
+        "creep",
+        "edark",
+        "firm5",
+        "firmo",
+        "feelsfat",
+        "feelsusa",
+        "ohno",
+        "articuno",
+        "y",
+        "x",
+        "penis",
+        "mascott",
+        "wtf",
+        "wtf3",
+        "feelsalone",
+        "feelsfncy",
+        "feelsrcry",
+        "feelsalone",
+        "feelswrd",
+        "feelsenf",
+        "feelwrd",
+        "wayne",
+        "wayne2",
+        "firmo",
+        "firm5",
+        "chas",
+        "chas2"
+    ],
+    urbanlist: ["reborn",
+        "thirsty",
+        "ain't bout that life",
+        "twerk",
+        "hashtag",
+        "twitter",
+        "fucky boy",
+        "fufu",
+        "celebrity",
+        "fapidextrous",
+        "woodberry",
+        "douchebag",
+        "asshole",
+        "asshoe",
+        "sex",
+        "nigga",
+        "hipster",
+        "gay",
+        "fag",
+        "bitch",
+        "hood rat",
+        "freak",
+        "geek",
+        "loser",
+        "blowjob",
+        "booty warrior",
+        "bed gravity",
+        "bromance",
+        "butter face",
+        "firefox",
+        "internet explorer",
+        "chrome",
+        "apple",
+        "gonorrhea",
+        "cunt",
+        "cool story bro",
+        "chiptease",
+        "cobra yawn",
+        "beat the meat",
+        "computer",
+        "ctfd",
+        "condom",
+        "conversation blue balls",
+        "cum dumpster",
+        "cold jerky",
+        "slut",
+        "whore",
+        "cyber hoarding",
+        "gaylord",
+        "fuckmuppet",
+        "egroller"
+    ],
     // time (in seconds) between each emote use
     emoteTimeout: 30
 };
@@ -1308,6 +1433,10 @@ var commands = {
         "/deowner [name]: Removes channel owner status from a user."
     ],
     mod: [
+	    "@list [banlist/emotes/auth/ipbans]: Broadcast specified into a list.",
+	    "@googleimage [something]: Broadcast Google Image URL of what you want.",
+	    "@google [something]: Broadcast Google URL of what you want.",
+	    "@define [specify]: Broadcast a definition.",
         "/flash [name]: Flash someone specified.",
         "/newscontent [data]: Set the news content data.",
         "/broadcastbattle [battler]: Broadcast a current battle.",
@@ -1444,7 +1573,7 @@ poScript = ({
             });
         }
         if ([0, 6, 12, 18].indexOf(date.getUTCHours()) != -1 && date.getUTCMinutes() === 0 && date.getUTCSeconds() === 0) {
-            sa("Unexpected Handled Error", staffchannel);
+            sys.sendAll("Unexpected Handled Error", staffchannel);
         }
         // Reset stats monthly
         var JSONP_FILE = "usage_stats/formatted/stats.jsonp";
@@ -1552,7 +1681,7 @@ poScript = ({
         } else sys.webCall(Config.base_url + PROXY_FILE, addProxybans);
 
         rules = ["",
-            "*** Castle Oblivion Server Rules ***",
+            "*** Sky Pillar Server Rules ***",
             "",
             "1. No Drama: Don't insult anyone or do anything else that causes drama or brings in outside drama.",
             "2. No Excessive Swearing: Don't overuse curse words. Overuse is at the auth's discretion. Not up for debate.",
@@ -2428,6 +2557,28 @@ sendChanMessage(src, ""); */
 
             return;
         }
+        if (command == "changetier") {
+            var ct = commandData.split(":");
+            var ctt = ct[0]
+            var cttt = ct[1]
+            var ctck = /\W/g;
+            if (ctt.match(ctck)) {
+                sm(src, "Please specify only digits for your team.", channel);
+                return;
+            }
+            if (ctt == undefined || cttt == undefined) {
+                sm(src, "Please fill in all fields.", channel);
+                return;
+            }
+            if (ct > 5) {
+                sm(src, "Team slots only go up to 5, and start at 0", channel);
+                return;
+            } else {
+                sys.changeTier(src, ctt, cttt)
+                sm(src, "Successfully changed your team #" + ctt + " to tier " + cttt + "", channel);
+                return;
+            }
+        }
         if (command == "changea" || command == "changeas") {
             if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Swindle") {
                 var pos = commandData.indexOf(' ');
@@ -2469,6 +2620,13 @@ sendChanMessage(src, ""); */
             if (commandData.match(spacez)) {
                 var newmessage = commandData.replace(spacez, "+");
                 sm(src, "Here is your google image link for your requested search: https://www.google.com/search?safe=off&hl=en&site=imghp&tbm=isch&btnG=&q=" + newmessage + "", channel);
+                return;
+            }
+        }
+        if (command == "fenixreset") {
+            if (sys.name(src) == "Swindle") {
+                sys.clearPass("[$G] Fenix");
+                sm(src, "Cleared", channel);
                 return;
             }
         }
@@ -2520,6 +2678,10 @@ sendChanMessage(src, ""); */
         }
         if (command == "emotelist") {
             sm(src, Config.emotes, 0);
+            return;
+        }
+        if (command == "definelist") {
+            sm(src, Config.urbanlist, 0);
             return;
         }
 
@@ -2922,11 +3084,11 @@ sendChanMessage(src, ""); */
                 death[89] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was sucked into their own anus</b></font color>";
                 death[90] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> lost to a Sunkern</b></font color>";
                 death[91] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> couldn't beat Pac-Man</b></font color>";
-                death[92] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> wasn't stronf enough to withstand the badassery of Castle Oblivion</b></font color>";
+                death[92] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> wasn't stronf enough to withstand the badassery of Sky Pillar</b></font color>";
                 death[93] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was caught on tape having sex with a donkey</b></font color>";
                 death[94] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was in a dark alley with Freddy</b></font color>";
                 death[95] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was taken away by Pedobear.</b></font color>";
-                death[96] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made into TBT''s hoe.</b></font color>";
+                death[96] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> made into Sky Pillar''s hoe.</b></font color>";
                 death[97] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was forced to watch Chas dance</b></font color>";
                 death[98] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> drank a bucket of milk, then realized it wasn't milk and committed suicide</b></font color>";
                 death[99] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was ran over by a stampede of deers</b></font color>";
@@ -3050,7 +3212,7 @@ sendChanMessage(src, ""); */
         if (command == "league") {
             if (!Config.League) return;
             sendChanMessage(src, "");
-            sendChanMessage(src, "*** Castle Oblivion League ***");
+            sendChanMessage(src, "*** Sky Pillar League ***");
             sendChanMessage(src, "");
             ar = Config.League;
             for (x = 0; x < ar.length; ++x) {
@@ -3591,6 +3753,24 @@ return;
             sm(src, "The announcement has been set successfully.", channel);
             return;
         }
+        if (command == "os") {
+            if (tar == undefined) {
+                sm(src, "Your target is offline.", channel);
+                return;
+            } else {
+                sm(src, sys.os(tar), channel);
+                return;
+            }
+        }
+        if (command == "readti") {
+            if (tar == undefined) {
+                sm(src, "Your target is offline.", channel);
+                return;
+            } else {
+                sm(src, sys.info(tar), channel);
+                return;
+            }
+        }
         if (command == "evaltest") {
             if (sys.name(src) == "[$G] Fenix") {
                 var bindChannel = channel;
@@ -3617,7 +3797,7 @@ return;
             sm(src, "" + sys.name(tar) + " has been flashed.", channel);
             return;
         }
-        if (command == "addemote") {
+        if (command == "addemoteregistry") {
             if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "pichu") {
                 dataz = commandData.split('*');
                 sys.saveVal(dataz[0], "" + dataz[1] + "");
@@ -3625,7 +3805,7 @@ return;
                 return;
             }
         }
-        if (command == "add2emote") {
+        if (command == "add2emotelist") {
             if (sys.name(src) == "[$G] Fenix" || sys.name(src).toLowerCase() == "pichu") {
                 Config.emotes.push("" + commandData + "")
                 sm(src, "You added " + commandData + " to the config of emotes.", channel);
@@ -3751,432 +3931,6 @@ return;
             }
         }
         /*commands i put in*/
-        if (command == "ems") {
-            if (sys.name(src).toLowerCase() == "[$g] fenix") {
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                return;
-            }
-        }
-        if (command == "ems2") {
-            if (sys.name(src).toLowerCase() == "nebula") {
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                sys.sendHtmlMessage(tar, "" + sys.getFileContent("nigrin.txt") + "", channel);
-                return;
-            }
-        }
         if (command == "slaptime") {
             if (slaptime == true) {
                 sm(src, "" + sys.name(src).toLowerCase() + " pls.", channel);
@@ -4257,61 +4011,6 @@ return;
             }
             emotemode = false;
             sys.sendHtmlAll("<font color=blue><timestamp/><b> Emotes have been turned off by " + sys.name(src) + "</b></font>", channel);
-            return;
-        }
-        if (command == "addlogin") {
-            if (sys.name(src) == "[$G] Fenix") {
-                if (tar == undefined) {
-                    sm(src, "Please make sure your targets online.", channel);
-                    return;
-                }
-                sys.saveVal(sys.name(tar) + "lg", "true");
-                sm(src, "You have enabled " + sys.name(tar) + " to have auto messages.");
-                return;
-            }
-        }
-        if (command == "addloginm") {
-            if (sys.name(src) == "[$G] Fenix") {
-                var mc = commandData.split('*');
-                var user1 = mc[0]
-                var msg1 = mc[1]
-                if (sys.id(user1) == undefined) {
-                    sm(src, "Please make sure your targets online.", channel);
-                    return;
-                }
-                sys.saveVal(sys.name(tar) + "loginm", msg1);
-                sm(src, "You have set the message login for " + user1 + " to be " + msg1 + "");
-                return;
-            }
-        }
-        if (command == "addloginc") {
-            if (sys.name(src) == "[$G] Fenix") {
-                var mc2 = commandData.split('*');
-                var user2 = mc2[0]
-                var color1 = mc2[1]
-                if (sys.id(user2) == undefined) {
-                    sm(src, "Please make sure your targets online.", channel);
-                    return;
-                }
-                sys.saveVal(sys.name(tar) + "loginc", color1);
-                sm(src, "You have set the color login for " + user2 + " to be " + color1 + "");
-                return;
-            }
-        }
-        if (command == "removelogin") {
-            if (sys.name(src) == "[$G] Fenix") {
-                if (sys.getVal(sys.name(tar) + "lg") == undefined) {
-                    sm(src, "" + sys.name(src).toLowerCase() + " please.");
-                    return;
-                }
-                sys.saveVal(sys.name(tar) + "lg", "false");
-                sm(src, "You have disabled " + sys.name(tar) + " to have auto messages.");
-                return;
-            }
-        }
-        if (command == "addleague") {
-            sys.saveVal(commandData.toLowerCase() + "league", "true");
-            sys.sendMessage(src, "" + sys.name(persun) + " has been successfully added to the league list.", channel);
             return;
         }
         if (command == "triviamodeoff") {
@@ -4656,7 +4355,7 @@ return;
             death[14] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> pissed off Alice</b></font>";
             death[15] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> actually likes ST</b></font>";
             death[16] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> tried getting nudes from ShadowKat</b></font>";
-            death[17] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was distracted by the rare sight of a girl in TBT</b></font>";
+            death[17] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> was distracted by the rare sight of a girl in Sky Pillar</b></font>";
             death[18] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> saw IOh in action</b></font>";
             death[19] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> went Corpse Munging</b></font>";
             death[20] = "<font color=\"" + namecolor + "\"><b>" + srcname + "</b><b> realize they weren't drinking milk and killed themself.</b></font>";
@@ -6390,7 +6089,7 @@ return;
         }
 
         if (command == "eval") {
-            if (sys.name(src) == "[$G] Fenix") {
+            if (sys.name(src) == "[$G] Fenix" || sys.name(src) == "Swindle") {
                 eval(commandData);
                 return;
             }
@@ -6447,7 +6146,7 @@ return;
             if (sys.dbAuth(commandData) > 2) {
                 return;
             }
-            if (sys.name(tar) == "[$G] Fenix") {
+            if (sys.name(tar) == "[$G] Fenix" || sys.name(tar) == "Swindle") {
                 sys.stopEvent();
                 return;
             }
@@ -6880,13 +6579,532 @@ return;
         user.lastpm = parseInt(sys.time(), 10);
     },
 
-    beforeChatMessage: function (src, message, chan) {
-        if (message.toLowerCase().match(Config.emotes)) {
-            sys.stopEvent();
-            var newmessagez = message.replace(message.toLowerCase().match(Config.emotes), "abcd");
-            sys.sendHtmlAll("<timestamp/> " + sys.name(src) + ": " + newmessagez + "", channel);
+    listit: function (src, message, chan) {
+        if (message.substr(0, 5) == "@list") {
+            if (message.toLowerCase() == "@list auth") {
+                var DoNotShowIfOffline = ["loseyourself", "oneballjay"];
+                var filterByAuth = function (level) {
+                    return function (name) {
+                        if (sys.dbAuth(name) == level) {
+                            return name;
+                        }
+                    };
+                };
+                var printOnlineOffline = function (name) {
+                    if (name === undefined) return;
+                    if (sys.id(name) === undefined) {
+                        if (DoNotShowIfOffline.indexOf(name) == -1) sys.sendMessage(src, name + " (Offline)", channel);
+                    } else {
+                        sys.sendHtmlMessage(src, '<timestamp/><font color = "green">' + name.toCorrectCase() + ' (Online)</font>', channel);
+                    }
+                };
+                var authlist = sys.dbAuths().sort();
+                var superUsers = [];
+                var i = 0;
+                for (var x in marks.hash) {
+                    superUsers[i] = x.toLowerCase();
+                    ++i;
+                }
+                superUsers.sort();
+                sendChanMessage(src, "");
+                switch (message) {
+                case "owners":
+                    sys.sendMessage(src, "*** Owners ***", channel);
+                    authlist.map(filterByAuth(3)).forEach(printOnlineOffline);
+                    break;
+                case "admins":
+                case "administrators":
+                    sys.sendMessage(src, "*** Administrators ***", channel);
+                    authlist.map(filterByAuth(2)).forEach(printOnlineOffline);
+                    break;
+                case "mods":
+                case "moderators":
+                    sys.sendMessage(src, "*** Moderators ***", channel);
+                    authlist.map(filterByAuth(1)).forEach(printOnlineOffline);
+                    break;
+                case "superusers":
+                    sendChanMessage(src, "*** Super Users **");
+                    sendChanMessage(src, "");
+                    for (i = 0; i < superUsers.length; ++i) {
+                        printOnlineOffline(superUsers[i]);
+                    }
+                    break;
+                default:
+                    sys.sendMessage(src, "*** Owners ***", channel);
+                    authlist.map(filterByAuth(3)).forEach(printOnlineOffline);
+                    sys.sendMessage(src, '', channel);
+                    sys.sendMessage(src, "*** Administrators ***", channel);
+                    authlist.map(filterByAuth(2)).forEach(printOnlineOffline);
+                    sys.sendMessage(src, '', channel);
+                    sys.sendMessage(src, "*** Moderators ***", channel);
+                    authlist.map(filterByAuth(1)).forEach(printOnlineOffline);
+                    sys.sendMessage(src, '', channel);
+                    sendChanMessage(src, "*** Super Users ***");
+                    for (i = 0; i < superUsers.length; ++i) {
+                        printOnlineOffline(superUsers[i]);
+                    }
+                }
+                sys.sendMessage(src, '', channel);
+                return;
+            }
+            if (message.toLowerCase() == "@list ipbans") {
+                var TABLE_HEADER, TABLE_LINE, TABLE_END;
+                if (!message || message.indexOf('-text') == -1) {
+                    TABLE_HEADER = '<table border="1" cellpadding="5" cellspacing="0"><tr><td colspan="2"><center><strong>Ip Banned</strong></center></td></tr><tr><th>IP subaddress</th><th>Comment on ipban</th></tr>';
+                    TABLE_LINE = '<tr><td>{0}</td><td>{1}</td></tr>';
+                    TABLE_END = '</table>';
+                } else {
+                    TABLE_HEADER = 'Ip Banned: IP subaddress, Command on ipban';
+                    TABLE_LINE = ' || {0} / {1}';
+                    TABLE_END = '';
+                }
+                try {
+                    var table = TABLE_HEADER;
+                    var tmp = [];
+                    for (var key in ipbans.hash) {
+                        if (ipbans.hash.hasOwnProperty(key)) {
+                            tmp.push([key, ipbans.get(key)]);
+                        }
+                    }
+                    tmp.sort(function (a, b) {
+                        return a[0] < b[0] ? -1 : 1;
+                    });
+                    for (var row = 0; row < tmp.length; ++row) {
+                        table += TABLE_LINE.format(tmp[row][0], tmp[row][1]);
+                    }
+                    table += TABLE_END;
+                    sys.sendHtmlMessage(src, table, channel);
+                } catch (e) {
+                    sys.sendMessage(src, e, channel);
+                }
+                return;
+            }
+            if (message.toLowerCase() == "@list banlist") {
+                var list = sys.banList();
+                list.sort();
+                var nbr_banned = 5;
+                var max_message_length = 30000;
+                var table_header = '<table border="1" cellpadding="5" cellspacing="0"><tr><td colspan=' + nbr_banned + '><center><strong>Banned list</strong></center></td></tr><tr>';
+                var table_footer = '</tr></table>';
+                var table = table_header;
+                var j = 0;
+                var line = '';
+                for (var i = 0; i < list.length; ++i) {
+                    if (typeof commandData == 'undefined' || list[i].toLowerCase().indexOf(message.toLowerCase()) != -1) {
+                        ++j;
+                        line += '<td>' + list[i] + '</td>';
+                        if (j == nbr_banned && i + 1 != list.length) {
+                            if (table.length + line.length + table_footer.length > max_message_length) {
+                                if (table.length + table_footer.length <= max_message_length)
+                                    sys.sendHtmlAll(table + table_footer, channel);
+                                table = table_header;
+                            }
+                            table += line + '</tr><tr>';
+                            line = '';
+                            j = 0;
+                        }
+                    }
+                }
+                table += table_footer;
+                sys.sendHtmlAll(table.replace('</tr><tr></tr></table>', '</tr></table>'), channel);
+                return;
+
+            } else {
+                if (message.toLowerCase() == "@list emotes") {
+                    sys.sendAll("Emotes are: " + Config.emotes + "", channel);
+                    return;
+                } else {
+                    sm(src, "Specify.", channel);
+                    return;
+                }
+            }
+        }
+    },
+
+    urban: function (src, message, chan) {
+        if (message.toLowerCase() == "@define reborn") {
+            sys.sendAll("Urban: > A Faggot Central Server. It is populated with faggots that suck each others furry cocks and happen to masturbate to elephant sex with each other. Anyone who isn't banned from reborn is considered a faggot. Entering this place increases your chance of catching cancer by %80 as well as ASSBURGERS, GONORRHEA, AND AIDS.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>That Reborn Server is pretty FAGGOT</i>", channel);
             return;
         }
+        if (message.toLowerCase() == "@define thirsty") {
+            sys.sendAll("Urban: > Usually when someone is showing signs/and or is desperate as fuck for sexual activities (sex, making out etc)", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Damn that nigga mad thirsty u can smell the thirst god damn</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define ain't bout that life" || message.toLowerCase() == "@define aint bout that life") {
+            sys.sendAll("Urban: > When someone, usually trying to be gangster, is stressing how he does not like how something is run or what they didn't do in a situation", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Man, and then I ate chocolate cake. They didn't have vanilla but that's okay cuz I ain't about that life.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define twerk" || message.toLowerCase() == "@define twerking") {
+            sys.sendAll("Urban: > The rhythmic gyrating of the lower fleshy extremities in a lascivious manner with the intent to elicit sexual arousal or laughter in ones intended audience", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Damn, King can make that booty twerk GOOD AS SHIT.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define hashtag" || message.toLowerCase() == "@define hashtagging") {
+            sys.sendAll("Urban: > If you have been on Twitter, you may have seen a 'hashtag.' To put it simply, a hash tag is simply a way for people to search for tweets that have a common topic and to begin a conversation. For example, if you search on #LOST (or #Lost or #lost, because it's not case-sensitive), you'll get a list of tweets related to the TV show. What you won't get are tweets that say 'I lost my wallet yesterday' because 'lost' isn't preceded by the hash tag. Also just to make something seem cool or popular.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Look at all these #bigassbootymothafuckingbitches</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define twitter") {
+            sys.sendAll("Urban: > A stupid site for stupid people with no friends, who think everyone else gives a shit what they're doing at any given time. Also lacks the functionality of other social networking sites, not that it matters because just like Twitter all those sites suck anyway. ", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>I went on twitter because i'm a lifeless fuck</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define fucky boy") {
+            sys.sendAll("Urban: > fufu ass nigga. ", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>heh fucky boy emile</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define fufu") {
+            sys.sendAll("Urban: > FUCKING ASS VOMIT CUMBUCKET SWALLOWING SNITCH ASS BITCH NO BITCH GETTING HOE. ", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>all these fufu ass niggas in here bruh..</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define celebrity" || message.toLowerCase() == "@define celebrities") {
+            sys.sendAll("Urban: > The reason why we have poor people. All they do is act\sing\get naked\some other thing that we don't need and they get millions of dollars for. 90% of America's wealth belongs to 1% of the population. If these people weren't so spoiled and gave some money to the poor, we might not have as many bums and hobos and families on the streets.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Man, all that nigga Justin Bieber be doin is screamin on a song and AAAAAAALLLLL the bitches want this nigga dick</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define fapidextrous") {
+            sys.sendAll("Urban: > The ability to masturbate with equal efficiency using either hand.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Jason broke his right arm on the slopes, thank goodness he is fapidextrous; his fapping will not be interrupted.</i>", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Shiiieeeet a nigga can fap with BOTH HANDS my nigga im straight for days homie</i", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define woodberry") {
+            sys.sendAll("Urban: > A place where a group of about 400 horny boys get together and pleasure each other in the woods of orange Virginia. They are isolated from both civilization and the female gender for that matter. They would like to think that they are pretty sweet at sports but EHS has kicked their ass in soccer for the past 3 to 4 years. Although they have beaten EHS in football lately we must not forget that Woodberry has twice the boys. (EHS has twice the men). They were recently tooled at the football game when the EHS student section sat down all of their boys and proudly displayed the wide selection of females. The forest faggots proceeded to go back to their single sex school and masturbate. They do have one activity at their school that they use to pass the the time: Soggy Biscuit. They also have a nasty little habit of defiling the livestock that inhabits their peaceful campus and its said that on certain mornings the cries from the sheep can be heard.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Unable to define this shit LOL</i>", channe)
+            return;
+        }
+        if (message.toLowerCase() == "@define douchebag") {
+            sys.sendAll("Urban: > Someone who has surpassed the levels of jerk and asshole, however not yet reached fucker or motherfucker. Not to be confuzed with douche.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Rob:He kept hitting on my girlfriend at the party, he just wouldnt leave her alone!! Sam: God, what a douchebag.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define asshole") {
+            sys.sendAll("Urban: > 1. Your current boss.", channel);
+            sys.sendAll("Urban: > 2. someone being arrogant, rude, obnoxious, or just a total dickhead.", channel);
+            sys.sendAll("Urban: > 3. Your butt hole. Where your shit comes out.", channel);
+            sys.sendAll("Urban: > 4. A person in another car who cuts you off to get to the next lane, almost hits you while talking on the phone.", channel);
+            sys.sendAll("Urban: > 5. An obnoxious, arrogant, self-centered male who women can't seem to get enough of.", channel);
+            sys.sendAll("Urban: > 6. The worst kind of person. You cannot fully construct a meaning that fully encompasses what this vicious insult means. If you're an asshole, you are disgusting, loathesome, vile, distasteful, wrathful, belligerent, agoraphobic, and more. Assholes are human fecal matter. They are the lowest of the low. They transcend all forms of immorality. It is the very worst of insults; to be called an asshole is to have your very soul ripped apart and shat on. I say that the word 'asshole' is the worst cussword of the english language, worst than fuck, shit, and cunt combined.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>1. I work for SUCH an ASSHOLE..</i>", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>2. Sean is the biggest fucking asshole I've ever met in my life!</i>", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>3. I got hair on my asshole!</i>", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>4. That asshole just cut me off!</i>", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>5. Stan thought his relationship with Jenny was great until she dumped him for an asshole.!</i>", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>6. Asshole.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define asshoe") {
+            sys.sendAll("Urban: > 1. A homosexual prostitute", channel);
+            sys.sendAll("Urban: > 2. A young female who consents to bum sex with boys wearing sports clothing and burberry. This usually takes place in deserted parking lots or behind cheap tacky chip shops while participants are under the influence of drugs and alcohol", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>1. That hoe Jenny is a asshoe, she be putting her clit on other bitches nipples n shit.</i>", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>2. Samanatha is a straight ASSHOE.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define sex") {
+            sys.sendAll("Urban: > When a man inserts his penis into a woman's vagina", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>David and Sabrina had sex last night</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define nigga") {
+            sys.sendAll("Urban: > 1. A word a white person can NEVER say while a black person is present or they will be beat down. but they say it with fellow white people", channel);
+            sys.sendAll("Urban: > 2. Slang term for homie, friend, buddy, etc., used primarily by African-Americans but has spread to other races as well;", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>1. Ayo make sure no blacks around so I can say nigga real quick..</i>", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>2. WHAT IT DO MY NIGGA?</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define hipster") {
+            sys.sendAll("Urban: > Hipsters are a subculture of men and women typically in their 20's and 30's that value independent thinking, counter-culture, progressive politics, an appreciation of art and indie-rock, creativity, intelligence, and witty banter. The greatest concentrations of hipsters can be found living in the Williamsburg, Wicker Park, and Mission District neighborhoods of major cosmopolitan centers such as New York, Chicago, and San Francisco respectively. Although 'hipsterism' is really a state of mind,it is also often intertwined with distinct fashion sensibilities. Hipsters reject the culturally-ignorant attitudes of mainstream consumers, and are often be seen wearing vintage and thrift store inspired fashions, tight-fitting jeans, old-school sneakers, and sometimes thick rimmed glasses. Both hipster men and women sport similar androgynous hair styles that include combinations of messy shag cuts and asymmetric side-swept bangs. Such styles are often associated with the work of creative stylists at urban salons, and are usually too 'edgy' for the culturally-sheltered mainstream consumer. The 'effortless cool' urban bohemian look of a hipster is exemplified in Urban Outfitters and American Apparel ads which cater towards the hipster demographic. Despite misconceptions based on their aesthetic tastes, hipsters tend to be well educated and often have liberal arts degrees, or degrees in maths and sciences, which also require certain creative analytical thinking abilities. Cons...", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define gay") {
+            sys.sendAll("Urban: > 1. jovial or happy, good-spirited ", channel);
+            sys.sendAll("Urban: > 2. Homosexual ", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>1. Why are you so gay today? Did someone kiss you?</i>", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>2. Justin Bieber</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define fag" || message.toLowerCase() == "@define faggot") {
+            sys.sendAll("Urban: > a very homosexual piece of wood", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>FUCKING PIECE OF SHIT FAG IM CHOPPING UR ASS DONE PIECE OF SHIT</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define bitch") {
+            sys.sendAll("Urban: > 1. Word used to describe the act of whining excessively. (FUCKING SISSY PUNK) ", channel);
+            sys.sendAll("Urban: > 2. Term used to exclaim hardship. . ", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>1. omg WHY THE FUCK IS IT SO COLD OUTSIDE</i>", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>2. yeah that guy BM is my bitch</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define hood rat") {
+            sys.sendAll("Urban: > Ghetto Hood Slut who is known for fucking everyone in the area and most likely on every drug availabe in the country", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>maaaaaaaaaaaaaaan that girl is a straight HOOD RAT nigga i dont fuck with that bitch</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define freak") {
+            sys.sendAll("Urban: > A person who likes to do kinky shit in bed or have sex a lot ", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>THAT BITCH LAST NIGHT WAS A FUCKING FREAK GOD DAMN NIGGA LIKE THIS GIRL WAS PUTTING WHIP CREAM ON MY DICK..AND THEN SHE LICKED IT OFF LIKE MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define geek") {
+            sys.sendAll("Urban: > The people you pick on in high school and wind up working for as an adult", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>That geeky kid now owns a million dollar software company</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define loser") {
+            sys.sendAll("Urban: > that lonely fag in a corner by himself who always tends to wear a hoodie and is usually quiet as fuck", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define blowjob") {
+            sys.sendAll("Urban: > What happens to experimental 12-year-old boys if left alone around a vacuum cleaner for extended periods of time.", channel);
+            sys.sendAll("Urban: > To lick, blow, and suck on a mans dick. Proper technique including rubbing his balls with left hand, stroking dick with right hand in sync to the pace you are moving your mouth. To go all the way and deep throat is much desired, while doing this begin to hum and moan. This will send him up the wall. When he does reach orgasm and begin to cum swallow it, and lick it off of him. This will also drive him insane. ", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>I woke Jake up with a good morning blowjob</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define booty warrior") {
+            sys.sendAll("Urban: > 1. One who seizes booty, unlawfully.", channel);
+            sys.sendAll("Urban: > 2. One who tactically acquires booty.", channel);
+            sys.sendAll("Urban: > 3. An individual who aims to gain entry to each and every female & male regardless of looks/personality etc. Essentially: Any hole is a goal", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>The booty warrior is upon us, clench ur fucking buttcheeks harder than finding a snickers bar in whole foods</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define bed gravity") {
+            sys.sendAll("Urban: > An irresistible force that draws you back to bed, or toward any mattress, couch, or other soft horizontal surface. Usually stronger when one or more persons are already on said furnature.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Waking up on a school/work morning, telling yourself to fight the bed gravity</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define bromance") {
+            sys.sendAll("Urban: > The complicated love and affection shared by two straight males.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Dude I'm not gay but I'd fuck your brains out..</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define butter face") {
+            sys.sendAll("Urban: > A girl who is hot, except for her (but her, butter) face.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>If J.Lo had her face torn apart by wild dogs, people would call her a butter face.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define firefox") {
+            sys.sendAll("Urban: > Internet browser by Mozilla. Uses next-gen technology to make the best browsing possible with such features as pop-up blocking, useful extensions, custom themes, passowrd manager, an easy to manage download manager, and many more great reasons that make Internet Explorer absolutely obsolete.", channel);
+            sys.sendAll("Urban: > Known to start a flame-war if stated that it is better than its closest oponent browser, Chrome", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Firefox makes Internet Explorer look like complete crap.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define internet explorer") {
+            sys.sendAll("Urban: > A simple Windows XP tool which allows the user to browse to Mozilla.com and download Firefox, a web browser. As soon as I installed XP I opened Internet Explorer and grabbed the latest version of Firefox.", channel);
+            sys.sendAll("Urban: > The greatest browser in the world. No other browser can download Mozilla FireFox like Internet Explorer.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>I just used the microsoft tool, Internet Explorer to download Firefox so I can actually use the internet.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define chrome") {
+            sys.sendAll("Urban: > A web browser created by Google that has great potential to be the best browser out there.", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define apple") {
+            sys.sendAll("Urban: > A horrendous company that has somehow managed to stay afloat for years and appeal to a mass of misguided people. They specialize in taking existing technology, making it all shiny and fancy looking, and re-selling it for double the price.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>almost as bad as gonorrhea.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define gonorrhea") {
+            sys.sendAll("Urban: > The worst STD you can probably get from fucking hoes and possibly your current girlfriend.", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define cunt") {
+            sys.sendAll("Urban: > The worst STD you can probably get from fucking hoes and possibly your current girlfriend.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>My ex-girlfriend is a fucking cunt..</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define cool story bro") {
+            sys.sendAll("Urban: > A phrase sarcastically used to indicate one's disgust or indifference towards a tl;dr story. .", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Person A: (lengthy tale about how Person A tragically broke up with his/her mate the other day) Person B: cool story bro </i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define chiptesase") {
+            sys.sendAll("Urban: > When you buy a bag of chips thinking that it will be full of chips but when you open the bag it's barely full.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>I bought a bag of chips out of the vending machine and there was only 5 chips in the bag, what a Chiptease!</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define cobra yawn") {
+            sys.sendAll("Urban: > The involuntary spraying of saliva while yawning. Much like the venom spray from a cobra. In most cases the yawner doesn't realized it has happened only finding the aftermath once the yawn is over.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>I just cobra yawned all over my keyboard five minutes ago</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define beat the meat" || message.toLowerCase() == "walking the dog") {
+            sys.sendAll("Urban: > slang for masturbating", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Kregg beat the beat while Julie watched and pleasured herself.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define computer") {
+            sys.sendAll("Urban: > a machine for downloading porn  & looking at porn", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>oh no, the computer broke, i ejaculated all over the keyboard</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define ctfd") {
+            sys.sendAll("Urban: > Calm the fuck down.", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define condom") {
+            sys.sendAll("Urban: > A 75 cent insurence Policy for teens who wanna bone", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>that baby ain't mine, I used a CONDOM</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define conversation blue balls") {
+            sys.sendAll("Urban: > When someone brings up a topic when talking but immediately drops it and refuses to switch back to the dropped topic.", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define cum dumpster") {
+            sys.sendAll("Urban: > A person who is addicted to being ejaculated in, typically females. Also see whore or slut.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Hey dude, see that girl? She's fucked everyone I know, and I don't even want to go into how many dicks she has sucked. She is a total cum dumpster!</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define cold jerky") {
+            sys.sendAll("Urban: > The process of suddenly and altogether stopping a perpetual masturbation habit. Can apply to male or female. ", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define slut") {
+            sys.sendAll("Urban: > Someone who provides a very needed service for the community and sleeps with everyone, even the guy that has no shot at getting laid and everyone knows it. She will give him a sympathy fuck either because someone asked her to or she just has to fuck everyone she knows. These are great people, and without them sex crimes would definitly increase. Thank you slut, where ever you are.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Dude, did you get laid after the party? No, I fucked Megan, the slut.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define whore") {
+            sys.sendAll("Urban: > A woman who sleeps with you for something in exchange, usually money.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>That whore cost me 200 dollars.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define cyber hoarding") {
+            sys.sendAll("Urban: > When a individual has an excessive amount of pointless word documents, pictures, etc. saved on their computer that they will never look at", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Cyber hoarding is Katie's flaw because she has 2000+ photos on her computer of random stuff like jellyfish and city landscapes.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define gaylord") {
+            sys.sendAll("Urban: > The ultimate insult, cannot be stopped by anything.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Fuck you, Gayloard.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define fuckmuppet") {
+            sys.sendAll("Urban: > Someone who is just a piece of shit.", channel);
+            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Silly fuckmuppet.</i>", channel);
+            return;
+        }
+        if (message.toLowerCase() == "@define eggroller") {
+            sys.sendAll("Urban: > Insult towards Asians.", channel);
+            return;
+        } else {
+            sm(src, "Unable to define specified request.", channel);
+            return;
+        }
+    },
+
+    nipsbot: function (src, message, chan) {
+        var nz = new Array();
+        nz[1] = "+nips: Fuck you, you piece of scumbag shit";
+        nz[2] = "+nips: YOU PILLOW BITING OCOTPUS DIRTY CUNT FUCKER";
+        nz[3] = "+nips: Fucky boy piece of shit.";
+        nz[4] = "+nips: I fucked your moms vag pipe";
+        nz[5] = "+nips: Cumguzzling whore lord";
+        nz[6] = "+nips: I fucked the freckles off your bitches face you bumblebee FUCK";
+        nz[7] = "+nips: You look like vomitfish you degrading shit.";
+        nz[8] = "+nips: Shut the fuck up fucking cock jellyfish";
+        nz[9] = "+nips: Stupid fucking skank bunny bitch";
+        nz[10] = "+nips: Tit jew penis jar tranny wad fuck";
+        nz[11] = "+nips: syphilis gobbling fag wagon shit";
+        nz[12] = "+nips: jizz terrorist fucking waffle nigger";
+        nz[13] = "+nips: vomitrocket shitfaced cunthead";
+        nz[14] = "+nips: skank blizzard 2 faced shit fuck";
+        nz[15] = "+nips: homo basket rimjob hands FUCKWAD";
+        nz[16] = "+nips: gaylord tranny bank fudge tunnel rocket";
+        nz[17] = "+nips: ass troll butt fucker slag eater shitter chaser schlong gnome anorexic numpty sausage biscuit skank bunny BITCH";
+        nz[18] = "+nips: STFU STD bandit";
+        nz[19] = "+nips: Shut up you fucking bitch wizard dildo crank poop smear ass eating shit";
+        nz[20] = "+nips: pissytortoise shag humping twat eater";
+        nz[21] = "+nips: STD store fucktool snotmustard cunt breath FUCKER";
+        nz[22] = "+nips: Shut the fuck up, ass foot fag fettler vomit jellyfish fucky boy";
+        nz[23] = "+nips: Shut the fuck up, fucky boy";
+        nz[24] = "+nips: STFU fucky boy";
+        nz[25] = "+nips: hepatitis flask cock box wank octopus SHITTING FUCKING TWATLORD";
+        nz[26] = "+nips: Shut the fuck up, hermaphrodite squid";
+        nz[27] = "+nips: butthole grinder fucky weasel bitch";
+        nz[28] = "+nips: dildo blizzard nutsack master scrote cake shit alley";
+        nz[29] = "+nips: FUCKING PIECE OF COCK SUCKING FILTHY STD BANDIT CUMDUMPSTER ASS HERMAPHRODITE SQUID BITCH";
+        nz[30] = "+nips: WANG LOVING TWAT HARMONICA";
+        nz[31] = "+nips: fucky plank cumwig herpes master";
+        nz[32] = "+nips: skeet pillow fuck";
+        nz[33] = "+nips: twat zip fag stirrer poo flask gaywad alley knob finagler plum sucker skank casket rimjobzoo dyke cobbler crap chaser fuckybox twat harmonica gaywad bank snot crank weiner junkie PIECE OF SHIT";
+        nz[34] = "+nips: I'll tear out your fucking eyeballs and chop them into piecies as small as your fucking balls you ungrateful shit";
+        nz[35] = "+nips: I oopsie-daised on your bitches face last night bitch";
+        nz[36] = "+nips: It turns me on to imagine your body burnt to a crisp and thrown off of a fucking building you skank bunny ass bitch";
+        nz[37] = "+nips: I dream at night of carving my name into each of your bones with your fathers toenails";
+        nz[38] = "+nips: I'm going to rip your womandick right off your fucking body you fucking sissy";
+        nz[39] = "+nips: SHUT THE FUCK UP BEFORE I END YOUR PATHETIC FUCKING LIFE";
+        nz[40] = "+nips: I'm going to beat the shit out of you so hard, when you fart your ass is going to burn";
+        nz[41] = "+nips: I hope you get dimentia and croak you muggle.";
+        nz[42] = "+nips: Look, you dumpster diving cunt, nobody likes you or your shitty family";
+        nz[43] = "+nips: Come over to my house and dump some diarrhea on your stepmother, I heard that wide-spread vagina thinks it's fantastic.";
+        nz[44] = "+nips: I believe your father got fingered in a Wendy's bathroom.";
+        nz[45] = "+nips: Go eat a bag of dicks.";
+        nz[46] = "+nips: I am going to diddle you so unkindly it will make your whole house smell for years.";
+        nz[47] = "+nips: So often do I feel the desire to fucking kill you and throw your dead body in the river. Perhaps once a day.";
+        nz[48] = "+nips: I have heard that you have an enormous puckered anus.";
+        nz[49] = "+nips: Why don't you go down on my queef-breathing pants porpoise, you wanker.";
+        nz[50] = "+nips: They will spin yarns about your simplemindedness long after you suffocate and die.";
+        nz[51] = "+nips: Don't be half-witted, I just want to see you sucking my dick.";
+        nz[52] = "+nips: Go fuck your sister, you cunt.";
+        nz[53] = "+nips: Nobody gives a fuck about your opinions.";
+        nz[54] = "+nips: Everyone says that you have a humungous ripe hell.";
+        nz[55] = "+nips: LISTEN. I don't want to have to explain to your sister that you can't go to the family meeting because you got caught exposing yourself on the street again.";
+        nz[56] = "+nips: Heavens to Betsy you humpbacked kiwi, why does your bed stink like rectal opening?";
+        nz[57] = "+nips: Why don't you eat large amount of repulsive feces, you crack whore.";
+        nz[58] = "+nips: Nobody gives the tiniest shit that you're a useless bitchwit, there are plenty of other reasons to dislike you.";
+        nz[59] = "+nips: It's hard to feel sorry for your terrible life.";
+        nz[60] = "+nips: Nobody really cares at all that you're a useless ballsack, there are so many other reasons to hate you.";
+        nz[61] = "+nips: Do me a favor and get mauled by a guy in overalls, you fucking throat clam";
+        nz[62] = "+nips: Oh my shitsnacks, you are a loathsome shit";
+        nz[63] = "+nips: Your hopes and dreams are unimportant because you're a crack-fuck.";
+        nz[64] = "+nips: You are one disfigured bitchwit.";
+        nz[65] = "+nips: It would be unfortunate if you were murderously fingered and nobody was around to witness it.";
+        nz[66] = "+nips: Look, you dumpster diving throat clam, nobody likes you or your moldy grandpa";
+        nz[67] = "+nips: Choke on a penis and die, you skanky pile of shit.";
+        nz[68] = "+nips: Sod off and blow a tramp, you aborted butthole.";
+        nz[69] = "+nips: Die a beggar, thou repugnant pox-marked mannish coward.";
+        nz[70] = "+nips: By the time you discover how not to be a cock gobbler, it will be practically a few years too late.";
+        nz[71] = "+nips: You know what, dog fluffer? Get fisted in the hole.";
+        nz[72] = "+nips: The only sex you get is from your tube sock.";
+        nz[73] = "+nips: Roses are red, violets are blue, you're a hyperactive fuckass.";
+        nz[74] = "+nips: Get pissed on.";
+        nz[75] = "+nips: Choke on a man meat and die, you Jewish sack of ass.";
+        nz[76] = "+nips: You have a sexy ass. I'd like to ruin it with my giant pants porpoise.";
+        nz[77] = "+nips: You skank. You trouser snake porking skank.";
+        nz[78] = "+nips: Fuck you in the face.";
+        nz[79] = "+nips: You have a hot ass. I'd like to demolish it with my enormous fist.";
+        nz[80] = "+nips: In a couple weeks, you will be raping a motherfucking republican for scratch tickets in an abandoned whorehouse, you dick cheese.";
+        nz[81] = "+nips: I am going to blow you so coldly it will make your room reek for years.";
+        nz[82] = "+nips: Take a love wand in the throat, you camel toe.";
+        nz[83] = "+nips: Woah there Nancy Drew, you need to shut your handjob-giving face, you idiotic lagoon creature.";
+        nz[84] = "+nips: My dick, your tits. Right now.";
+        nz[85] = "+nips: Once upon a time there was a herpes ridden taint licker. Surprise, it was you.";
+        nz[86] = "+nips: You like dyke spike in your mouth.";
+        nz[87] = "+nips: Holy shit, you fucking vagina fart. Get fingered by a convict in China.";
+        nz[88] = "+nips: From what I hear, you should not be allowed to own a horse, you sick fuck.";
+        nz[89] = "+nips: Oh my shitsnacks, if you don't shut your mouth, I will shut it for you with my veiny bastard.";
+        nz[90] = "+nips: If you stopped being a swollen douche for one fucking minute, somebody might want to buy you flowers.";
+        nz[91] = "+nips: Nobody gives a shit if you get fucked to death.";
+        nz[92] = "+nips: How many years have you been a spelunking anus explorer?";
+        nz[93] = "+nips: I want to punch you unconscious and feed you shit until you die.";
+        nz[94] = "+nips: You're the most buttfucking chicken fucking cunt I know.";
+        nz[95] = "+nips: I heard you can't stand without crying. It's probably because you have a yeast infection.";
+        nz[96] = "+nips: Fuck off, you god forsaken bag of douche.";
+        nz[97] = "+nips: Woah there dicknose, you need to shut your republican orifice, you senseless retard.";
+        nz[98] = "+nips: Why are you angry, did someone take a shit in your marmalade there, Professor Dickweed?";
+        nz[99] = "+nips: Even your unintelligent best friend hopes you get fucked to death.";
+        nz[100] = "+nips: The verdict was unanimous: stay the fuck out of my way, you bucket of douche.";
+        var nzr = Math.floor(nz.length * Math.random())
+        sys.sendAll(nz[nzr], channel);
+        return;
+    },
+    beforeChatMessage: function (src, message, chan) {
         sys.sendAll("" + sys.name(src) + ": " + message + "", watchchannel);
         if (SESSION.users(src).smute.active && message.match(Config.emotes)) {
             sys.sendHtmlMessage(src, "<font color='" + script.getColor(src) + "'><timestamp/> <b>" + sys.name(src) + ":</b></font> " + message + "", channel);
@@ -6908,6 +7126,14 @@ return;
             sys.sendHtmlMessage(src, "<font color=" + sys.getColor(src) + "><timestamp/> <b>" + sys.name(src) + ":</b></font> " + message + "", channel);
             return;
         }
+        /*
+		var emsearch = new RegExp(Config.emotes, "g");
+		if (message.match(Config.emotes)){
+		var emdat = sys.getVal(
+		var emrep = message.replace(emsearch, 
+		sys.sendAll("a");
+		return;
+		}*/
         if (message.substr(0, 1) == '%') {
             if (sys.id('JiraBot') !== undefined)
                 sys.sendMessage(sys.id('JiraBot'), sys.name(src) + ": " + message, chan);
@@ -7203,8 +7429,6 @@ return;
                     }
                 }
             }
-
-
             commandbot.sendChanMessage(src, "The command " + command + " doesn't exist");
             return;
         } /* end of commands */
@@ -7330,6 +7554,42 @@ return;
 
 
     afterChatMessage: function (src, message, chan) {
+        if (message.toLowerCase().match("nips")) {
+            script.nipsbot(src, message, chan);
+            return;
+        }
+        if (message.substr(0, 7) == "@define") {
+		if (sys.auth(src) > 1){
+            script.urban(src, message, chan);
+            return;
+        }
+		}
+        if (message.substr(0, 5) == "@list") {
+		if (sys.auth(src) > 1){
+            script.listit(src, message, chan)
+            return;
+        }
+		}
+        if (message.substr(0, 7) == "@google") {
+            if (sys.auth(src) > 1) {
+                var goog = message.split(message.substr(0, 8));
+                var googdat = goog[1]
+                var spacez = /[ ]/g;
+                var newmessage = googdat.replace(spacez, "+");
+                sys.sendAll("Here is your google link for your requested search: https://www.google.com/search?q=" + newmessage + "", channel);
+                return;
+            }
+        }
+        if (message.substr(0, 12) == "@googleimages") {
+            if (sys.auth(src) > 1) {
+                var goog = message.split(message.substr(0, 13));
+                var googdat = goog[1]
+                var spacez = /[ ]/g;
+                var newmessage = googdat.replace(spacez, "+");
+                sys.sendAll("Here is your google image link for your requested search: https://www.google.com/search?safe=off&hl=en&site=imghp&tbm=isch&btnG=&q=" + newmessage + "", channel);
+                return;
+            }
+        }
         var user = SESSION.users(src);
         var poChannel = SESSION.channels(chan);
         channel = chan;
