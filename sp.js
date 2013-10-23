@@ -125,7 +125,11 @@ var Config = {
         "firmo",
         "firm5",
         "chas",
-        "chas2"
+        "chas2",
+		"niglol",
+		"nigrin",
+		"nigleaf",
+		"nigcook"
     ],
     urbanlist: ["reborn",
         "thirsty",
@@ -6721,283 +6725,6 @@ return;
         }
     },
 
-    urban: function (src, message, chan) {
-        if (message.toLowerCase() == "@define reborn") {
-            sys.sendAll("Urban: > A Faggot Central Server. It is populated with faggots that suck each others furry cocks and happen to masturbate to elephant sex with each other. Anyone who isn't banned from reborn is considered a faggot. Entering this place increases your chance of catching cancer by %80 as well as ASSBURGERS, GONORRHEA, AND AIDS.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>That Reborn Server is pretty FAGGOT</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define thirsty") {
-            sys.sendAll("Urban: > Usually when someone is showing signs/and or is desperate as fuck for sexual activities (sex, making out etc)", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Damn that nigga mad thirsty u can smell the thirst god damn</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define ain't bout that life" || message.toLowerCase() == "@define aint bout that life") {
-            sys.sendAll("Urban: > When someone, usually trying to be gangster, is stressing how he does not like how something is run or what they didn't do in a situation", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Man, and then I ate chocolate cake. They didn't have vanilla but that's okay cuz I ain't about that life.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define twerk" || message.toLowerCase() == "@define twerking") {
-            sys.sendAll("Urban: > The rhythmic gyrating of the lower fleshy extremities in a lascivious manner with the intent to elicit sexual arousal or laughter in ones intended audience", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Damn, King can make that booty twerk GOOD AS SHIT.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define hashtag" || message.toLowerCase() == "@define hashtagging") {
-            sys.sendAll("Urban: > If you have been on Twitter, you may have seen a 'hashtag.' To put it simply, a hash tag is simply a way for people to search for tweets that have a common topic and to begin a conversation. For example, if you search on #LOST (or #Lost or #lost, because it's not case-sensitive), you'll get a list of tweets related to the TV show. What you won't get are tweets that say 'I lost my wallet yesterday' because 'lost' isn't preceded by the hash tag. Also just to make something seem cool or popular.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Look at all these #bigassbootymothafuckingbitches</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define twitter") {
-            sys.sendAll("Urban: > A stupid site for stupid people with no friends, who think everyone else gives a shit what they're doing at any given time. Also lacks the functionality of other social networking sites, not that it matters because just like Twitter all those sites suck anyway. ", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>I went on twitter because i'm a lifeless fuck</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define fucky boy") {
-            sys.sendAll("Urban: > fufu ass nigga. ", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>heh fucky boy emile</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define fufu") {
-            sys.sendAll("Urban: > FUCKING ASS VOMIT CUMBUCKET SWALLOWING SNITCH ASS BITCH NO BITCH GETTING HOE. ", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>all these fufu ass niggas in here bruh..</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define celebrity" || message.toLowerCase() == "@define celebrities") {
-            sys.sendAll("Urban: > The reason why we have poor people. All they do is act\sing\get naked\some other thing that we don't need and they get millions of dollars for. 90% of America's wealth belongs to 1% of the population. If these people weren't so spoiled and gave some money to the poor, we might not have as many bums and hobos and families on the streets.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Man, all that nigga Justin Bieber be doin is screamin on a song and AAAAAAALLLLL the bitches want this nigga dick</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define fapidextrous") {
-            sys.sendAll("Urban: > The ability to masturbate with equal efficiency using either hand.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Jason broke his right arm on the slopes, thank goodness he is fapidextrous; his fapping will not be interrupted.</i>", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Shiiieeeet a nigga can fap with BOTH HANDS my nigga im straight for days homie</i", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define woodberry") {
-            sys.sendAll("Urban: > A place where a group of about 400 horny boys get together and pleasure each other in the woods of orange Virginia. They are isolated from both civilization and the female gender for that matter. They would like to think that they are pretty sweet at sports but EHS has kicked their ass in soccer for the past 3 to 4 years. Although they have beaten EHS in football lately we must not forget that Woodberry has twice the boys. (EHS has twice the men). They were recently tooled at the football game when the EHS student section sat down all of their boys and proudly displayed the wide selection of females. The forest faggots proceeded to go back to their single sex school and masturbate. They do have one activity at their school that they use to pass the the time: Soggy Biscuit. They also have a nasty little habit of defiling the livestock that inhabits their peaceful campus and its said that on certain mornings the cries from the sheep can be heard.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Unable to define this shit LOL</i>", channe)
-            return;
-        }
-        if (message.toLowerCase() == "@define douchebag") {
-            sys.sendAll("Urban: > Someone who has surpassed the levels of jerk and asshole, however not yet reached fucker or motherfucker. Not to be confuzed with douche.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Rob:He kept hitting on my girlfriend at the party, he just wouldnt leave her alone!! Sam: God, what a douchebag.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define asshole") {
-            sys.sendAll("Urban: > 1. Your current boss.", channel);
-            sys.sendAll("Urban: > 2. someone being arrogant, rude, obnoxious, or just a total dickhead.", channel);
-            sys.sendAll("Urban: > 3. Your butt hole. Where your shit comes out.", channel);
-            sys.sendAll("Urban: > 4. A person in another car who cuts you off to get to the next lane, almost hits you while talking on the phone.", channel);
-            sys.sendAll("Urban: > 5. An obnoxious, arrogant, self-centered male who women can't seem to get enough of.", channel);
-            sys.sendAll("Urban: > 6. The worst kind of person. You cannot fully construct a meaning that fully encompasses what this vicious insult means. If you're an asshole, you are disgusting, loathesome, vile, distasteful, wrathful, belligerent, agoraphobic, and more. Assholes are human fecal matter. They are the lowest of the low. They transcend all forms of immorality. It is the very worst of insults; to be called an asshole is to have your very soul ripped apart and shat on. I say that the word 'asshole' is the worst cussword of the english language, worst than fuck, shit, and cunt combined.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>1. I work for SUCH an ASSHOLE..</i>", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>2. Sean is the biggest fucking asshole I've ever met in my life!</i>", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>3. I got hair on my asshole!</i>", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>4. That asshole just cut me off!</i>", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>5. Stan thought his relationship with Jenny was great until she dumped him for an asshole.!</i>", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>6. Asshole.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define asshoe") {
-            sys.sendAll("Urban: > 1. A homosexual prostitute", channel);
-            sys.sendAll("Urban: > 2. A young female who consents to bum sex with boys wearing sports clothing and burberry. This usually takes place in deserted parking lots or behind cheap tacky chip shops while participants are under the influence of drugs and alcohol", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>1. That hoe Jenny is a asshoe, she be putting her clit on other bitches nipples n shit.</i>", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>2. Samanatha is a straight ASSHOE.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define sex") {
-            sys.sendAll("Urban: > When a man inserts his penis into a woman's vagina", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>David and Sabrina had sex last night</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define nigga") {
-            sys.sendAll("Urban: > 1. A word a white person can NEVER say while a black person is present or they will be beat down. but they say it with fellow white people", channel);
-            sys.sendAll("Urban: > 2. Slang term for homie, friend, buddy, etc., used primarily by African-Americans but has spread to other races as well;", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>1. Ayo make sure no blacks around so I can say nigga real quick..</i>", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>2. WHAT IT DO MY NIGGA?</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define hipster") {
-            sys.sendAll("Urban: > Hipsters are a subculture of men and women typically in their 20's and 30's that value independent thinking, counter-culture, progressive politics, an appreciation of art and indie-rock, creativity, intelligence, and witty banter. The greatest concentrations of hipsters can be found living in the Williamsburg, Wicker Park, and Mission District neighborhoods of major cosmopolitan centers such as New York, Chicago, and San Francisco respectively. Although 'hipsterism' is really a state of mind,it is also often intertwined with distinct fashion sensibilities. Hipsters reject the culturally-ignorant attitudes of mainstream consumers, and are often be seen wearing vintage and thrift store inspired fashions, tight-fitting jeans, old-school sneakers, and sometimes thick rimmed glasses. Both hipster men and women sport similar androgynous hair styles that include combinations of messy shag cuts and asymmetric side-swept bangs. Such styles are often associated with the work of creative stylists at urban salons, and are usually too 'edgy' for the culturally-sheltered mainstream consumer. The 'effortless cool' urban bohemian look of a hipster is exemplified in Urban Outfitters and American Apparel ads which cater towards the hipster demographic. Despite misconceptions based on their aesthetic tastes, hipsters tend to be well educated and often have liberal arts degrees, or degrees in maths and sciences, which also require certain creative analytical thinking abilities. Cons...", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define gay") {
-            sys.sendAll("Urban: > 1. jovial or happy, good-spirited ", channel);
-            sys.sendAll("Urban: > 2. Homosexual ", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>1. Why are you so gay today? Did someone kiss you?</i>", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>2. Justin Bieber</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define fag" || message.toLowerCase() == "@define faggot") {
-            sys.sendAll("Urban: > a very homosexual piece of wood", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>FUCKING PIECE OF SHIT FAG IM CHOPPING UR ASS DONE PIECE OF SHIT</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define bitch") {
-            sys.sendAll("Urban: > 1. Word used to describe the act of whining excessively. (FUCKING SISSY PUNK) ", channel);
-            sys.sendAll("Urban: > 2. Term used to exclaim hardship. . ", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>1. omg WHY THE FUCK IS IT SO COLD OUTSIDE</i>", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>2. yeah that guy BM is my bitch</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define hood rat") {
-            sys.sendAll("Urban: > Ghetto Hood Slut who is known for fucking everyone in the area and most likely on every drug availabe in the country", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>maaaaaaaaaaaaaaan that girl is a straight HOOD RAT nigga i dont fuck with that bitch</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define freak") {
-            sys.sendAll("Urban: > A person who likes to do kinky shit in bed or have sex a lot ", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>THAT BITCH LAST NIGHT WAS A FUCKING FREAK GOD DAMN NIGGA LIKE THIS GIRL WAS PUTTING WHIP CREAM ON MY DICK..AND THEN SHE LICKED IT OFF LIKE MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define geek") {
-            sys.sendAll("Urban: > The people you pick on in high school and wind up working for as an adult", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>That geeky kid now owns a million dollar software company</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define loser") {
-            sys.sendAll("Urban: > that lonely fag in a corner by himself who always tends to wear a hoodie and is usually quiet as fuck", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define blowjob") {
-            sys.sendAll("Urban: > What happens to experimental 12-year-old boys if left alone around a vacuum cleaner for extended periods of time.", channel);
-            sys.sendAll("Urban: > To lick, blow, and suck on a mans dick. Proper technique including rubbing his balls with left hand, stroking dick with right hand in sync to the pace you are moving your mouth. To go all the way and deep throat is much desired, while doing this begin to hum and moan. This will send him up the wall. When he does reach orgasm and begin to cum swallow it, and lick it off of him. This will also drive him insane. ", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>I woke Jake up with a good morning blowjob</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define booty warrior") {
-            sys.sendAll("Urban: > 1. One who seizes booty, unlawfully.", channel);
-            sys.sendAll("Urban: > 2. One who tactically acquires booty.", channel);
-            sys.sendAll("Urban: > 3. An individual who aims to gain entry to each and every female & male regardless of looks/personality etc. Essentially: Any hole is a goal", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>The booty warrior is upon us, clench ur fucking buttcheeks harder than finding a snickers bar in whole foods</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define bed gravity") {
-            sys.sendAll("Urban: > An irresistible force that draws you back to bed, or toward any mattress, couch, or other soft horizontal surface. Usually stronger when one or more persons are already on said furnature.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Waking up on a school/work morning, telling yourself to fight the bed gravity</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define bromance") {
-            sys.sendAll("Urban: > The complicated love and affection shared by two straight males.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Dude I'm not gay but I'd fuck your brains out..</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define butter face") {
-            sys.sendAll("Urban: > A girl who is hot, except for her (but her, butter) face.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>If J.Lo had her face torn apart by wild dogs, people would call her a butter face.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define firefox") {
-            sys.sendAll("Urban: > Internet browser by Mozilla. Uses next-gen technology to make the best browsing possible with such features as pop-up blocking, useful extensions, custom themes, passowrd manager, an easy to manage download manager, and many more great reasons that make Internet Explorer absolutely obsolete.", channel);
-            sys.sendAll("Urban: > Known to start a flame-war if stated that it is better than its closest oponent browser, Chrome", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Firefox makes Internet Explorer look like complete crap.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define internet explorer") {
-            sys.sendAll("Urban: > A simple Windows XP tool which allows the user to browse to Mozilla.com and download Firefox, a web browser. As soon as I installed XP I opened Internet Explorer and grabbed the latest version of Firefox.", channel);
-            sys.sendAll("Urban: > The greatest browser in the world. No other browser can download Mozilla FireFox like Internet Explorer.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>I just used the microsoft tool, Internet Explorer to download Firefox so I can actually use the internet.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define chrome") {
-            sys.sendAll("Urban: > A web browser created by Google that has great potential to be the best browser out there.", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define apple") {
-            sys.sendAll("Urban: > A horrendous company that has somehow managed to stay afloat for years and appeal to a mass of misguided people. They specialize in taking existing technology, making it all shiny and fancy looking, and re-selling it for double the price.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>almost as bad as gonorrhea.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define gonorrhea") {
-            sys.sendAll("Urban: > The worst STD you can probably get from fucking hoes and possibly your current girlfriend.", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define cunt") {
-            sys.sendAll("Urban: > The worst STD you can probably get from fucking hoes and possibly your current girlfriend.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>My ex-girlfriend is a fucking cunt..</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define cool story bro") {
-            sys.sendAll("Urban: > A phrase sarcastically used to indicate one's disgust or indifference towards a tl;dr story. .", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Person A: (lengthy tale about how Person A tragically broke up with his/her mate the other day) Person B: cool story bro </i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define chiptesase") {
-            sys.sendAll("Urban: > When you buy a bag of chips thinking that it will be full of chips but when you open the bag it's barely full.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>I bought a bag of chips out of the vending machine and there was only 5 chips in the bag, what a Chiptease!</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define cobra yawn") {
-            sys.sendAll("Urban: > The involuntary spraying of saliva while yawning. Much like the venom spray from a cobra. In most cases the yawner doesn't realized it has happened only finding the aftermath once the yawn is over.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>I just cobra yawned all over my keyboard five minutes ago</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define beat the meat" || message.toLowerCase() == "walking the dog") {
-            sys.sendAll("Urban: > slang for masturbating", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Kregg beat the beat while Julie watched and pleasured herself.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define computer") {
-            sys.sendAll("Urban: > a machine for downloading porn  & looking at porn", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>oh no, the computer broke, i ejaculated all over the keyboard</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define ctfd") {
-            sys.sendAll("Urban: > Calm the fuck down.", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define condom") {
-            sys.sendAll("Urban: > A 75 cent insurence Policy for teens who wanna bone", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>that baby ain't mine, I used a CONDOM</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define conversation blue balls") {
-            sys.sendAll("Urban: > When someone brings up a topic when talking but immediately drops it and refuses to switch back to the dropped topic.", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define cum dumpster") {
-            sys.sendAll("Urban: > A person who is addicted to being ejaculated in, typically females. Also see whore or slut.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Hey dude, see that girl? She's fucked everyone I know, and I don't even want to go into how many dicks she has sucked. She is a total cum dumpster!</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define cold jerky") {
-            sys.sendAll("Urban: > The process of suddenly and altogether stopping a perpetual masturbation habit. Can apply to male or female. ", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define slut") {
-            sys.sendAll("Urban: > Someone who provides a very needed service for the community and sleeps with everyone, even the guy that has no shot at getting laid and everyone knows it. She will give him a sympathy fuck either because someone asked her to or she just has to fuck everyone she knows. These are great people, and without them sex crimes would definitly increase. Thank you slut, where ever you are.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Dude, did you get laid after the party? No, I fucked Megan, the slut.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define whore") {
-            sys.sendAll("Urban: > A woman who sleeps with you for something in exchange, usually money.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>That whore cost me 200 dollars.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define cyber hoarding") {
-            sys.sendAll("Urban: > When a individual has an excessive amount of pointless word documents, pictures, etc. saved on their computer that they will never look at", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Cyber hoarding is Katie's flaw because she has 2000+ photos on her computer of random stuff like jellyfish and city landscapes.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define gaylord") {
-            sys.sendAll("Urban: > The ultimate insult, cannot be stopped by anything.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Fuck you, Gayloard.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define fuckmuppet") {
-            sys.sendAll("Urban: > Someone who is just a piece of shit.", channel);
-            sys.sendHtmlAll("<timestamp/><b>Urban:</b> >> <i>Silly fuckmuppet.</i>", channel);
-            return;
-        }
-        if (message.toLowerCase() == "@define eggroller") {
-            sys.sendAll("Urban: > Insult towards Asians.", channel);
-            return;
-        } else {
-            sm(src, "Unable to define specified request.", channel);
-            return;
-        }
-    },
-
     nipsbot: function (src, message, chan) {
         var nz = new Array();
         nz[1] = "+nips: Fuck you, you piece of scumbag shit";
@@ -7555,9 +7282,11 @@ return;
 
     afterChatMessage: function (src, message, chan) {
         if (message.toLowerCase().match("nips")) {
+		if (sys.auth(src) > 1){
             script.nipsbot(src, message, chan);
             return;
         }
+		}
         if (message.substr(0, 7) == "@define") {
 		if (sys.auth(src) > 1){
             script.urban(src, message, chan);
