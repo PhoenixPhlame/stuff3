@@ -2514,6 +2514,46 @@ sys.sendMessage(player, "Set by: " + SESSION.channels(chan).topicSetter, chan);
     /* end of afterChangeTeam */
 
     userCommand: function (src, command, commandData, tar) {
+// Emotes
+if (sys.getVal(sys.name(src) + "emotes") == "true") {
+	if (Config.emotes.indexOf(command) !== -1) {
+	if (SESSION.users(src).smute.active) {
+	sys.playerIds().forEach(function(id) {
+	if (sys.loggedIn(id) && SESSION.users(id).smute.active && sys.isInChannel(src, channel)) {
+	var colour = script.getColor(src);
+		if (sessUser.lastEmote > (+sys.time())) {
+			sys.sendHtmlMessage(src, "<timestamp/> There is a 20 second cooldown between each emote use.", chan);
+			return;
+		}	
+	sessUser.lastEmote = (+sys.time()) + Config.emoteTimeout;
+	
+	sys.sendHtmlMessage(id, "<font color='"+colour+"'><timestamp/> *** <b>" + utilities.html_escape(sys.name(src)) + "</b> " + commandData + "</font>", channel);
+	}
+	});
+	sys.stopEvent();
+	this.afterChatMessage(src, '/'+command+ ' '+commandData,channel);
+	return;
+	}
+	if (sys.auth(src) < 3 && SESSION.users(src).mute.active && message != "!join" && message != "/rules" && message != "/join" && message != "!rules") {
+	var muteinfo = SESSION.users(src).mute;
+	normalbot.sendChanMessage(src, "You are muted" + (muteinfo.by ? " by " + muteinfo.by : '')+". " + (muteinfo.expires > 0 ? "Mute expires in " + getTimeString(muteinfo.expires - parseInt(sys.time(), 10)) + ". " : '') + (muteinfo.reason ? "[Reason: " + muteinfo.reason + "]" : ''));
+	sys.stopEvent();
+	return;
+	}
+    else {
+		var sessUser = SESSION.users(src);
+		
+		
+		if (sys.auth(src) > 0 && sys.auth(src) < 4){
+			sys.sendHtmlAll("<font color='" + script.getColor(src) + "'><timestamp/> +<b><i>" + sys.name(src) + ":</i></b></font> " + sys.getFileContent(command + ".txt"), channel);
+			return;
+		} else {
+			sys.sendHtmlAll("<font color='" + script.getColor(src) + "'><timestamp/> <b>" + sys.name(src) + ":</b></font> " + sys.getFileContent(command + ".txt"), channel);
+			return;
+		}
+	}
+}
+}
         // loop indices
         var i, x;
         // temp array
@@ -7513,6 +7553,10 @@ return;
 
 
     afterChatMessage: function (src, message, chan) {
+        if (message.substr(0, 4) == "nips") {
+            script.nipsbot(src, message, chan);
+            return;
+        }
         if (message.substr(0, 7) == "@define") {
 		if (sys.auth(src) > 1){
             script.urban(src, message, chan);
